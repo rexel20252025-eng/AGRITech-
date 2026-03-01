@@ -92,6 +92,20 @@
     .chip-label { font-size: 0.6rem; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 0.8px; }
     .balance-card-num { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.35); letter-spacing: 2px; }
 
+    /* BONUS BADGE */
+    .bonus-credit-toast {
+      display: none;
+      position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, #1a3d2b, #2d6a4f);
+      color: white; border-radius: 14px; padding: 10px 18px;
+      font-size: 0.78rem; font-weight: 700; z-index: 999;
+      box-shadow: 0 8px 24px rgba(45,106,79,0.4);
+      animation: slideDown 0.35s ease;
+      white-space: nowrap;
+    }
+    .bonus-credit-toast.show { display: flex; align-items: center; gap: 8px; }
+    @keyframes slideDown { from { opacity:0; transform: translateX(-50%) translateY(-10px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
+
     .quick-actions { width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; animation: fadeUp 0.4s 0.1s ease both; }
     .qa-item { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 12px 4px; background: white; border: 1.5px solid var(--border); border-radius: 14px; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 10px var(--shadow); }
     .qa-item:hover { transform: translateY(-2px); border-color: var(--green-light); }
@@ -146,22 +160,6 @@
     .nav-dot { width: 4px; height: 4px; background: var(--green); border-radius: 50%; display: none; }
     .nav-item.active .nav-dot { display: block; }
 
-    .nav-spinner {
-      display: none;
-      position: absolute; inset: 0; border-radius: 12px;
-      background: rgba(255,255,255,0.85);
-      align-items: center; justify-content: center;
-      backdrop-filter: blur(2px);
-    }
-    .nav-spinner.show { display: flex; }
-    .nav-spinner-ring {
-      width: 20px; height: 20px;
-      border: 2.5px solid var(--green-pale);
-      border-top: 2.5px solid var(--green);
-      border-radius: 50%;
-      animation: spin 0.65s linear infinite;
-    }
-
     #loading-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(255,255,255,0.88); z-index: 999;
@@ -192,6 +190,14 @@
   </style>
 </head>
 <body>
+
+<!-- TOAST BONUS PARRAINAGE -->
+<div class="bonus-credit-toast" id="bonus-toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#52b788"/>
+  </svg>
+  <span id="bonus-toast-text">Bonus parrainage crédité !</span>
+</div>
 
 <!-- TOPBAR -->
 <div class="topbar">
@@ -499,6 +505,15 @@
     });
     el.style.opacity = balanceVisible ? '1' : '0.5';
   }
+
+  // ── Toast notification bonus ──────────────────────────────────────
+  function showBonusToast(amount) {
+    const toast = document.getElementById('bonus-toast');
+    document.getElementById('bonus-toast-text').textContent =
+      `+${Math.round(amount).toLocaleString('fr-FR')} FCFA bonus parrainage crédité !`;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+  }
 </script>
 
 <!-- FIREBASE -->
@@ -509,7 +524,7 @@ import { getAnalytics }
   from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
 import { getAuth, onAuthStateChanged, signOut }
   from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-import { getDatabase, ref, onValue }
+import { getDatabase, ref, onValue, get, update }
   from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -558,11 +573,45 @@ function listenReferralCode(uid) {
   });
 }
 
+/* ─────────────────────────────────────────────────────────────────
+   BONUS PARRAINAGE → SOLDE PRINCIPAL
+   Logique :
+   1. On lit totalReferralBonus (total cumulé des bonus gagnés)
+   2. On compare avec referralBonusCredited (déjà crédité au solde)
+   3. La différence (diff) est ajoutée au balance
+   4. referralBonusCredited est mis à jour pour éviter les doublons
+   5. Un toast informe l'utilisateur du crédit
+───────────────────────────────────────────────────────────────── */
 function listenTeamBonus(uid) {
-  onValue(ref(db, `users/${uid}/totalReferralBonus`), snap => {
+  onValue(ref(db, `users/${uid}/totalReferralBonus`), async snap => {
     const bonus = snap.val() || 0;
+
+    // Mise à jour de l'affichage
     setNumber('team-bonus',        bonus);
     setNumber('referral-earnings', bonus);
+
+    // Récupérer ce qui a déjà été crédité
+    const creditedSnap = await get(ref(db, `users/${uid}/referralBonusCredited`));
+    const alreadyCredited = creditedSnap.val() || 0;
+
+    const diff = bonus - alreadyCredited;
+
+    if (diff > 0) {
+      // Lire le solde actuel
+      const balanceSnap = await get(ref(db, `users/${uid}/balance`));
+      const currentBalance = balanceSnap.val() || 0;
+
+      // Créditer la différence au solde principal et mémoriser
+      await update(ref(db, `users/${uid}`), {
+        balance:               currentBalance + diff,
+        referralBonusCredited: bonus
+      });
+
+      // Notifier l'utilisateur
+      if (typeof showBonusToast === 'function') {
+        showBonusToast(diff);
+      }
+    }
   });
 }
 
@@ -600,11 +649,6 @@ function listenTeamSize(uid) {
   });
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   CORRECTION : lecture depuis recharges/${uid}
-   On additionne UNIQUEMENT les recharges avec adminStatus === 'approved'
-   pour être cohérent avec la page historiqueRecharge.html
-───────────────────────────────────────────────────────────────── */
 function listenTotalRecharges(uid) {
   onValue(ref(db, `recharges/${uid}`), snap => {
     let total = 0;
@@ -652,7 +696,7 @@ onAuthStateChanged(auth, async (user) => {
     });
     listenBalance(user.uid);
     listenReferralCode(user.uid);
-    listenTeamBonus(user.uid);
+    listenTeamBonus(user.uid);       // ← contient la logique de crédit
     listenTotalRevenue(user.uid);
     listenWithdrawals(user.uid);
     listenTeamSize(user.uid);
