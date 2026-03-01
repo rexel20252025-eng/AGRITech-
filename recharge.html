@@ -52,41 +52,26 @@ body {
 .sdot { width:5px; height:5px; border-radius:50%; background:#6fe89a; box-shadow:0 0 6px #6fe89a; animation:blink 2s ease-in-out infinite; }
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
 
-/* ── Tabs ── */
 .tabs { display:flex; background:#f6faf7; border-bottom:1px solid rgba(26,122,60,.1); }
 .tab { flex:1; padding:10px 4px; text-align:center; font-size:12px; font-weight:500; color:rgba(0,0,0,.3); border-bottom:2px solid transparent; transition:all .35s ease; }
 .tab.active { color:var(--green); border-bottom-color:var(--green); font-weight:600; }
 .tab.done { color:rgba(26,122,60,.4); }
 
-/* ── Steps avec animation de bascule ── */
 .body { padding:22px 20px 26px; overflow:hidden; }
 
 .step { display:none; }
 .step.active { display:block; animation:stepFwd .42s cubic-bezier(.16,1,.3,1) both; }
 .step.enter-back { display:block; animation:stepBack .42s cubic-bezier(.16,1,.3,1) both; }
 
-@keyframes stepFwd {
-  from { opacity:0; transform:translateX(48px) scale(.97); }
-  to   { opacity:1; transform:translateX(0) scale(1); }
-}
-@keyframes stepBack {
-  from { opacity:0; transform:translateX(-48px) scale(.97); }
-  to   { opacity:1; transform:translateX(0) scale(1); }
-}
-@keyframes stepOutFwd {
-  from { opacity:1; transform:translateX(0); }
-  to   { opacity:0; transform:translateX(-48px); }
-}
-@keyframes stepOutBack {
-  from { opacity:1; transform:translateX(0); }
-  to   { opacity:0; transform:translateX(48px); }
-}
+@keyframes stepFwd { from{opacity:0;transform:translateX(48px) scale(.97);} to{opacity:1;transform:translateX(0) scale(1);} }
+@keyframes stepBack { from{opacity:0;transform:translateX(-48px) scale(.97);} to{opacity:1;transform:translateX(0) scale(1);} }
+@keyframes stepOutFwd { from{opacity:1;transform:translateX(0);} to{opacity:0;transform:translateX(-48px);} }
+@keyframes stepOutBack { from{opacity:1;transform:translateX(0);} to{opacity:0;transform:translateX(48px);} }
 
 .sl { display:flex; align-items:center; gap:8px; font-size:11px; font-weight:600; color:var(--green); margin-bottom:12px; }
 .sl::after { content:''; flex:1; height:1px; background:linear-gradient(to right,rgba(26,122,60,.2),transparent); }
 .err-msg { font-size:12px; color:#d32f2f; font-weight:400; margin-top:5px; opacity:0; transition:opacity .25s; min-height:16px; display:block; }
 
-/* ── Operators ── */
 .ops { display:grid; grid-template-columns:repeat(5,1fr); gap:7px; margin-bottom:4px; }
 .op {
   position:relative; border:1.5px solid rgba(0,0,0,.08); border-radius:13px;
@@ -94,12 +79,7 @@ body {
   transition:all .25s cubic-bezier(.16,1,.3,1);
 }
 .op:hover { border-color:rgba(26,122,60,.3); background:#f0faf4; transform:translateY(-3px) scale(1.03); }
-.op.sel {
-  border-color:var(--green); background:#eaf5ef;
-  transform:translateY(-3px) scale(1.05);
-  box-shadow:0 6px 18px rgba(26,122,60,.18);
-  animation:opPop .3s cubic-bezier(.16,1,.3,1);
-}
+.op.sel { border-color:var(--green); background:#eaf5ef; transform:translateY(-3px) scale(1.05); box-shadow:0 6px 18px rgba(26,122,60,.18); animation:opPop .3s cubic-bezier(.16,1,.3,1); }
 @keyframes opPop{from{transform:translateY(-3px) scale(.93);}to{transform:translateY(-3px) scale(1.05);}}
 .op input[type="radio"] { position:absolute; opacity:0; width:0; height:0; }
 .op-ico { width:34px; height:34px; border-radius:50%; margin:0 auto 5px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:#fff; box-shadow:0 3px 10px rgba(0,0,0,.18); transition:transform .25s; }
@@ -110,8 +90,9 @@ body {
 .op.sel .op-ck { display:flex; animation:ckPop .25s cubic-bezier(.16,1,.3,1); }
 @keyframes ckPop{from{transform:scale(0) rotate(-45deg);}to{transform:scale(1) rotate(0);}}
 
-/* ── Amounts ── */
+/* ── Amounts : 7 montants en grille 3+4 ── */
 .amts { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:4px; }
+.amts .amt:last-child { grid-column: 1 / -1; }
 .amt {
   position:relative; overflow:hidden; border:1.5px solid rgba(0,0,0,.08); border-radius:12px;
   padding:12px 5px; text-align:center; cursor:pointer; background:#f8f9fa;
@@ -122,16 +103,10 @@ body {
 .amt::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--green),var(--green2)); transform:scaleX(0); transition:transform .25s; }
 .amt:hover { border-color:rgba(26,122,60,.3); color:#1a2e20; transform:translateY(-2px); }
 .amt:hover::after { transform:scaleX(1); }
-.amt.sel {
-  border-color:var(--green); background:#eaf5ef; color:var(--green);
-  transform:translateY(-2px);
-  box-shadow:0 5px 14px rgba(26,122,60,.14);
-  animation:amtPop .28s cubic-bezier(.16,1,.3,1);
-}
+.amt.sel { border-color:var(--green); background:#eaf5ef; color:var(--green); transform:translateY(-2px); box-shadow:0 5px 14px rgba(26,122,60,.14); animation:amtPop .28s cubic-bezier(.16,1,.3,1); }
 .amt.sel::after { transform:scaleX(1); }
 @keyframes amtPop{from{transform:translateY(-2px) scale(.93);}to{transform:translateY(-2px) scale(1);}}
 
-/* ── Fields ── */
 .field { margin-bottom:16px; }
 .field label { font-size:12px; font-weight:500; color:rgba(0,0,0,.45); display:block; margin-bottom:7px; }
 .inp-wrap { position:relative; }
@@ -146,12 +121,7 @@ body {
 .field input:focus { border-color:var(--green); background:#fff; box-shadow:0 0 0 4px rgba(26,122,60,.08); }
 .inp-wrap:focus-within .inp-ico { opacity:.6; }
 
-/* ── Buttons ── */
-.btn {
-  width:100%; border:none; border-radius:13px; padding:14px;
-  font-family:'Inter',sans-serif; font-size:14px; font-weight:600;
-  cursor:pointer; transition:all .25s cubic-bezier(.16,1,.3,1);
-}
+.btn { width:100%; border:none; border-radius:13px; padding:14px; font-family:'Inter',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all .25s cubic-bezier(.16,1,.3,1); }
 .btn:active { transform:scale(.97) !important; }
 .btn-green { background:linear-gradient(135deg,#1a7a3c,#2db85e); color:#fff; box-shadow:0 8px 24px rgba(26,122,60,.28); }
 .btn-green:hover { box-shadow:0 12px 32px rgba(26,122,60,.4); transform:translateY(-2px); }
@@ -160,7 +130,6 @@ body {
 .btn-ghost { background:transparent; border:1.5px solid rgba(0,0,0,.1); color:rgba(0,0,0,.4); margin-top:8px; }
 .btn-ghost:hover { background:#f5f5f5; color:rgba(0,0,0,.6); transform:translateY(-1px); }
 
-/* ── Confirm card ── */
 .cf-card { background:#f8f9fa; border:1px solid rgba(0,0,0,.07); border-radius:14px; overflow:hidden; margin-bottom:16px; }
 .cf-row { display:flex; justify-content:space-between; align-items:center; padding:13px 16px; border-bottom:1px solid rgba(0,0,0,.05); transition:background .2s; }
 .cf-row:last-child { border-bottom:none; }
@@ -180,7 +149,6 @@ body {
 .total-sub { font-size:11px; color:rgba(0,0,0,.25); margin-top:2px; }
 .total-val { font-size:22px; font-weight:700; color:var(--green); }
 
-/* ── Return alert ── */
 .return-alert {
   background:linear-gradient(135deg,#fffbea,#fff8d6);
   border:2px solid var(--gold); border-radius:16px;
@@ -214,7 +182,6 @@ body {
 .txn-section { display:none; }
 .txn-section.show { display:block; animation:fadeInUp .4s cubic-bezier(.16,1,.3,1) .15s both; }
 
-/* ── Success ── */
 .success-area { text-align:center; padding:6px 0 18px; }
 .s-ring {
   width:74px; height:74px; border-radius:50%;
@@ -224,11 +191,7 @@ body {
   box-shadow:0 0 0 10px rgba(26,122,60,.08),0 0 0 20px rgba(26,122,60,.04),0 16px 30px rgba(26,122,60,.2);
   animation:ringPop .7s cubic-bezier(.16,1,.3,1) .1s both;
 }
-@keyframes ringPop{
-  0%  { transform:scale(0) rotate(-20deg); opacity:0; }
-  60% { transform:scale(1.15) rotate(5deg); opacity:1; }
-  100%{ transform:scale(1) rotate(0); opacity:1; }
-}
+@keyframes ringPop{0%{transform:scale(0) rotate(-20deg);opacity:0;}60%{transform:scale(1.15) rotate(5deg);opacity:1;}100%{transform:scale(1) rotate(0);opacity:1;}}
 .s-title { font-size:20px; font-weight:700; color:#1a2e20; margin-bottom:5px; animation:fadeInUp .5s cubic-bezier(.16,1,.3,1) .25s both; }
 .s-sub { font-size:13px; color:rgba(0,0,0,.4); margin-bottom:14px; line-height:1.6; animation:fadeInUp .5s cubic-bezier(.16,1,.3,1) .35s both; }
 .txn-pill {
@@ -284,10 +247,12 @@ body {
 
       <div style="margin-top:16px;">
         <div class="sl">Montant de rechargement</div>
+        <!-- 7 montants mis à jour : 6 en 3 colonnes + le dernier pleine largeur -->
         <div class="amts">
           <div class="amt" onclick="pickAmt(this,'3.500',3500)"><span class="amt-v">3 500</span><span class="amt-c">F CFA</span></div>
           <div class="amt" onclick="pickAmt(this,'6.000',6000)"><span class="amt-v">6 000</span><span class="amt-c">F CFA</span></div>
-          <div class="amt" onclick="pickAmt(this,'15.000',15000)"><span class="amt-v">15 000</span><span class="amt-c">F CFA</span></div>
+          <div class="amt" onclick="pickAmt(this,'12.000',12000)"><span class="amt-v">12 000</span><span class="amt-c">F CFA</span></div>
+          <div class="amt" onclick="pickAmt(this,'20.000',20000)"><span class="amt-v">20 000</span><span class="amt-c">F CFA</span></div>
           <div class="amt" onclick="pickAmt(this,'50.000',50000)"><span class="amt-v">50 000</span><span class="amt-c">F CFA</span></div>
           <div class="amt" onclick="pickAmt(this,'100.000',100000)"><span class="amt-v">100 000</span><span class="amt-c">F CFA</span></div>
           <div class="amt" onclick="pickAmt(this,'500.000',500000)"><span class="amt-v">500 000</span><span class="amt-c">F CFA</span></div>
@@ -296,7 +261,6 @@ body {
         <span class="err-msg" id="amountError"></span>
       </div>
 
-      <!-- Gmail EN HAUT -->
       <div class="field" style="margin-top:16px;">
         <label>Adresse Gmail</label>
         <div class="inp-wrap">
@@ -306,7 +270,6 @@ body {
         <span class="err-msg" id="gmailError"></span>
       </div>
 
-      <!-- Téléphone EN BAS -->
       <div class="field">
         <label>Numéro de téléphone</label>
         <div class="inp-wrap">
@@ -361,7 +324,7 @@ body {
           <label>ID de transaction MoneyFusion</label>
           <div class="inp-wrap">
             <span class="inp-ico">🔑</span>
-            <input type="text" id="transactionId" placeholder="Ex : 8L5teSc5TaIkP3ds9Dlx" autocomplete="off" autocorrect="off" spellcheck="false"/>
+            <input type="text" id="transactionId" placeholder="Collez ici votre ID de transaction" autocomplete="off" autocorrect="off" spellcheck="false"/>
           </div>
           <span class="err-msg" id="txnError"></span>
         </div>
@@ -422,7 +385,6 @@ body {
   const $  = id => document.getElementById(id);
   const qs = s  => document.querySelector(s);
 
-  /* ── Helpers UI ── */
   function showLoading(m='Traitement...') { $('loading-text').textContent=m; qs('.loading').style.display='flex'; }
   function hideLoading() { qs('.loading').style.display='none'; }
   function showNotif(m, t='success') {
@@ -434,13 +396,11 @@ body {
   function showErr(id,m){ const e=$(id); if(e){e.textContent=m;e.style.opacity='1';} }
   function clearErrors(){ ['operatorError','amountError','gmailError','phoneError','txnError'].forEach(id=>{ const e=$(id); if(e){e.textContent='';e.style.opacity='0';} }); }
 
-  /* ── Navigation avec animation de bascule ── */
   window.goTo = (n, dir) => {
-    const isBack     = dir === 'back' || n < currentStep;
-    const oldStep    = $('step' + currentStep);
-    const newStep    = $('step' + n);
+    const isBack  = dir === 'back' || n < currentStep;
+    const oldStep = $('step' + currentStep);
+    const newStep = $('step' + n);
 
-    /* Animer la sortie */
     oldStep.style.animation = isBack
       ? 'stepOutBack .28s cubic-bezier(.4,0,1,1) both'
       : 'stepOutFwd .28s cubic-bezier(.4,0,1,1) both';
@@ -449,21 +409,15 @@ body {
       oldStep.classList.remove('active','enter-back');
       oldStep.style.display  = 'none';
       oldStep.style.animation = '';
-
       newStep.style.display = 'block';
       newStep.classList.remove('active','enter-back');
-      if(isBack) {
-        newStep.classList.add('enter-back');
-      } else {
-        newStep.classList.add('active');
-      }
+      if(isBack) newStep.classList.add('enter-back');
+      else newStep.classList.add('active');
 
-      /* Tabs */
       for(let i=1;i<=3;i++){
         const t=$('tab'+i); t.classList.remove('active','done');
         if(i===n) t.classList.add('active'); else if(i<n) t.classList.add('done');
       }
-
       currentStep = n;
       window.scrollTo({top:0,behavior:'smooth'});
     }, 260);
@@ -482,9 +436,20 @@ body {
     S.amtLabel = label; S.amtNum = parseInt(num); $('amount').value = num;
   };
 
-  /* ── Validation Gmail stricte : doit finir par @gmail.com ── */
   function isValidGmail(email) {
     return /^[a-zA-Z0-9._%+\-]+@gmail\.com$/.test(email.trim());
+  }
+
+  /* ════════════════════════════════════════════
+     VALIDATION ID : accepte TOUS les formats
+     — longueur minimale : 4 caractères
+     — pas de caractères spéciaux dangereux
+  ════════════════════════════════════════════ */
+  function isValidTxnId(id) {
+    const clean = id.trim();
+    if (clean.length < 4) return false;
+    // Accepte lettres, chiffres, tirets, underscores, points — rejette seulement les chars dangereux
+    return /^[a-zA-Z0-9\-_.@#/\\+= ]+$/.test(clean);
   }
 
   window.goConfirm = () => {
@@ -500,18 +465,14 @@ body {
     if(!ok) return;
     if(!currentUser)   { showNotif('🔒 Veuillez vous connecter','error'); return; }
 
-    S.phone = phone;
-    S.gmail = gmail;
-
+    S.phone = phone; S.gmail = gmail;
     $('c-op').textContent    = S.opLabel;
     $('c-gmail').textContent = S.gmail;
     $('c-phone').textContent = S.phone;
     $('c-amt').textContent   = S.amtLabel + ' F';
-
     goTo(2);
   };
 
-  /* ── Ouvrir MoneyFusion ── */
   window.ouvrirMF = () => {
     sessionStorage.setItem(SS_KEY, JSON.stringify({...S, mfOuvert:true}));
 
@@ -532,13 +493,20 @@ body {
     window.open(MF_LINK, '_blank');
   };
 
-  /* ── Confirmer la transaction ── */
   window.confirmerTransaction = async () => {
     const txnId = $('transactionId').value.trim();
     clearErrors();
-    if(!txnId)         { showErr('txnError','Veuillez saisir votre ID de transaction'); return; }
-    if(txnId.length<8) { showErr('txnError','ID trop court — vérifiez votre ID MoneyFusion'); return; }
-    if(!currentUser)   { showNotif('🔒 Veuillez vous connecter','error'); return; }
+
+    // Validation souple : accepte tout ID de 4 caractères minimum
+    if(!txnId) {
+      showErr('txnError','Veuillez saisir votre ID de transaction');
+      return;
+    }
+    if(!isValidTxnId(txnId)) {
+      showErr('txnError','ID invalide — vérifiez et ressaisissez votre ID');
+      return;
+    }
+    if(!currentUser) { showNotif('🔒 Veuillez vous connecter','error'); return; }
 
     showLoading('Envoi de votre demande...');
     try {
@@ -591,7 +559,6 @@ body {
     }
   };
 
-  /* ── Restauration au retour de page ── */
   function restaurerEtat() {
     const raw = sessionStorage.getItem(SS_KEY);
     if(!raw) return false;
@@ -620,7 +587,6 @@ body {
     } catch(e){ return false; }
   }
 
-  /* ── Restart ── */
   window.restart = () => {
     sessionStorage.removeItem(SS_KEY);
     S.op=''; S.opLabel=''; S.amtLabel=''; S.amtNum=0; S.phone=''; S.gmail='';
@@ -638,7 +604,6 @@ body {
     $('txnSection').classList.remove('show');
     $('modifyBtn').style.display = 'block';
 
-    /* Réinitialiser les steps */
     for(let i=2;i<=3;i++){
       const s=$('step'+i);
       s.classList.remove('active','enter-back');
@@ -656,7 +621,6 @@ body {
     window.scrollTo({top:0,behavior:'smooth'});
   };
 
-  /* ── Auth ── */
   onAuthStateChanged(auth, user => {
     if(user){
       currentUser = user;
