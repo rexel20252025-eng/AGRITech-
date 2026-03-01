@@ -81,19 +81,6 @@
     .stat-chip .s-val { font-size: 1rem; font-weight: 700; font-family: 'Cormorant Garamond', serif; }
     .stat-chip .s-lab { font-size: 0.58rem; font-weight: 500; color: rgba(255,255,255,0.65); letter-spacing: 0.5px; text-transform: uppercase; }
 
-    /* RETRAIT NOTICE */
-    .retrait-notice {
-      margin: 16px 16px 0;
-      background: linear-gradient(135deg, #fff8e1, #fffbf0);
-      border: 1.5px solid #f0c040;
-      border-radius: 14px;
-      padding: 13px 16px;
-      display: flex; gap: 10px; align-items: flex-start;
-    }
-    .retrait-notice .rn-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
-    .retrait-notice .rn-text { font-size: 0.76rem; color: #7a5c00; line-height: 1.55; }
-    .retrait-notice .rn-text strong { font-weight: 700; color: #5a3e00; }
-
     /* SECTION TITLE */
     .section-head {
       padding: 24px 20px 8px;
@@ -290,7 +277,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 20px;
     }
     .recap-item {
       background: var(--bg);
@@ -320,19 +307,6 @@
       color: var(--text);
     }
     .ri-val.green { color: var(--green-light); }
-
-    /* DÉLAI RETRAIT DANS MODAL */
-    .modal-delay-block {
-      background: #fff8e1;
-      border: 1.5px solid #f0c040;
-      border-radius: 12px;
-      padding: 11px 14px;
-      margin-bottom: 14px;
-      display: flex; gap: 10px; align-items: center;
-    }
-    .modal-delay-block .db-icon { font-size: 1.2rem; flex-shrink: 0; }
-    .modal-delay-block p { font-size: 0.74rem; color: #7a5c00; line-height: 1.5; }
-    .modal-delay-block strong { font-weight: 700; }
 
     .modal-divider { height: 1px; background: var(--border); margin: 0 0 16px; }
 
@@ -414,15 +388,6 @@
   </div>
 </div>
 
-<!-- NOTICE DÉLAI RETRAIT -->
-<div class="retrait-notice">
-  <div class="rn-icon">⏳</div>
-  <div class="rn-text">
-    <strong>Délai de retrait : 3 jours minimum</strong><br>
-    Après activation de votre investissement, le retrait de vos bénéfices est disponible après <strong>3 jours</strong> d'accumulation. Valable pour toutes les machines.
-  </div>
-</div>
-
 <!-- SECTION TITLE -->
 <div class="section-head">
   <h2>Choisissez votre machine</h2>
@@ -432,7 +397,7 @@
 <!-- CARDS GRID -->
 <div class="grid">
 
-  <!-- Machine 1 : 3 000 FCFA -->
+  <!-- Machine 1 -->
   <div class="card card-tier-1">
     <div class="card-img">
       <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&fit=crop" alt="Machine Agricole 1"/>
@@ -454,7 +419,7 @@
     </div>
   </div>
 
-  <!-- Machine 2 : 6 000 FCFA -->
+  <!-- Machine 2 -->
   <div class="card card-tier-2">
     <div class="card-img">
       <img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?w=400&fit=crop" alt="Machine Agricole 2"/>
@@ -476,7 +441,7 @@
     </div>
   </div>
 
-  <!-- Machine 3 : 12 000 FCFA -->
+  <!-- Machine 3 -->
   <div class="card card-tier-3">
     <div class="card-img">
       <img src="https://images.unsplash.com/photo-1599058917765-a780eda07a3e?w=400&fit=crop" alt="Machine Agricole 3"/>
@@ -498,7 +463,7 @@
     </div>
   </div>
 
-  <!-- Machine 4 : 20 000 FCFA -->
+  <!-- Machine 4 -->
   <div class="card card-tier-4">
     <div class="card-img">
       <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=400&fit=crop" alt="Machine Agricole 4"/>
@@ -520,7 +485,7 @@
     </div>
   </div>
 
-  <!-- Machine 5 : 50 000 FCFA -->
+  <!-- Machine 5 -->
   <div class="card card-tier-5">
     <div class="card-img">
       <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&fit=crop" alt="Machine Agricole 5"/>
@@ -542,7 +507,7 @@
     </div>
   </div>
 
-  <!-- Machine 6 : 100 000 FCFA -->
+  <!-- Machine 6 -->
   <div class="card card-tier-6">
     <div class="card-img">
       <img src="https://images.unsplash.com/photo-1473973266408-ed4e27abdd47?w=400&fit=crop" alt="Machine Agricole 6"/>
@@ -564,7 +529,7 @@
     </div>
   </div>
 
-  <!-- Machine 7 : 500 000 FCFA — pleine largeur -->
+  <!-- Machine 7 : pleine largeur -->
   <div class="card card-tier-7" style="grid-column: 1 / -1;">
     <div class="card-img" style="height: 130px;">
       <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&fit=crop" alt="Machine Agricole 7"/>
@@ -617,16 +582,11 @@
         </div>
       </div>
 
-      <div class="modal-delay-block">
-        <div class="db-icon">⏳</div>
-        <p><strong>Délai retrait : 3 jours</strong> — Vos bénéfices seront disponibles au retrait 3 jours après l'activation de l'investissement.</p>
-      </div>
-
       <div class="modal-divider"></div>
 
       <div class="info-block">
         <div class="ib-icon">⚡</div>
-        <p>Votre investissement démarre immédiatement. Les bénéfices sont crédités chaque jour sur votre compte AGRITech pendant 60 jours.</p>
+        <p>Votre investissement démarre immédiatement. Les bénéfices sont crédités chaque jour sur votre compte AGRITech pendant 60 jours. <strong>Le retrait est disponible dès le premier jour !</strong></p>
       </div>
 
       <button class="btn-confirm" id="confirmBtn" onclick="window.confirmInvestment()">✅ Confirmer l'investissement</button>
@@ -659,7 +619,7 @@
   </a>
 </div>
 
-<!-- Script classique pour ouverture du modal -->
+<!-- Script classique -->
 <script>
   window.PRODUCT_DATA = {
     1: { nom:"Machine Agricole 1", price:3000,   dailyRevenue:400,   cycleDuration:60, totalRevenue:24000,   gold:false, img:"https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&fit=crop" },
@@ -740,9 +700,6 @@
     let currentUser = null;
     let currentSolde = 0;
 
-    // Délai retrait : 3 jours
-    const WITHDRAWAL_DELAY_MS = 3 * 24 * 60 * 60 * 1000;
-
     const PRODUCT_CONFIG = {
         1: { productId:1, price:3000,   dailyRevenue:400,   cycleDuration:60, totalRevenue:24000,   limit:1 },
         2: { productId:2, price:6000,   dailyRevenue:1000,  cycleDuration:60, totalRevenue:60000,   limit:1 },
@@ -816,9 +773,6 @@
             const newBalance = currentSolde - product.price;
             const now = new Date();
 
-            // Date disponibilité retrait = J+3
-            const withdrawalAvailableAt = new Date(now.getTime() + WITHDRAWAL_DELAY_MS).toISOString();
-
             const updates = {};
             updates[`users/${currentUser.uid}/balance`] = newBalance;
 
@@ -831,7 +785,6 @@
                 totalRevenue: product.totalRevenue,
                 remainingDays: product.cycleDuration,
                 startDate: now.toISOString(),
-                withdrawalAvailableAt: withdrawalAvailableAt,
                 status: "active",
                 totalCollected: 0,
                 lastCollection: now.toISOString(),
@@ -839,7 +792,7 @@
             };
 
             await update(ref(db), updates);
-            showNotification("✅ Investissement activé ! Retrait dans 3 jours.");
+            showNotification("✅ Investissement activé ! Retrait disponible immédiatement.");
             window.fermerModal();
             updateInvestmentLimits(currentUser.uid);
             setTimeout(() => location.href = "agricol.html", 2200);
