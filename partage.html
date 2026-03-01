@@ -139,7 +139,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* ── PAGE ÉQUIPE : styles ── */
+    /* ── PAGE ÉQUIPE : styles ajoutés ── */
     .equipe-hero {
       width: 100%;
       background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
@@ -229,26 +229,12 @@
     /* Toast */
     .toast { position: fixed; bottom: 95px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--green); color: white; padding: 10px 20px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; opacity: 0; transition: all 0.3s; z-index: 200; white-space: nowrap; box-shadow: 0 6px 20px rgba(45,106,79,0.4); }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    /* Commission toast spécial */
-    .commission-toast {
-      position: fixed; bottom: 95px; left: 50%;
-      transform: translateX(-50%) translateY(30px);
-      background: linear-gradient(135deg, #f9d923, #f0a500);
-      color: #2a1500; padding: 12px 22px; border-radius: 50px;
-      font-size: 0.82rem; font-weight: 700; opacity: 0;
-      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
-      z-index: 201; white-space: nowrap;
-      box-shadow: 0 6px 24px rgba(240,165,0,0.5);
-    }
-    .commission-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
 
 <!-- TOAST / COPY NOTIFICATION -->
 <div class="toast" id="toast"></div>
-<div class="commission-toast" id="commissionToast"></div>
 <div id="copyNotification" style="display:none;position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:var(--green);color:white;padding:10px 20px;border-radius:50px;font-size:0.78rem;font-weight:600;z-index:201;white-space:nowrap;box-shadow:0 6px 20px rgba(45,106,79,0.4);">✓ Copié !</div>
 
 <!-- PAGE ACCUEIL -->
@@ -268,7 +254,7 @@
       </div>
       <div class="equipe-stat-divider"></div>
       <div class="equipe-stat">
-        <div class="equipe-stat-val" id="totalNetwork">—</div>
+        <div class="equipe-stat-val">—</div>
         <div class="equipe-stat-label">Total réseau</div>
       </div>
       <div class="equipe-stat-divider"></div>
@@ -533,7 +519,7 @@
       <div class="menu-item-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#aac4b0" stroke-width="2" stroke-linecap="round"/></svg></div>
     </div>
     <div class="menu-item">
-      <div class="menu-item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <div class="menu-item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/></.></div>
       <div class="menu-item-label">Notifications</div>
       <div class="menu-item-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#aac4b0" stroke-width="2" stroke-linecap="round"/></svg></div>
     </div>
@@ -555,11 +541,14 @@
   </div>
 </div>
 
-<!-- LOADING OVERLAY -->
+<!-- PAGE ÉQUIPE supprimée — contenu intégré dans page-accueil -->
+
+<!-- ✅ LOADING OVERLAY AMÉLIORÉ -->
 <div id="loading-overlay">
   <div class="loader-wrapper">
     <div class="loader-ring"></div>
     <div class="loader-icon" id="loader-icon">
+      <!-- Icône par défaut : logo AGRITech -->
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
         <path d="M12 2C8 2 5 6 5 10c0 5 7 12 7 12s7-7 7-12c0-4-3-8-7-8z" fill="#2d6a4f" opacity="0.85"/>
         <circle cx="12" cy="10" r="3" fill="#d8f3dc"/>
@@ -595,6 +584,90 @@
 </div>
 
 <script>
+  // Navigation pages internes
+  function goTo(page, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    el.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  // Icônes SVG par type
+  const loaderIcons = {
+    recharge: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#e8f5ed"/><path d="M12 6v6l4 2" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round"/><path d="M6 12a6 6 0 1 0 6-6" stroke="#52b788" stroke-width="2" stroke-linecap="round"/></svg>`,
+    retrait:  `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#fef7ec"/><path d="M12 8v8M9 13l3 3 3-3" stroke="#b7882c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    produits: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#fce4ec"/><path d="M8 12h8M8 9h5M8 15h3" stroke="#e91e8c" stroke-width="2" stroke-linecap="round"/></svg>`,
+    tableau:  `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#eef0ff"/><polyline points="9,17 9,13 12,13 12,9 15,9 15,17" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    notif:    `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round"/></svg>`,
+    default:  `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 6 5 10c0 5 7 12 7 12s7-7 7-12c0-4-3-8-7-8z" fill="#2d6a4f" opacity="0.85"/><circle cx="12" cy="10" r="3" fill="#d8f3dc"/></svg>`
+  };
+
+  // ✅ Loader pour les boutons rapides (Recharge, Retrait, Mes produits, Tableau, Cloche)
+  function goLink(href, message, iconKey) {
+    const overlay    = document.getElementById('loading-overlay');
+    const loaderText = document.getElementById('loader-text');
+    const loaderIcon = document.getElementById('loader-icon');
+
+    loaderText.textContent = message || 'Chargement…';
+    loaderIcon.innerHTML   = loaderIcons[iconKey] || loaderIcons.default;
+
+    // Placeholder → loader temporaire
+    if (!href || href.startsWith('LIEN_')) {
+      overlay.style.display = 'flex';
+      setTimeout(() => { overlay.style.display = 'none'; }, 1800);
+      return;
+    }
+
+    // Vrai lien → loader puis redirection
+    overlay.style.display = 'flex';
+    setTimeout(() => { window.location.href = href; }, 1200);
+  }
+
+  // Loader pour la barre de navigation
+  function showLoader(e, el, href) {
+    if (!href || href.startsWith('LIEN_')) {
+      e.preventDefault();
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      el.classList.add('active');
+      const overlay = document.getElementById('loading-overlay');
+      const loaderText = document.getElementById('loader-text');
+      loaderText.textContent = 'Chargement…';
+      overlay.style.display = 'flex';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        el.classList.remove('active');
+        document.getElementById('nav-accueil').classList.add('active');
+      }, 1500);
+      return;
+    }
+    const overlay = document.getElementById('loading-overlay');
+    overlay.style.display = 'flex';
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Trust carousel
+  let trustIdx = 0;
+  const trustTotal = 3;
+
+  function goTrust(idx) {
+    trustIdx = idx;
+    const track = document.getElementById('trust-track');
+    if (!track) return;
+    track.style.transform = 'translateX(-' + (idx * 33.333) + '%)';
+    document.querySelectorAll('.trust-dot').forEach((d, i) => {
+      d.style.width = i === idx ? '20px' : '8px';
+      d.style.background = i === idx ? 'var(--green)' : 'var(--border)';
+    });
+  }
+
+  setInterval(() => {
+    goTrust((trustIdx + 1) % trustTotal);
+  }, 4000);
+
+  // ── Fonctions page Équipe ──
+
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -602,20 +675,13 @@
     setTimeout(() => t.classList.remove('show'), 2200);
   }
 
-  function showCommissionToast(amount) {
-    const t = document.getElementById('commissionToast');
-    t.textContent = `🥇 +${Math.round(amount).toLocaleString('fr-FR')} FCFA commission reçue !`;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3500);
-  }
-
-  function copyToClipboard(inputId, btnId) {
-    const val = document.getElementById(inputId).value;
+  function copyText(elId, btnId, successMsg) {
+    const val = document.getElementById(elId).textContent.trim();
     const btn = document.getElementById(btnId);
     const copy = () => {
       btn.classList.add('copied');
       btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polyline points="20,6 9,17 4,12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copié !`;
-      showToast('✓ Copié dans le presse-papier');
+      showToast(successMsg);
       setTimeout(() => {
         btn.classList.remove('copied');
         btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="white" stroke-width="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg> Copier`;
@@ -641,45 +707,34 @@
         url: link
       }).catch(() => {});
     } else {
+      const btn = document.getElementById('copyReferralLinkBtn');
       navigator.clipboard?.writeText(link).then(() => {
-        showToast('✓ Lien copié !');
+        const n = document.getElementById('copyNotification');
+        if (n) { n.style.display = 'block'; setTimeout(() => n.style.display = 'none', 2000); }
       });
     }
-  }
-
-  const loaderIcons = {
-    default: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 6 5 10c0 5 7 12 7 12s7-7 7-12c0-4-3-8-7-8z" fill="#2d6a4f" opacity="0.85"/><circle cx="12" cy="10" r="3" fill="#d8f3dc"/></svg>`
-  };
-
-  function goLink(href, message, iconKey) {
-    const overlay = document.getElementById('loading-overlay');
-    const loaderText = document.getElementById('loader-text');
-    const loaderIcon = document.getElementById('loader-icon');
-    loaderText.textContent = message || 'Chargement…';
-    loaderIcon.innerHTML = loaderIcons[iconKey] || loaderIcons.default;
-    if (!href || href.startsWith('LIEN_')) {
-      overlay.style.display = 'flex';
-      setTimeout(() => { overlay.style.display = 'none'; }, 1800);
-      return;
-    }
-    overlay.style.display = 'flex';
-    setTimeout(() => { window.location.href = href; }, 1200);
   }
 </script>
 
 <script type="module">
 
-/* ================= IMPORTS FIREBASE ================= */
-import { initializeApp }
-  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-import { getAnalytics }
-  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
-import { getAuth, onAuthStateChanged }
-  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-import { getDatabase, ref, get, set, update, onValue, runTransaction, push }
-  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+/* ================= IMPORT FIREBASE 12.9.0 ================= */
 
-/* ================= CONFIG ================= */
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+
+import { getAnalytics }
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+
+import { getAuth, onAuthStateChanged, signOut }
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+import { getDatabase, ref, set, get, onValue }
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+
+
+/* ================= CONFIGURATION ================= */
+
 const firebaseConfig = {
   apiKey: "AIzaSyDaFEepJKO8TbePfgnYlX0N3-CcaV75fy4",
   authDomain: "agri-5af15.firebaseapp.com",
@@ -691,195 +746,110 @@ const firebaseConfig = {
   measurementId: "G-XYB13DQZSP"
 };
 
+/* ================= INIT ================= */
+
 const app      = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth     = getAuth(app);
-const db       = getDatabase(app);
+const database = getDatabase(app);
 
-/* ================= TAUX ================= */
-const COMMISSION_RATE_LVL1 = 0.27; // 27% pour filleuls directs (niveau 1)
+let currentUser = null;
 
-/* ================= ÉTAT ================= */
-let currentUser     = null;
-let currentUserData = null;
+/* ================= UI ELEMENTS ================= */
+
+const elements = {
+    copyReferralCodeBtn: document.getElementById('copyReferralCodeBtn'),
+    copyReferralLinkBtn: document.getElementById('copyReferralLinkBtn'),
+    totalBonus:          document.getElementById('totalBonus'),
+    teamCount:           document.getElementById('teamCount')
+};
 
 /* ================= UTILS ================= */
-const formatFCFA = (v) => `${Math.round(v).toLocaleString('fr-FR')}`;
 
-/* ================= MISE À JOUR UI ================= */
-const updateUI = (data) => {
-  currentUserData = data;
-  if (!data) return;
+const parseAmount = (amount) => Math.round(parseFloat(amount || 0));
 
-  // Lien & code parrainage
-  const codeEl = document.getElementById('referralCode');
-  const linkEl = document.getElementById('referralLink');
-  if (codeEl) codeEl.value = data.referralCode || '';
-  if (linkEl) linkEl.value = `${location.origin}/index.html?ref=${data.referralCode || ''}`;
+const formatCurrency = (amountFCFA) => {
+    const fcfa = parseAmount(amountFCFA);
+    return `${fcfa.toLocaleString('fr-FR')} FCFA`;
+};
 
-  // Total bonus
-  const bonusEl = document.getElementById('totalBonus');
-  if (bonusEl) bonusEl.textContent = formatFCFA(data.totalReferralBonus || 0);
+const showNotification = () => {
+    const notification = document.getElementById('copyNotification');
+    if (notification) {
+        notification.style.display = 'block';
+        setTimeout(() => notification.style.display = 'none', 2000);
+    }
+};
+
+const copyToClipboard = async (elementId) => {
+    try {
+        const element = document.getElementById(elementId);
+        if (element) {
+            await navigator.clipboard.writeText(element.value);
+            showNotification();
+        }
+    } catch (err) {
+        console.error('Erreur copie:', err);
+    }
 };
 
 /* ================= COMPTEUR ÉQUIPE ================= */
-const updateTeamCount = async (uid) => {
-  try {
-    const snap = await get(ref(db, 'users'));
-    let count = 0;
-    if (snap.exists()) {
-      snap.forEach(s => { if (s.val()?.referredBy === uid) count++; });
-    }
-    const el = document.getElementById('teamCount');
-    if (el) el.textContent = count.toString().padStart(2, '0');
 
-    const netEl = document.getElementById('totalNetwork');
-    if (netEl) netEl.textContent = count;
-  } catch (e) {
-    console.error('Erreur comptage équipe:', e);
-  }
-};
-
-/* ================================================================
-   🔑 LOGIQUE PRINCIPALE — SURVEILLANCE DES RECHARGES DES FILLEULS
-   ================================================================
-   
-   Fonctionnement :
-   1. On récupère tous les utilisateurs qui ont `referredBy === currentUser.uid` (filleuls directs = niveau 1)
-   2. Pour chaque filleul, on écoute ses recharges en temps réel
-   3. Quand une recharge passe à `adminStatus === 'approved'` :
-      a. On vérifie qu'elle n'a pas encore été traitée (`commissionPaid !== true`)
-      b. On calcule 27% du montant
-      c. On crédite le parrain : `users/{parrainUid}/totalReferralBonus += commission`
-      d. On marque la recharge comme traitée : `commissionPaid: true`
-      e. On enregistre dans `commissions/{parrainUid}/{rechargeId}` pour historique
-      f. On affiche un toast doré à l'écran si le parrain est connecté
-================================================================ */
-
-const processedRecharges = new Set(); // Évite les doublons dans la session
-
-const watchFilleulRecharges = async (parrainUid) => {
-  try {
-    // 1. Trouver tous les filleuls directs
-    const usersSnap = await get(ref(db, 'users'));
-    if (!usersSnap.exists()) return;
-
-    usersSnap.forEach((userSnap) => {
-      const filleulData = userSnap.val();
-      const filleulUid  = userSnap.key;
-
-      // Ne garder que les filleuls directs de ce parrain
-      if (filleulData?.referredBy !== parrainUid) return;
-
-      // 2. Écouter les recharges de ce filleul en temps réel
-      onValue(ref(db, `recharges/${filleulUid}`), async (rechargesSnap) => {
-        if (!rechargesSnap.exists()) return;
-
-        for (const [rechargeId, recharge] of Object.entries(rechargesSnap.val())) {
-          // 3. Seulement si approuvée et pas encore traitée
-          if (
-            recharge.adminStatus === 'approved' &&
-            !recharge.commissionPaid &&
-            !processedRecharges.has(rechargeId)
-          ) {
-            processedRecharges.add(rechargeId);
-            await creditCommission(parrainUid, filleulUid, rechargeId, recharge);
-          }
-        }
-      });
-    });
-  } catch (e) {
-    console.error('Erreur surveillance filleuls:', e);
-  }
-};
-
-/* ================================================================
-   💰 CRÉDITER LA COMMISSION AU PARRAIN
-================================================================ */
-const creditCommission = async (parrainUid, filleulUid, rechargeId, recharge) => {
-  const amount     = parseFloat(recharge.amount || 0);
-  const commission = Math.round(amount * COMMISSION_RATE_LVL1); // 27%
-
-  if (commission <= 0) return;
-
-  try {
-    // a. Marquer la recharge comme traitée (anti-doublon Firebase)
-    await update(ref(db, `recharges/${filleulUid}/${rechargeId}`), {
-      commissionPaid:   true,
-      commissionAmount: commission,
-      commissionPaidAt: new Date().toISOString()
-    });
-
-    // b. Créditer le totalReferralBonus du parrain via transaction atomique
-    await runTransaction(ref(db, `users/${parrainUid}/totalReferralBonus`), (current) => {
-      return (current || 0) + commission;
-    });
-
-    // c. Enregistrer dans l'historique des commissions du parrain
-    const commissionRecord = {
-      filleulUid:    filleulUid,
-      filleulName:   recharge.userName || recharge.phone || 'Filleul',
-      rechargeId:    rechargeId,
-      rechargeAmount: amount,
-      commission:    commission,
-      rate:          '27%',
-      operator:      recharge.operator || '',
-      date:          new Date().toISOString(),
-      type:          'niveau1'
-    };
-
-    await push(ref(db, `commissions/${parrainUid}`), commissionRecord);
-
-    // d. Toast doré visible si l'utilisateur est sur la page
-    if (typeof showCommissionToast === 'function') {
-      showCommissionToast(commission);
-    }
-
-    console.log(`✅ Commission créditée : ${commission} FCFA (27% de ${amount} FCFA) pour parrain ${parrainUid}`);
-
-  } catch (e) {
-    // Rollback : si erreur, on retire le flag commissionPaid pour pouvoir réessayer
-    processedRecharges.delete(rechargeId);
+const updateTeamCount = async (userUid) => {
+    if (!userUid || !elements.teamCount) return;
     try {
-      await update(ref(db, `recharges/${filleulUid}/${rechargeId}`), {
-        commissionPaid: false
-      });
-    } catch (_) {}
-    console.error('Erreur crédit commission:', e);
-  }
+        const allUsersSnapshot = await get(ref(database, 'users'));
+        let teamSize = 0;
+        if (allUsersSnapshot.exists()) {
+            allUsersSnapshot.forEach((userSnap) => {
+                if (userSnap.val()?.referredBy === userUid) teamSize++;
+            });
+        }
+        elements.teamCount.textContent = teamSize.toString().padStart(2, '0');
+    } catch (error) {
+        console.error('Erreur comptage équipe:', error);
+        elements.teamCount.textContent = '00';
+    }
 };
 
-/* ================= EVENTS UI ================= */
+/* ================= UI TEMPS RÉEL ================= */
+
+const updateUI = async () => {
+    if (!currentUser) return;
+    await updateTeamCount(currentUser.uid);
+    onValue(ref(database, `users/${currentUser.uid}`), (snap) => {
+        const data = snap.val();
+        if (!data) return;
+        if (elements.totalBonus) {
+            elements.totalBonus.textContent = formatCurrency(data.totalReferralBonus || 0);
+        }
+        const codeEl = document.getElementById('referralCode');
+        const linkEl = document.getElementById('referralLink');
+        if (codeEl) codeEl.value = data.referralCode || '';
+        if (linkEl) linkEl.value = `${location.origin}/index.html?ref=${data.referralCode || ''}`;
+    });
+};
+
+/* ================= EVENTS ================= */
+
 const setupEvents = () => {
-  document.getElementById('copyReferralCodeBtn')?.addEventListener('click', () => {
-    copyToClipboard('referralCode', 'copyReferralCodeBtn');
-  });
-  document.getElementById('copyReferralLinkBtn')?.addEventListener('click', () => {
-    copyToClipboard('referralLink', 'copyReferralLinkBtn');
-  });
+    elements.copyReferralCodeBtn?.addEventListener('click', () => copyToClipboard('referralCode'));
+    elements.copyReferralLinkBtn?.addEventListener('click', () => copyToClipboard('referralLink'));
 };
 
 /* ================= AUTH ================= */
+
 onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.href = 'index.html';
-    return;
-  }
-  currentUser = user;
-  setupEvents();
-
-  // Écoute des données utilisateur en temps réel (solde bonus, code, etc.)
-  onValue(ref(db, `users/${user.uid}`), (snap) => {
-    updateUI(snap.val());
-  });
-
-  // Compteur équipe
-  await updateTeamCount(user.uid);
-
-  // 🚀 Démarrer la surveillance des recharges des filleuls pour commissions 27%
-  await watchFilleulRecharges(user.uid);
+    if (!user) {
+        window.location.href = 'index.html';
+        return;
+    }
+    currentUser = user;
+    setupEvents();
+    await updateUI();
 });
 
 </script>
+
 </body>
 </html>
