@@ -58,7 +58,6 @@ body {
 .tab.done { color:rgba(26,122,60,.4); }
 
 .body { padding:22px 20px 26px; overflow:hidden; }
-
 .step { display:none; }
 .step.active { display:block; animation:stepFwd .42s cubic-bezier(.16,1,.3,1) both; }
 .step.enter-back { display:block; animation:stepBack .42s cubic-bezier(.16,1,.3,1) both; }
@@ -90,7 +89,6 @@ body {
 .op.sel .op-ck { display:flex; animation:ckPop .25s cubic-bezier(.16,1,.3,1); }
 @keyframes ckPop{from{transform:scale(0) rotate(-45deg);}to{transform:scale(1) rotate(0);}}
 
-/* ── Amounts : 7 montants en grille 3+4 ── */
 .amts { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:4px; }
 .amts .amt:last-child { grid-column: 1 / -1; }
 .amt {
@@ -247,7 +245,6 @@ body {
 
       <div style="margin-top:16px;">
         <div class="sl">Montant de rechargement</div>
-        <!-- 7 montants mis à jour : 6 en 3 colonnes + le dernier pleine largeur -->
         <div class="amts">
           <div class="amt" onclick="pickAmt(this,'3.500',3500)"><span class="amt-v">3 500</span><span class="amt-c">F CFA</span></div>
           <div class="amt" onclick="pickAmt(this,'6.000',6000)"><span class="amt-v">6 000</span><span class="amt-c">F CFA</span></div>
@@ -396,6 +393,16 @@ body {
   function showErr(id,m){ const e=$(id); if(e){e.textContent=m;e.style.opacity='1';} }
   function clearErrors(){ ['operatorError','amountError','gmailError','phoneError','txnError'].forEach(id=>{ const e=$(id); if(e){e.textContent='';e.style.opacity='0';} }); }
 
+  /* ══════════════════════════════════════════════════
+     SANITIZE : remplace les caractères interdits par _
+     Firebase interdit : . # $ [ ]
+     On garde l'ID original pour l'affichage (rawTxnId)
+     On utilise la version nettoyée comme clé Firebase
+  ══════════════════════════════════════════════════ */
+  function sanitizeForFirebase(id) {
+    return id.trim().replace(/[.#$[\]]/g, '_');
+  }
+
   window.goTo = (n, dir) => {
     const isBack  = dir === 'back' || n < currentStep;
     const oldStep = $('step' + currentStep);
@@ -440,18 +447,6 @@ body {
     return /^[a-zA-Z0-9._%+\-]+@gmail\.com$/.test(email.trim());
   }
 
-  /* ════════════════════════════════════════════
-     VALIDATION ID : accepte TOUS les formats
-     — longueur minimale : 4 caractères
-     — pas de caractères spéciaux dangereux
-  ════════════════════════════════════════════ */
-  function isValidTxnId(id) {
-    const clean = id.trim();
-    if (clean.length < 4) return false;
-    // Accepte lettres, chiffres, tirets, underscores, points — rejette seulement les chars dangereux
-    return /^[a-zA-Z0-9\-_.@#/\\+= ]+$/.test(clean);
-  }
-
   window.goConfirm = () => {
     const phone = $('phone').value.trim();
     const gmail = $('gmail').value.trim();
@@ -494,23 +489,21 @@ body {
   };
 
   window.confirmerTransaction = async () => {
-    const txnId = $('transactionId').value.trim();
+    const rawTxnId  = $('transactionId').value.trim();   // ID original (pour affichage)
+    const safeTxnId = sanitizeForFirebase(rawTxnId);     // ID nettoyé (pour Firebase)
+
     clearErrors();
 
-    // Validation souple : accepte tout ID de 4 caractères minimum
-    if(!txnId) {
-      showErr('txnError','Veuillez saisir votre ID de transaction');
-      return;
-    }
-    if(!isValidTxnId(txnId)) {
-      showErr('txnError','ID invalide — vérifiez et ressaisissez votre ID');
+    if(!rawTxnId || rawTxnId.length < 4) {
+      showErr('txnError','Veuillez saisir votre ID de transaction (min. 4 caractères)');
       return;
     }
     if(!currentUser) { showNotif('🔒 Veuillez vous connecter','error'); return; }
 
     showLoading('Envoi de votre demande...');
     try {
-      const dupSnap = await get(ref(db,`submitted_txns/${txnId}`));
+      // Vérif doublon avec la clé nettoyée
+      const dupSnap = await get(ref(db,`submitted_txns/${safeTxnId}`));
       if(dupSnap.exists()) {
         hideLoading();
         showErr('txnError','⚠️ Cet ID a déjà été soumis — attendez la validation admin');
@@ -520,13 +513,19 @@ body {
       const snap = await get(ref(db,`users/${currentUser.uid}/balance`));
       const ancienSolde = snap.val() || 0;
 
-      await set(ref(db,`submitted_txns/${txnId}`), {
-        userId: currentUser.uid, amount: S.amtNum, date: new Date().toISOString()
+      // Sauvegarde avec clé nettoyée + ID original dans les données
+      await set(ref(db,`submitted_txns/${safeTxnId}`), {
+        userId: currentUser.uid,
+        originalTxnId: rawTxnId,       // ← on garde l'original ici
+        amount: S.amtNum,
+        date: new Date().toISOString()
       });
 
       await set(push(ref(db,'transactions')), {
         operator: S.op, opLabel: S.opLabel, phone: S.phone, gmail: S.gmail,
-        amount: S.amtNum, transactionId: txnId,
+        amount: S.amtNum,
+        transactionId: rawTxnId,        // ← ID original visible par l'admin
+        transactionIdSafe: safeTxnId,   // ← clé Firebase
         adminStatus: 'pending', credited: false,
         balanceAvant: ancienSolde, balanceApres: ancienSolde + S.amtNum,
         userId: currentUser.uid, userEmail: currentUser.email,
@@ -535,18 +534,22 @@ body {
 
       await set(push(ref(db,`recharges/${currentUser.uid}`)), {
         operator: S.op, opLabel: S.opLabel, phone: S.phone, gmail: S.gmail,
-        amount: S.amtNum, transactionId: txnId, adminStatus: 'pending',
-        balanceAvant: ancienSolde, date: new Date().toISOString()
+        amount: S.amtNum,
+        transactionId: rawTxnId,
+        adminStatus: 'pending',
+        balanceAvant: ancienSolde,
+        date: new Date().toISOString()
       });
 
       sessionStorage.removeItem(SS_KEY);
 
+      // Affichage de l'ID original à l'utilisateur
       $('s-op').textContent       = S.opLabel;
       $('s-gmail').textContent    = S.gmail;
       $('s-phone').textContent    = S.phone;
       $('s-amt').textContent      = S.amtLabel + ' F';
-      $('s-txn').textContent      = txnId;
-      $('s-txn-pill').textContent = txnId;
+      $('s-txn').textContent      = rawTxnId;
+      $('s-txn-pill').textContent = rawTxnId;
       $('new-balance').textContent= '⏳ En cours de validation';
 
       hideLoading();
