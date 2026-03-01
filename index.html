@@ -471,7 +471,7 @@
 
         <div class="parrainage-box">
           <div class="parrainage-label">🎁 Code de parrainage</div>
-          <input type="text" id="referralCode" placeholder="Entrez le code de parrainage"/>
+          <input type="text" id="referralCodeInput" placeholder="Entrez le code de parrainage"/>
           <div id="referralStatus" class="msg referral-status"></div>
         </div>
 
@@ -537,7 +537,7 @@
       const params = new URLSearchParams(window.location.search);
       const refCode = params.get('ref');
       if (refCode) {
-        const refInput = document.getElementById('referralCode');
+        const refInput = document.getElementById('referralCodeInput');
         if (refInput) {
           refInput.value = refCode.toUpperCase();
           // Basculer sur l'onglet inscription automatiquement
@@ -663,7 +663,7 @@
         const telephone    = document.getElementById('signupTelephone').value.trim();
         const password     = document.getElementById('signupPassword').value;
         const confirmPwd   = document.getElementById('confirmPassword').value;
-        const referralCode = document.getElementById('referralCode')?.value.trim().toUpperCase();
+        const referralCode = document.getElementById('referralCodeInput')?.value.trim().toUpperCase();
 
         if (!username || !telephone || !password)
           throw new Error('Veuillez remplir tous les champs');
@@ -743,6 +743,29 @@
       ?.addEventListener('submit', FormManager.handleSignup);
     document.getElementById('loginFormData')
       ?.addEventListener('submit', FormManager.handleLogin);
+
+    // ✅ Vérification en temps réel du code de parrainage
+    let referralCheckTimer = null;
+    document.getElementById('referralCodeInput')?.addEventListener('input', (e) => {
+      const code = e.target.value.trim().toUpperCase();
+      clearTimeout(referralCheckTimer);
+
+      if (!code) {
+        Utils.updateReferralStatus(false, '');
+        return;
+      }
+
+      Utils.updateReferralStatus(false, '⏳ Vérification…');
+
+      referralCheckTimer = setTimeout(async () => {
+        const parrain = await Utils.checkReferralCode(code);
+        if (parrain) {
+          Utils.updateReferralStatus(true, `✅ Code valide — Parrainé par ${parrain.username}`);
+        } else {
+          Utils.updateReferralStatus(false, '❌ Code de parrainage invalide');
+        }
+      }, 600); // attendre 600ms après la dernière frappe
+    });
   });
 
   onAuthStateChanged(auth, async (user) => {
