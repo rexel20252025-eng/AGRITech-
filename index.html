@@ -171,6 +171,15 @@
     }
     .parrainage-box input { background: white; border-color: #d4e8d9; }
 
+    /* Highlight when auto-filled from URL */
+    .parrainage-box input.auto-filled {
+      border-color: var(--green-light);
+      background: #f0fff5;
+      font-weight: 600;
+      color: var(--green);
+      letter-spacing: 1px;
+    }
+
     /* ── Divider ── */
     .divider { display: flex; align-items: center; gap: 8px; margin: 2px 0; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
@@ -549,6 +558,35 @@
       if (spinner) spinner.style.display = loading ? 'block' : 'none';
       if (btn)     btn.disabled          = loading;
     }
+
+    /* ══════════════════════════════════════════════
+       AUTO-FILL CODE DE PARRAINAGE DEPUIS L'URL
+       Exemple de lien : https://monsite.com/?ref=ABC123
+    ══════════════════════════════════════════════ */
+    document.addEventListener('DOMContentLoaded', function() {
+      const params  = new URLSearchParams(window.location.search);
+      const refCode = params.get('ref');
+
+      if (refCode) {
+        // 1. Basculer sur l'onglet Inscription
+        switchTab('register');
+
+        // 2. Remplir le champ code de parrainage
+        const input = document.getElementById('referralCode');
+        if (input) {
+          input.value = refCode.toUpperCase();
+          input.classList.add('auto-filled');
+
+          // 3. Afficher un message de confirmation
+          const statusEl = document.getElementById('referralStatus');
+          if (statusEl) {
+            statusEl.textContent = '✅ Code de parrainage appliqué automatiquement !';
+            statusEl.className   = 'msg referral-status valid';
+            statusEl.style.display = 'block';
+          }
+        }
+      }
+    });
   </script>
 
   <!-- ══════════ FIREBASE ══════════ -->
