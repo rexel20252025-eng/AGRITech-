@@ -171,15 +171,6 @@
     }
     .parrainage-box input { background: white; border-color: #d4e8d9; }
 
-    /* Highlight when auto-filled from URL */
-    .parrainage-box input.auto-filled {
-      border-color: var(--green-light);
-      background: #f0fff5;
-      font-weight: 600;
-      color: var(--green);
-      letter-spacing: 1px;
-    }
-
     /* ── Divider ── */
     .divider { display: flex; align-items: center; gap: 8px; margin: 2px 0; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
@@ -250,7 +241,6 @@
     }
     .modal-overlay.show .modal { transform: translateY(0) scale(1); }
 
-    /* Arc décoratif en haut */
     .modal-header {
       background: linear-gradient(135deg, var(--green), var(--green-light));
       padding: 28px 24px 22px;
@@ -281,7 +271,6 @@
 
     .modal-body { padding: 28px 24px 0; }
 
-    /* Badge bonus */
     .bonus-badge {
       background: linear-gradient(135deg, #fffcf0, #fef5d4);
       border: 2px solid var(--gold); border-radius: 18px;
@@ -301,14 +290,12 @@
     .bonus-label { font-size: 0.7rem; font-weight: 700; color: #a07020; letter-spacing: 0.8px; text-transform: uppercase; }
     .bonus-sub   { font-size: 0.68rem; color: #c09040; margin-top: 4px; }
 
-    /* Texte de bienvenue */
     .welcome-text {
       font-size: 0.84rem; color: var(--muted); line-height: 1.65;
       margin-bottom: 20px;
     }
     .welcome-text strong { color: var(--text); }
 
-    /* Bouton WhatsApp */
     .btn-whatsapp {
       display: flex; align-items: center; justify-content: center; gap: 10px;
       width: 100%; padding: 13px 18px;
@@ -323,7 +310,6 @@
     .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,211,102,0.5); }
     .btn-whatsapp svg   { width: 21px; height: 21px; fill: white; flex-shrink: 0; }
 
-    /* Bouton passer */
     .btn-skip {
       width: 100%; padding: 10px 18px;
       background: transparent; color: var(--muted);
@@ -333,7 +319,6 @@
     }
     .btn-skip:hover { background: var(--green-pale); color: var(--green); border-color: var(--green-light); }
 
-    /* ── Animations ── */
     @keyframes fadeDown { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeUp   { from { opacity: 0; transform: translateY(14px);  } to { opacity: 1; transform: translateY(0); } }
     @keyframes bounceIn {
@@ -504,7 +489,6 @@
 
   <!-- ══════════ SCRIPT UI ══════════ -->
   <script>
-    /* ── Tabs ── */
     function switchTab(tab) {
       document.querySelectorAll('.tab').forEach((t, i) => {
         t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
@@ -513,7 +497,6 @@
       document.getElementById('signupFormData').classList.toggle('active', tab === 'register');
     }
 
-    /* ── Dropdowns ── */
     function toggleDropdownLogin() {
       document.getElementById('countryDropdownLogin').classList.toggle('open');
     }
@@ -538,7 +521,6 @@
       }
     });
 
-    /* ── Modal ── */
     function showWelcomeModal(username) {
       document.getElementById('welcomeUsername').textContent = username || 'ami(e)';
       document.getElementById('welcomeModal').classList.add('show');
@@ -548,7 +530,6 @@
       setTimeout(() => { window.location.href = 'accueil.html'; }, 300);
     }
 
-    /* ── Loading state ── */
     function setLoading(type, loading) {
       const text    = document.getElementById(type + 'BtnText');
       const spinner = document.getElementById(type + 'Spinner');
@@ -558,245 +539,205 @@
       if (spinner) spinner.style.display = loading ? 'block' : 'none';
       if (btn)     btn.disabled          = loading;
     }
-
-    /* ══════════════════════════════════════════════
-       AUTO-FILL CODE DE PARRAINAGE DEPUIS L'URL
-       Exemple de lien : https://monsite.com/?ref=ABC123
-    ══════════════════════════════════════════════ */
-    document.addEventListener('DOMContentLoaded', function() {
-      const params  = new URLSearchParams(window.location.search);
-      const refCode = params.get('ref');
-
-      if (refCode) {
-        // 1. Basculer sur l'onglet Inscription
-        switchTab('register');
-
-        // 2. Remplir le champ code de parrainage
-        const input = document.getElementById('referralCode');
-        if (input) {
-          input.value = refCode.toUpperCase();
-          input.classList.add('auto-filled');
-
-          // 3. Afficher un message de confirmation
-          const statusEl = document.getElementById('referralStatus');
-          if (statusEl) {
-            statusEl.textContent = '✅ Code de parrainage appliqué automatiquement !';
-            statusEl.className   = 'msg referral-status valid';
-            statusEl.style.display = 'block';
-          }
-        }
-      }
-    });
   </script>
 
   <!-- ══════════ FIREBASE ══════════ -->
-<script type="module">
+  <script type="module">
 
-/* ================= IMPORT FIREBASE 12.9.0 ================= */
+  import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 
-import { initializeApp } 
-from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getAnalytics }
+  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
 
-import { getAnalytics } 
-from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+  import { getAuth, createUserWithEmailAndPassword,
+           signInWithEmailAndPassword, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
-import { getAuth, createUserWithEmailAndPassword,
-         signInWithEmailAndPassword, onAuthStateChanged }
-from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+  import { getDatabase, ref, set, get, update }
+  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
-import { getDatabase, ref, set, get }
-from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyDaFEepJKO8TbePfgnYlX0N3-CcaV75fy4",
+    authDomain: "agri-5af15.firebaseapp.com",
+    databaseURL: "https://agri-5af15-default-rtdb.firebaseio.com",
+    projectId: "agri-5af15",
+    storageBucket: "agri-5af15.firebasestorage.app",
+    messagingSenderId: "1010902928190",
+    appId: "1:1010902928190:web:57d2555d69e2c023057a6f",
+    measurementId: "G-XYB13DQZSP"
+  };
 
-
-/* ================= CONFIGURATION ================= */
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDaFEepJKO8TbePfgnYlX0N3-CcaV75fy4",
-  authDomain: "agri-5af15.firebaseapp.com",
-  databaseURL: "https://agri-5af15-default-rtdb.firebaseio.com",
-  projectId: "agri-5af15",
-  storageBucket: "agri-5af15.firebasestorage.app",
-  messagingSenderId: "1010902928190",
-  appId: "1:1010902928190:web:57d2555d69e2c023057a6f",
-  measurementId: "G-XYB13DQZSP"
-};
-
-
-/* ================= INITIALISATION ================= */
-
-const app       = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth      = getAuth(app);
-const database  = getDatabase(app);
+  const app      = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth     = getAuth(app);
+  const database = getDatabase(app);
 
 
-/* ================= UTILS ================= */
+  /* ================= UTILS ================= */
 
-class Utils {
+  class Utils {
 
-  static generateReferralCode() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    return Array.from({ length: 6 }, () =>
-      chars.charAt(Math.floor(Math.random() * chars.length))
-    ).join('');
-  }
-
-  static async checkReferralCode(code) {
-    if (!code) return null;
-    const snapshot = await get(ref(database, 'users'));
-    if (snapshot.exists()) {
-      const users = snapshot.val();
-      for (const uid in users) {
-        if (users[uid].referralCode === code)
-          return { userId: uid, username: users[uid].username };
-      }
+    static generateReferralCode() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      return Array.from({ length: 6 }, () =>
+        chars.charAt(Math.floor(Math.random() * chars.length))
+      ).join('');
     }
-    return null;
-  }
 
-  static showMsg(id, text, type) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.textContent = text;
-    el.style.display = text ? 'block' : 'none';
-    if (type) el.className = 'msg ' + type;
-  }
+    // ✅ Retourne { userId, username } si le code existe, sinon null
+    static async checkReferralCode(code) {
+      if (!code) return null;
+      const snapshot = await get(ref(database, 'users'));
+      if (snapshot.exists()) {
+        const users = snapshot.val();
+        for (const uid in users) {
+          if (users[uid].referralCode === code)
+            return { userId: uid, username: users[uid].username };
+        }
+      }
+      return null;
+    }
 
-  static clearMessages() {
-    ['loginError','signupError','signupSuccess','referralStatus'].forEach(id => {
+    static showMsg(id, text, type) {
       const el = document.getElementById(id);
-      if (el) {
-        el.textContent = '';
-        el.style.display = 'none';
-      }
-    });
-  }
+      if (!el) return;
+      el.textContent = text;
+      el.style.display = text ? 'block' : 'none';
+      if (type) el.className = 'msg ' + type;
+    }
 
-  static updateReferralStatus(isValid, msg) {
-    const el = document.getElementById('referralStatus');
-    if (!el) return;
-    el.textContent = msg;
-    el.className = `msg referral-status ${isValid ? 'valid' : 'invalid'}`;
-    el.style.display = msg ? 'block' : 'none';
-  }
-
-  static updateUserDisplay(userData) {
-    const nameEl  = document.getElementById('user-name');
-    const idEl    = document.getElementById('user-id');
-    const emailEl = document.getElementById('user-email');
-
-    if (nameEl  && userData?.username)
-      nameEl.textContent = `Hello 👋 ${userData.username}`;
-
-    if (idEl && userData?.phoneNumber)
-      idEl.textContent = userData.phoneNumber;
-
-    if (emailEl && userData?.phoneNumber)
-      emailEl.textContent = `${userData.phoneNumber}@temp.com`;
-  }
-}
-
-
-/* ================= FORM MANAGER ================= */
-
-class FormManager {
-
-  static async handleSignup(event) {
-    event.preventDefault();
-    Utils.clearMessages();
-    setLoading('signup', true);
-
-    try {
-      const username   = document.getElementById('signupUsername').value.trim();
-      const telephone  = document.getElementById('signupTelephone').value.trim();
-      const password   = document.getElementById('signupPassword').value;
-      const confirmPwd = document.getElementById('confirmPassword').value;
-      const referralCode = document.getElementById('referralCode')?.value.trim();
-
-      if (!username || !telephone || !password)
-        throw new Error('Veuillez remplir tous les champs');
-
-      if (password !== confirmPwd)
-        throw new Error('Les codes PIN ne correspondent pas');
-
-      if (password.length < 6)
-        throw new Error('Le code PIN doit contenir au moins 6 chiffres');
-
-      const email = `${telephone}@temp.com`;
-
-      const userCredential =
-        await createUserWithEmailAndPassword(auth, email, password);
-
-      const user = userCredential.user;
-      const newCode = Utils.generateReferralCode();
-
-      await set(ref(database, `users/${user.uid}`), {
-        username,
-        phoneNumber: telephone,
-        balance: 1000,
-        referralCode: newCode,
-        referredBy: null,
-        createdAt: Date.now()
+    static clearMessages() {
+      ['loginError','signupError','signupSuccess','referralStatus'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = ''; el.style.display = 'none'; }
       });
+    }
 
-      setLoading('signup', false);
-      showWelcomeModal(username);
+    static updateReferralStatus(isValid, msg) {
+      const el = document.getElementById('referralStatus');
+      if (!el) return;
+      el.textContent = msg;
+      el.className = `msg referral-status ${isValid ? 'valid' : 'invalid'}`;
+      el.style.display = msg ? 'block' : 'none';
+    }
 
-    } catch (error) {
-      setLoading('signup', false);
-      Utils.showMsg('signupError', error.message, 'error');
+    static updateUserDisplay(userData) {
+      const nameEl  = document.getElementById('user-name');
+      const idEl    = document.getElementById('user-id');
+      const emailEl = document.getElementById('user-email');
+      if (nameEl  && userData?.username)    nameEl.textContent  = `Hello 👋 ${userData.username}`;
+      if (idEl    && userData?.phoneNumber) idEl.textContent    = userData.phoneNumber;
+      if (emailEl && userData?.phoneNumber) emailEl.textContent = `${userData.phoneNumber}@temp.com`;
     }
   }
 
 
-  static async handleLogin(event) {
-    event.preventDefault();
-    Utils.clearMessages();
-    setLoading('login', true);
+  /* ================= FORM MANAGER ================= */
 
-    try {
-      const telephone = document.getElementById('loginTelephone').value.trim();
-      const password  = document.getElementById('loginPassword').value;
+  class FormManager {
 
-      if (!telephone || !password)
-        throw new Error('Veuillez remplir tous les champs');
+    static async handleSignup(event) {
+      event.preventDefault();
+      Utils.clearMessages();
+      setLoading('signup', true);
 
-      const email = `${telephone}@temp.com`;
+      try {
+        const username     = document.getElementById('signupUsername').value.trim();
+        const telephone    = document.getElementById('signupTelephone').value.trim();
+        const password     = document.getElementById('signupPassword').value;
+        const confirmPwd   = document.getElementById('confirmPassword').value;
+        const referralCode = document.getElementById('referralCode')?.value.trim().toUpperCase();
 
-      await signInWithEmailAndPassword(auth, email, password);
+        if (!username || !telephone || !password)
+          throw new Error('Veuillez remplir tous les champs');
 
-      window.location.href = 'accueil.html';
+        if (password !== confirmPwd)
+          throw new Error('Les codes PIN ne correspondent pas');
 
-    } catch (error) {
-      setLoading('login', false);
-      Utils.showMsg('loginError', 'Numéro ou code PIN incorrect', 'error');
+        if (password.length < 6)
+          throw new Error('Le code PIN doit contenir au moins 6 chiffres');
+
+        // ✅ Vérifier le code de parrainage AVANT de créer le compte
+        let parrain = null;
+        if (referralCode) {
+          parrain = await Utils.checkReferralCode(referralCode);
+          if (!parrain) {
+            Utils.updateReferralStatus(false, '❌ Code de parrainage invalide');
+            setLoading('signup', false);
+            return;
+          }
+          Utils.updateReferralStatus(true, `✅ Parrainé par ${parrain.username}`);
+        }
+
+        const email = `${telephone}@temp.com`;
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        const newCode = Utils.generateReferralCode();
+
+        // ✅ CORRECTION : referredBy = UID du parrain (pas null), totalReferralBonus initialisé à 0
+        await set(ref(database, `users/${user.uid}`), {
+          username,
+          phoneNumber:        telephone,
+          balance:            1000,
+          referralCode:       newCode,
+          referredBy:         parrain ? parrain.userId : null,   // ← UID du parrain ou null
+          totalReferralBonus: 0,                                  // ← initialisé à 0
+          createdAt:          Date.now()
+        });
+
+        setLoading('signup', false);
+        showWelcomeModal(username);
+
+      } catch (error) {
+        setLoading('signup', false);
+        Utils.showMsg('signupError', error.message, 'error');
+      }
+    }
+
+
+    static async handleLogin(event) {
+      event.preventDefault();
+      Utils.clearMessages();
+      setLoading('login', true);
+
+      try {
+        const telephone = document.getElementById('loginTelephone').value.trim();
+        const password  = document.getElementById('loginPassword').value;
+
+        if (!telephone || !password)
+          throw new Error('Veuillez remplir tous les champs');
+
+        const email = `${telephone}@temp.com`;
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = 'accueil.html';
+
+      } catch (error) {
+        setLoading('login', false);
+        Utils.showMsg('loginError', 'Numéro ou code PIN incorrect', 'error');
+      }
     }
   }
-}
 
 
-/* ================= INIT ================= */
+  /* ================= INIT ================= */
 
-document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('signupFormData')
+      ?.addEventListener('submit', FormManager.handleSignup);
+    document.getElementById('loginFormData')
+      ?.addEventListener('submit', FormManager.handleLogin);
+  });
 
-  document.getElementById('signupFormData')
-    ?.addEventListener('submit', FormManager.handleSignup);
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const snap = await get(ref(database, `users/${user.uid}`));
+      if (snap.exists()) Utils.updateUserDisplay(snap.val());
+    } else {
+      Utils.updateUserDisplay(null);
+    }
+  });
 
-  document.getElementById('loginFormData')
-    ?.addEventListener('submit', FormManager.handleLogin);
-});
-
-
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    const snap = await get(ref(database, `users/${user.uid}`));
-    if (snap.exists())
-      Utils.updateUserDisplay(snap.val());
-  } else {
-    Utils.updateUserDisplay(null);
-  }
-});
-
-</script> 
+  </script>
 </body>
 </html>
