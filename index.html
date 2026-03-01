@@ -402,6 +402,7 @@
           </div>
           <div class="country-dropdown" id="countryDropdownLogin">
             <div class="country-option" onclick="pickCountryLogin('🇨🇮','Côte d\'Ivoire','+225')"><span class="flag">🇨🇮</span><span class="cname">Côte d'Ivoire</span><span class="code">+225</span></div>
+            <div class="country-option" onclick="pickCountryLogin('🇨🇲','Cameroun','+237')"><span class="flag">🇨🇲</span><span class="cname">Cameroun</span><span class="code">+237</span></div>
             <div class="country-option" onclick="pickCountryLogin('🇲🇱','Mali','+223')"><span class="flag">🇲🇱</span><span class="cname">Mali</span><span class="code">+223</span></div>
             <div class="country-option" onclick="pickCountryLogin('🇹🇬','Togo','+228')"><span class="flag">🇹🇬</span><span class="cname">Togo</span><span class="code">+228</span></div>
             <div class="country-option" onclick="pickCountryLogin('🇧🇫','Burkina Faso','+226')"><span class="flag">🇧🇫</span><span class="cname">Burkina Faso</span><span class="code">+226</span></div>
@@ -444,6 +445,7 @@
           </div>
           <div class="country-dropdown" id="countryDropdown">
             <div class="country-option" onclick="pickCountry('🇨🇮','Côte d\'Ivoire','+225')"><span class="flag">🇨🇮</span><span class="cname">Côte d'Ivoire</span><span class="code">+225</span></div>
+            <div class="country-option" onclick="pickCountry('🇨🇲','Cameroun','+237')"><span class="flag">🇨🇲</span><span class="cname">Cameroun</span><span class="code">+237</span></div>
             <div class="country-option" onclick="pickCountry('🇲🇱','Mali','+223')"><span class="flag">🇲🇱</span><span class="cname">Mali</span><span class="code">+223</span></div>
             <div class="country-option" onclick="pickCountry('🇹🇬','Togo','+228')"><span class="flag">🇹🇬</span><span class="cname">Togo</span><span class="code">+228</span></div>
             <div class="country-option" onclick="pickCountry('🇧🇫','Burkina Faso','+226')"><span class="flag">🇧🇫</span><span class="cname">Burkina Faso</span><span class="code">+226</span></div>
@@ -529,6 +531,20 @@
       document.getElementById('welcomeModal').classList.remove('show');
       setTimeout(() => { window.location.href = 'accueil.html'; }, 300);
     }
+
+    // ✅ Remplir automatiquement le code de parrainage depuis l'URL (?ref=XXXX)
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const refCode = params.get('ref');
+      if (refCode) {
+        const refInput = document.getElementById('referralCode');
+        if (refInput) {
+          refInput.value = refCode.toUpperCase();
+          // Basculer sur l'onglet inscription automatiquement
+          switchTab('register');
+        }
+      }
+    });
 
     function setLoading(type, loading) {
       const text    = document.getElementById(type + 'BtnText');
