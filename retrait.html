@@ -590,7 +590,7 @@ input:focus { border-color: var(--g2); background: #fff; box-shadow: 0 0 0 4px r
       </label>
       <div class="account-selector" id="accountSelector">
         <div class="no-accounts">
-          Aucun compte lié. <a href="agritech-retrait.html">Ajouter un compte →</a>
+          Aucun compte lié. <a href="compteBancaire.html">Ajouter un compte →</a>
         </div>
       </div>
     </div>
@@ -846,12 +846,12 @@ window.calcFee = () => {
 const renderAccounts = (accountsObj) => {
   const sel = document.getElementById('accountSelector');
   if (!accountsObj) {
-    sel.innerHTML = `<div class="no-accounts">Aucun compte lié. <a href="agritech-retrait.html">Ajouter un compte →</a></div>`;
+    sel.innerHTML = `<div class="no-accounts">Aucun compte lié. <a href="compteBancaire.html">Ajouter un compte →</a></div>`;
     return;
   }
   const entries = Object.entries(accountsObj);
   if (!entries.length) {
-    sel.innerHTML = `<div class="no-accounts">Aucun compte lié. <a href="agritech-retrait.html">Ajouter un compte →</a></div>`;
+    sel.innerHTML = `<div class="no-accounts">Aucun compte lié. <a href="compteBancaire.html">Ajouter un compte →</a></div>`;
     return;
   }
   sel.innerHTML = entries.map(([key, a], idx) => `
