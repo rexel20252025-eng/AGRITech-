@@ -695,7 +695,7 @@
         await set(ref(database, `users/${user.uid}`), {
           username,
           phoneNumber:        telephone,
-          balance:            1000,
+          balance:            200,
           referralCode:       newCode,
           referredBy:         parrain ? parrain.userId : null,   // ← UID du parrain ou null
           totalReferralBonus: 0,                                  // ← initialisé à 0
