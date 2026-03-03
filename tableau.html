@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     background: #060f07;
     font-family: 'Outfit', sans-serif;
@@ -17,7 +16,6 @@
     min-height: 100vh;
     padding: 6px;
   }
-
   .poster {
     width: 100%;
     max-width: 400px;
@@ -25,14 +23,12 @@
     border-radius: 3px;
     overflow: hidden;
   }
-
   .header {
     padding: 5px 8px 4px;
     text-align: center;
     background: linear-gradient(180deg, rgba(200,148,15,0.08) 0%, transparent 100%);
     border-bottom: 1px solid rgba(200,148,15,0.25);
   }
-
   .brand {
     font-family: 'Playfair Display', serif;
     font-size: 12px;
@@ -44,7 +40,6 @@
     justify-content: center;
     gap: 4px;
   }
-
   .brand-sub {
     font-size: 5.5px;
     letter-spacing: 2px;
@@ -52,7 +47,6 @@
     text-transform: uppercase;
     margin-top: 1px;
   }
-
   .title-row {
     margin-top: 3px;
     display: flex;
@@ -69,15 +63,8 @@
     color: #e8c86a;
     white-space: nowrap;
   }
-
   .table-wrap { padding: 4px 4px 6px; overflow-x: auto; }
-
-  table {
-    width: 100%;
-    min-width: 280px;
-    border-collapse: collapse;
-  }
-
+  table { width: 100%; min-width: 280px; border-collapse: collapse; }
   thead th {
     padding: 3px 4px;
     font-size: 6px;
@@ -91,7 +78,6 @@
     white-space: nowrap;
   }
   thead th:first-child { text-align: left; }
-
   tbody td {
     padding: 2px 4px;
     text-align: center;
@@ -99,7 +85,6 @@
     border-bottom: 1px solid rgba(255,255,255,0.04);
   }
   tbody td:first-child { text-align: left; }
-
   .mach-cell { display: flex; align-items: center; gap: 4px; }
   .mach-num {
     width: 14px; height: 14px;
@@ -109,12 +94,10 @@
   }
   .mach-name { font-size: 6.5px; font-weight: 700; color: #fff; line-height: 1.2; }
   .mach-lvl  { font-size: 5px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 0; }
-
   .val-price  { font-size: 6.5px; font-weight: 600; color: rgba(255,255,255,0.75); }
   .val-profit { font-size: 7px; font-weight: 700; color: #5ecf62; }
   .val-cycle  { font-size: 6.5px; color: rgba(255,255,255,0.35); }
   .val-total  { font-size: 7px; font-weight: 700; color: #f0c040; }
-
   .l1 .mach-num { background: rgba(158,158,158,0.12); border: 1px solid rgba(158,158,158,0.25); }
   .l1 .mach-lvl { color: #9e9e9e; }
   .l2 .mach-num { background: rgba(33,150,243,0.12); border: 1px solid rgba(33,150,243,0.25); }
@@ -129,9 +112,8 @@
   .l6 .mach-lvl { color: #f0c040; }
   .l7 .mach-num { background: rgba(212,160,23,0.28); border: 2px solid rgba(212,160,23,0.7); }
   .l7 .mach-lvl { color: #f2c96e; }
-
-  .elite-tr  { background: linear-gradient(90deg, rgba(212,160,23,0.07), transparent); }
-  .prestige-tr { background: linear-gradient(90deg, rgba(212,160,23,0.13), rgba(212,160,23,0.04), transparent); }
+  .elite-tr   { background: linear-gradient(90deg, rgba(212,160,23,0.07), transparent); }
+  .prestige-tr{ background: linear-gradient(90deg, rgba(212,160,23,0.13), rgba(212,160,23,0.04), transparent); }
 </style>
 </head>
 <body>
@@ -159,67 +141,60 @@
       </thead>
       <tbody>
 
-        <!-- Machine 1 : 3 000 FCFA / +400/j / 24 000 -->
         <tr class="l1">
           <td><div class="mach-cell"><div class="mach-num">🚜</div><div><div class="mach-name">Machine Agricole 1</div><div class="mach-lvl">⬡ Débutant</div></div></div></td>
-          <td><span class="val-price">3 000 FCFA</span></td>
-          <td><span class="val-profit">+400 FCFA</span></td>
-          <td><span class="val-cycle">60 j</span></td>
-          <td><span class="val-total">24 000 FCFA</span></td>
+          <td><span class="val-price">5 500 FCFA</span></td>
+          <td><span class="val-profit">+1 000 FCFA</span></td>
+          <td><span class="val-cycle">20 j</span></td>
+          <td><span class="val-total">20 000 FCFA</span></td>
         </tr>
 
-        <!-- Machine 2 : 6 000 FCFA / +1 000/j / 60 000 -->
         <tr class="l2">
           <td><div class="mach-cell"><div class="mach-num">🌱</div><div><div class="mach-name">Machine Agricole 2</div><div class="mach-lvl">◈ Standard</div></div></div></td>
-          <td><span class="val-price">6 000 FCFA</span></td>
-          <td><span class="val-profit">+1 000 FCFA</span></td>
-          <td><span class="val-cycle">60 j</span></td>
-          <td><span class="val-total">60 000 FCFA</span></td>
+          <td><span class="val-price">10 500 FCFA</span></td>
+          <td><span class="val-profit">+2 500 FCFA</span></td>
+          <td><span class="val-cycle">19 j</span></td>
+          <td><span class="val-total">47 500 FCFA</span></td>
         </tr>
 
-        <!-- Machine 3 : 12 000 FCFA / +2 000/j / 120 000 -->
         <tr class="l3">
           <td><div class="mach-cell"><div class="mach-num">⚙️</div><div><div class="mach-name">Machine Agricole 3</div><div class="mach-lvl">◆ Avancé</div></div></div></td>
-          <td><span class="val-price">12 000 FCFA</span></td>
-          <td><span class="val-profit">+2 000 FCFA</span></td>
-          <td><span class="val-cycle">60 j</span></td>
-          <td><span class="val-total">120 000 FCFA</span></td>
+          <td><span class="val-price">18 500 FCFA</span></td>
+          <td><span class="val-profit">+4 000 FCFA</span></td>
+          <td><span class="val-cycle">18 j</span></td>
+          <td><span class="val-total">72 000 FCFA</span></td>
         </tr>
 
-        <!-- Machine 4 : 20 000 FCFA / +3 000/j / 180 000 -->
         <tr class="l4">
           <td><div class="mach-cell"><div class="mach-num">🔧</div><div><div class="mach-name">Machine Agricole 4</div><div class="mach-lvl">▲ Expert</div></div></div></td>
-          <td><span class="val-price">20 000 FCFA</span></td>
-          <td><span class="val-profit">+3 000 FCFA</span></td>
-          <td><span class="val-cycle">60 j</span></td>
-          <td><span class="val-total">180 000 FCFA</span></td>
+          <td><span class="val-price">35 500 FCFA</span></td>
+          <td><span class="val-profit">+8 000 FCFA</span></td>
+          <td><span class="val-cycle">17 j</span></td>
+          <td><span class="val-total">136 000 FCFA</span></td>
         </tr>
 
-        <!-- Machine 5 : 50 000 FCFA / +7 000/j / 420 000 -->
         <tr class="l5">
           <td><div class="mach-cell"><div class="mach-num">💎</div><div><div class="mach-name">Machine Agricole 5</div><div class="mach-lvl">★ Premium</div></div></div></td>
           <td><span class="val-price">50 000 FCFA</span></td>
-          <td><span class="val-profit">+7 000 FCFA</span></td>
-          <td><span class="val-cycle">60 j</span></td>
-          <td><span class="val-total">420 000 FCFA</span></td>
+          <td><span class="val-profit">+13 000 FCFA</span></td>
+          <td><span class="val-cycle">16 j</span></td>
+          <td><span class="val-total">208 000 FCFA</span></td>
         </tr>
 
-        <!-- Machine 6 : 100 000 FCFA / +15 000/j / 900 000 -->
         <tr class="l6 elite-tr">
           <td><div class="mach-cell"><div class="mach-num">👑</div><div><div class="mach-name">Machine Agricole 6</div><div class="mach-lvl">⭐ Élite</div></div></div></td>
           <td><span class="val-price">100 000 FCFA</span></td>
-          <td><span class="val-profit" style="color:#f0c040;">+15 000 FCFA</span></td>
-          <td><span class="val-cycle">60 j</span></td>
-          <td><span class="val-total">900 000 FCFA</span></td>
+          <td><span class="val-profit" style="color:#f0c040;">+25 400 FCFA</span></td>
+          <td><span class="val-cycle">14 j</span></td>
+          <td><span class="val-total">355 600 FCFA</span></td>
         </tr>
 
-        <!-- Machine 7 : 500 000 FCFA / +65 000/j / 3 900 000 -->
         <tr class="l7 prestige-tr">
           <td><div class="mach-cell"><div class="mach-num">🌟</div><div><div class="mach-name">Machine Agricole 7</div><div class="mach-lvl">✦ Prestige</div></div></div></td>
-          <td><span class="val-price">500 000 FCFA</span></td>
-          <td><span class="val-profit" style="color:#f2c96e;">+65 000 FCFA</span></td>
-          <td><span class="val-cycle">60 j</span></td>
-          <td><span class="val-total" style="color:#f2c96e;">3 900 000 FCFA</span></td>
+          <td><span class="val-price">200 000 FCFA</span></td>
+          <td><span class="val-profit" style="color:#f2c96e;">+50 000 FCFA</span></td>
+          <td><span class="val-cycle">9 j</span></td>
+          <td><span class="val-total" style="color:#f2c96e;">450 000 FCFA</span></td>
         </tr>
 
       </tbody>
