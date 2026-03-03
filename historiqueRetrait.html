@@ -37,7 +37,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 16px 70px;
+  padding: 0 16px 40px;
   position: relative;
   overflow-x: hidden;
 }
@@ -154,12 +154,10 @@ body::after {
   cursor: pointer; transition: all .2s;
   display: flex; align-items: center; justify-content: center; gap: 5px;
 }
-.tab-btn .dot {
-  width: 6px; height: 6px; border-radius: 50%;
-}
-.tab-btn.active-all    { border-color: var(--g2); background: #edfaf4; color: var(--g1); }
-.tab-btn.active-pending { border-color: var(--pending-border); background: var(--pending-bg); color: var(--pending); }
-.tab-btn.active-success { border-color: var(--success-border); background: var(--success-bg); color: var(--success); }
+.tab-btn .dot { width: 6px; height: 6px; border-radius: 50%; }
+.tab-btn.active-all      { border-color: var(--g2); background: #edfaf4; color: var(--g1); }
+.tab-btn.active-pending  { border-color: var(--pending-border); background: var(--pending-bg); color: var(--pending); }
+.tab-btn.active-success  { border-color: var(--success-border); background: var(--success-bg); color: var(--success); }
 .tab-btn.active-rejected { border-color: var(--rejected-border); background: var(--rejected-bg); color: var(--rejected); }
 
 /* SECTION HEADER */
@@ -203,7 +201,6 @@ body::after {
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* status stripe */
 .wd-card.status-pending  { border-top: 3px solid var(--pending); }
 .wd-card.status-success  { border-top: 3px solid var(--success); }
 .wd-card.status-rejected { border-top: 3px solid var(--rejected); }
@@ -213,15 +210,12 @@ body::after {
   display: flex; align-items: flex-start; justify-content: space-between;
   gap: 12px;
 }
-.wd-amount-block {}
 .wd-amount {
   font-family: 'Playfair Display', serif;
   font-size: 22px; font-weight: 800; color: var(--dark);
   letter-spacing: -0.02em;
 }
-.wd-net {
-  font-size: 11px; color: var(--muted); margin-top: 2px;
-}
+.wd-net { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .wd-net strong { color: var(--success); }
 
 .status-badge {
@@ -234,7 +228,7 @@ body::after {
 .status-badge.success  { background: var(--success-bg);  color: var(--success);  border: 1px solid var(--success-border); }
 .status-badge.rejected { background: var(--rejected-bg); color: var(--rejected); border: 1px solid var(--rejected-border); }
 .status-dot { width: 7px; height: 7px; border-radius: 50%; }
-.status-dot.pending  { background: var(--pending);  animation: blink 1.2s infinite; }
+.status-dot.pending  { background: var(--pending); animation: blink 1.2s infinite; }
 .status-dot.success  { background: var(--success); }
 .status-dot.rejected { background: var(--rejected); }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
@@ -270,20 +264,9 @@ body::after {
   position: relative; z-index: 1;
   animation: slideUp .5s .15s cubic-bezier(.22,1,.36,1) both;
 }
-.empty-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-icon  { font-size: 48px; margin-bottom: 12px; }
 .empty-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
-.empty-sub { font-size: 13px; color: var(--muted); }
-.empty-link {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 16px; padding: 10px 20px;
-  background: linear-gradient(135deg, var(--g1), var(--g2));
-  color: white; border-radius: 50px;
-  font-size: 13px; font-weight: 600;
-  text-decoration: none;
-  box-shadow: 0 6px 18px rgba(26,140,78,.28);
-  transition: transform .15s;
-}
-.empty-link:hover { transform: translateY(-2px); }
+.empty-sub   { font-size: 13px; color: var(--muted); }
 
 /* TOAST */
 .toast {
@@ -297,39 +280,6 @@ body::after {
   z-index: 999; white-space: nowrap;
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
-
-/* NEW WITHDRAW BTN */
-.fab {
-  position: fixed; bottom: 24px; right: 20px;
-  width: 52px; height: 52px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--g1), var(--g2));
-  color: white; border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 8px 24px rgba(26,140,78,.38);
-  z-index: 100;
-  transition: transform .2s, box-shadow .2s;
-  animation: fadeIn .5s .3s both;
-}
-@keyframes fadeIn { from{opacity:0;transform:scale(.7)} to{opacity:1;transform:scale(1)} }
-.fab:hover { transform: scale(1.1); box-shadow: 0 12px 32px rgba(26,140,78,.45); }
-.fab svg { width: 22px; height: 22px; fill: white; }
-.fab-tip {
-  position: fixed; bottom: 30px; right: 82px;
-  background: var(--dark); color: white;
-  font-size: 11px; font-weight: 600;
-  padding: 6px 12px; border-radius: 8px;
-  white-space: nowrap; pointer-events: none;
-  animation: fadeIn .5s .5s both;
-  z-index: 100;
-}
-.fab-tip::after {
-  content: '';
-  position: absolute; right: -6px; top: 50%;
-  transform: translateY(-50%);
-  border: 6px solid transparent;
-  border-left-color: var(--dark);
-  border-right: none;
-}
 </style>
 </head>
 <body>
@@ -386,7 +336,7 @@ body::after {
     <span class="dot" style="background:var(--success)"></span> Validés
   </button>
   <button class="tab-btn" onclick="filterBy('rejected')">
-    <span class="dot" style="background:var(--rejected)"></span> Refusés
+    <span class="dot" style="background:var(--pending)"></span> Refusés
   </button>
 </div>
 
@@ -400,24 +350,16 @@ body::after {
 </div>
 
 <!-- LIST -->
-<div class="withdraw-list" id="withdrawList">
-  <!-- populated by JS -->
-</div>
-
-<!-- FAB -->
-<button class="fab" onclick="window.location.href='agritech-withdraw.html'" title="Nouveau retrait">
-  <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-</button>
-<div class="fab-tip">Nouveau retrait</div>
+<div class="withdraw-list" id="withdrawList"></div>
 
 <div class="toast" id="toast"></div>
 
 <!-- ═══ FIREBASE ═══ -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+import { initializeApp }               from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getAnalytics }                from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+import { getDatabase, ref, onValue }   from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDaFEepJKO8TbePfgnYlX0N3-CcaV75fy4",
@@ -430,10 +372,10 @@ const firebaseConfig = {
   measurementId: "G-XYB13DQZSP"
 };
 
-const app      = initializeApp(firebaseConfig);
+const app       = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-const auth     = getAuth(app);
-const db       = getDatabase(app);
+const auth      = getAuth(app);
+const db        = getDatabase(app);
 
 let allWithdrawals = [];
 let currentFilter  = 'all';
@@ -452,8 +394,8 @@ const STATUS_LABEL = {
   rejected: '❌ Refusé'
 };
 
-const fmt = (n) => Math.round(n).toLocaleString('fr-FR') + ' FCFA';
-const esc = (s) => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const fmt      = (n) => Math.round(n).toLocaleString('fr-FR') + ' FCFA';
+const esc      = (s) => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const initials = (n) => String(n||'').trim().split(' ').slice(0,2).map(w=>w[0]?.toUpperCase()||'').join('');
 
 const formatDate = (ts) => {
@@ -476,10 +418,10 @@ const render = (list) => {
 
   if (!list.length) {
     const msgs = {
-      all      : { icon:'💸', title:'Aucun retrait', sub:'Vous n\'avez encore aucune demande de retrait.' },
+      all      : { icon:'💸', title:'Aucun retrait',          sub:'Vous n\'avez encore aucune demande de retrait.' },
       pending  : { icon:'⏳', title:'Aucun retrait en cours', sub:'Toutes vos demandes ont été traitées.' },
-      success  : { icon:'✅', title:'Aucun retrait validé', sub:'Vos retraits validés apparaîtront ici.' },
-      rejected : { icon:'❌', title:'Aucun retrait refusé', sub:'Aucune demande n\'a été refusée.' }
+      success  : { icon:'✅', title:'Aucun retrait validé',   sub:'Vos retraits validés apparaîtront ici.' },
+      rejected : { icon:'❌', title:'Aucun retrait refusé',   sub:'Aucune demande n\'a été refusée.' }
     };
     const m = msgs[currentFilter] || msgs.all;
     container.innerHTML = `
@@ -487,10 +429,6 @@ const render = (list) => {
         <div class="empty-icon">${m.icon}</div>
         <div class="empty-title">${m.title}</div>
         <div class="empty-sub">${m.sub}</div>
-        <a href="agritech-withdraw.html" class="empty-link">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-          Faire un retrait
-        </a>
       </div>`;
     return;
   }
@@ -536,20 +474,11 @@ const render = (list) => {
 /* ── FILTER ── */
 window.filterBy = (filter) => {
   currentFilter = filter;
-
-  // update tabs
-  document.querySelectorAll('.tab-btn').forEach(b => {
-    b.className = 'tab-btn';
-  });
-  const idx = ['all','pending','success','rejected'].indexOf(filter);
+  document.querySelectorAll('.tab-btn').forEach(b => b.className = 'tab-btn');
+  const idx  = ['all','pending','success','rejected'].indexOf(filter);
   const tabs = document.querySelectorAll('.tab-btn');
-  if (tabs[idx]) {
-    tabs[idx].classList.add(filter === 'all' ? 'active-all' : `active-${filter}`);
-  }
-
-  const filtered = filter === 'all'
-    ? allWithdrawals
-    : allWithdrawals.filter(w => w.status === filter);
+  if (tabs[idx]) tabs[idx].classList.add(filter === 'all' ? 'active-all' : `active-${filter}`);
+  const filtered = filter === 'all' ? allWithdrawals : allWithdrawals.filter(w => w.status === filter);
   render(filtered);
 };
 
@@ -571,7 +500,6 @@ onAuthStateChanged(auth, (user) => {
         const val = s.val();
         if (val) allWithdrawals.push({ id: s.key, ...val });
       });
-      // Sort newest first
       allWithdrawals.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     }
 
