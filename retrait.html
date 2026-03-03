@@ -153,9 +153,7 @@ body::after {
 }
 .bal-badge strong { display: block; font-size: 15px; color: var(--gold2); font-family: 'Playfair Display', serif; }
 
-/* ══════════════════════════════════════
-   BLOC BLOCAGE — aucun investissement
-═══════════════════════════════════════ */
+/* BLOC BLOCAGE */
 #noInvestBanner {
   display: none;
   width: 100%; max-width: 440px;
@@ -231,7 +229,6 @@ body::after {
 .ni-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(201,147,58,.42); }
 .ni-cta:active { transform: translateY(1px); }
 
-/* Séparateur "ou" */
 .ni-divider {
   display: flex; align-items: center; gap: 10px;
   margin: 14px 0; font-size: 11px; color: var(--muted);
@@ -240,7 +237,6 @@ body::after {
   content: ''; flex: 1; height: 1px; background: var(--border);
 }
 
-/* Badge locked sur le form */
 .form-locked-badge {
   display: flex; align-items: center; gap: 8px;
   background: #fff3e0; border: 1.5px solid #f0c060;
@@ -298,7 +294,6 @@ input[type="text"], input[type="number"], input[type="password"] {
 }
 input:focus { border-color: var(--g2); background: #fff; box-shadow: 0 0 0 4px rgba(26,140,78,.09); }
 
-/* Disabled state quand pas d'investissement */
 .form-disabled input,
 .form-disabled .pin-dot,
 .form-disabled select {
@@ -307,7 +302,6 @@ input:focus { border-color: var(--g2); background: #fff; box-shadow: 0 0 0 4px r
 .form-disabled .acc-option { pointer-events: none; opacity: .45; }
 .form-disabled .btn-submit { opacity: .45; cursor: not-allowed; transform: none !important; }
 
-/* Amount wrapper */
 .amount-wrap { position: relative; }
 .amount-wrap input { padding-right: 60px; font-size: 16px; font-weight: 600; font-family: 'Playfair Display', serif; }
 .amount-suffix {
@@ -513,7 +507,7 @@ input:focus { border-color: var(--g2); background: #fff; box-shadow: 0 0 0 4px r
   </div>
 </div>
 
-<!-- ══ BLOC AUCUN INVESTISSEMENT ══ -->
+<!-- BLOC AUCUN INVESTISSEMENT -->
 <div id="noInvestBanner">
   <div class="no-invest-card">
     <div class="ni-header">
@@ -573,7 +567,7 @@ input:focus { border-color: var(--g2); background: #fff; box-shadow: 0 0 0 4px r
       <div class="countdown-text" id="timeStatusText">Vérification des horaires…</div>
     </div>
 
-    <!-- Badge investissement requis (visible seulement si bloqué) -->
+    <!-- Badge investissement requis -->
     <div class="form-locked-badge" id="lockedBadge" style="display:none;">
       <span class="flb-icon">🔒</span>
       <div class="flb-text">
@@ -616,7 +610,7 @@ input:focus { border-color: var(--g2); background: #fff; box-shadow: 0 0 0 4px r
         <span class="fee-val" id="feeGross">—</span>
       </div>
       <div class="fee-row">
-        <span class="fee-label">Frais (18%)</span>
+        <span class="fee-label">Frais (1%)</span>
         <span class="fee-val red" id="feeCost">—</span>
       </div>
       <div class="fee-row">
@@ -652,7 +646,7 @@ input:focus { border-color: var(--g2); background: #fff; box-shadow: 0 0 0 4px r
       <ul class="info-list">
         <li>
           <span class="info-num">1</span>
-          Les heures de retrait sont de <strong>10h à 17h</strong> uniquement.
+          Les heures de retrait sont de <strong>8h à 20h</strong> uniquement.
         </li>
         <li>
           <span class="info-num">2</span>
@@ -660,7 +654,7 @@ input:focus { border-color: var(--g2); background: #fff; box-shadow: 0 0 0 4px r
         </li>
         <li>
           <span class="info-num">3</span>
-          Les frais de retrait sont de <strong>18%</strong> sur le montant demandé.
+          Les frais de retrait sont de <strong>1%</strong> sur le montant demandé.
         </li>
         <li>
           <span class="info-num">4</span>
@@ -677,14 +671,12 @@ input:focus { border-color: var(--g2); background: #fff; box-shadow: 0 0 0 4px r
   </div>
 </div>
 
-<!-- hidden fields -->
 <input type="hidden" id="referralCode" value="">
 <input type="hidden" id="referralLink" value="">
 <div id="copyNotification" style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--g2);color:white;padding:10px 22px;border-radius:50px;font-size:13px;z-index:9000;">✅ Copié !</div>
 
 <div class="toast" id="toast">✅</div>
 
-<!-- ═══════════════ FIREBASE ═══════════════ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
@@ -710,13 +702,14 @@ const database  = getDatabase(app);
 
 let currentUser      = null;
 let userData         = null;
-let hasActiveInvest  = false; // ← clé : est-ce que l'utilisateur a investi ?
+let hasActiveInvest  = false;
 
+// ✅ Frais 1% — Heures 8h–20h
 const FEE_RATE   = 0.01;
 const MIN_AMOUNT = 1000;
 const MAX_DAILY  = 2;
-const HOUR_OPEN  = 10;
-const HOUR_CLOSE = 17;
+const HOUR_OPEN  = 8;
+const HOUR_CLOSE = 20;
 
 const OP_GRAD = {
   MTN     : 'linear-gradient(135deg,#ffd600,#ff9800)',
@@ -726,7 +719,6 @@ const OP_GRAD = {
   'T-Money':'linear-gradient(135deg,#00695c,#26a69a)'
 };
 
-/* ── UTILS ── */
 const fmt      = (n) => Math.round(n).toLocaleString('fr-FR') + ' FCFA';
 const esc      = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const initials = (n) => n.trim().split(' ').slice(0,2).map(w=>w[0]?.toUpperCase()||'').join('');
@@ -738,11 +730,6 @@ const toast = (msg, type='') => {
   setTimeout(() => t.classList.remove('show'), 3000);
 };
 
-/* ══════════════════════════════════════════════
-   VÉRIFICATION INVESTISSEMENT
-   Lit investments/{uid} dans Firebase et vérifie
-   qu'au moins un investissement est "active"
-══════════════════════════════════════════════ */
 const checkInvestments = async (uid) => {
   try {
     const snap = await get(ref(database, `investments/${uid}`));
@@ -750,8 +737,6 @@ const checkInvestments = async (uid) => {
     let found = false;
     snap.forEach(child => {
       const inv = child.val();
-      // On considère qu'un investissement bloque le retrait si son status est "active"
-      // (ou si le champ status est absent — ancien format — on vérifie les jours restants)
       if (inv.status === 'active') found = true;
       else if (!inv.status) {
         const passed = Math.floor((Date.now() - new Date(inv.startDate).getTime()) / 86400000);
@@ -761,21 +746,18 @@ const checkInvestments = async (uid) => {
     return found;
   } catch (e) {
     console.error('Erreur vérif investissements :', e);
-    return false; // En cas d'erreur on bloque par sécurité
+    return false;
   }
 };
 
-/* ── Application du blocage UI ── */
 const applyInvestmentLock = (locked) => {
-  const banner     = document.getElementById('noInvestBanner');
-  const formBody   = document.getElementById('formBody');
+  const banner      = document.getElementById('noInvestBanner');
+  const formBody    = document.getElementById('formBody');
   const lockedBadge = document.getElementById('lockedBadge');
-  const submitBtn  = document.getElementById('submitBtn');
+  const submitBtn   = document.getElementById('submitBtn');
 
   if (locked) {
-    // Afficher la bannière explicative au-dessus du formulaire
     banner.style.display = 'block';
-    // Griser le formulaire et désactiver le bouton
     formBody.classList.add('form-disabled');
     lockedBadge.style.display = 'flex';
     submitBtn.disabled = true;
@@ -789,7 +771,6 @@ const applyInvestmentLock = (locked) => {
   }
 };
 
-/* ── TIME CHECK ── */
 const checkTime = () => {
   const now  = new Date();
   const hour = now.getHours();
@@ -798,13 +779,11 @@ const checkTime = () => {
   const wrap = document.getElementById('timeStatus');
 
   if (open) {
-    el.innerHTML = `<strong style="color:var(--g1)">Retraits ouverts</strong> — Jusqu'à ${HOUR_CLOSE}h00`;
+    el.innerHTML = `<strong style="color:var(--g1)">Retraits ouverts</strong> — Jusqu'à 20h00`;
     wrap.style.background = '#f0fbf5';
     wrap.querySelector('.countdown-dot').style.background = 'var(--g3)';
   } else {
-    const next = hour < HOUR_OPEN
-      ? `Ouverture à ${HOUR_OPEN}h00`
-      : `Ouverture demain à ${HOUR_OPEN}h00`;
+    const next = hour < HOUR_OPEN ? `Ouverture à 8h00` : `Ouverture demain à 8h00`;
     el.innerHTML = `<strong style="color:#c08010">Retraits fermés</strong> — ${next}`;
     wrap.style.background = '#fff8ec';
     wrap.style.borderColor = '#f0d080';
@@ -813,7 +792,6 @@ const checkTime = () => {
   return open;
 };
 
-/* ── PIN ── */
 const pinIds = ['p1','p2','p3','p4'];
 pinIds.forEach((id, i) => {
   const el = document.getElementById(id);
@@ -827,9 +805,8 @@ pinIds.forEach((id, i) => {
 });
 const getPin = () => pinIds.map(id => document.getElementById(id).value).join('');
 
-/* ── FEE CALC (exposed globally) ── */
 window.calcFee = () => {
-  if (!hasActiveInvest) return; // Ne rien faire si bloqué
+  if (!hasActiveInvest) return;
   const raw = parseFloat(document.getElementById('amount').value) || 0;
   const preview = document.getElementById('feePreview');
   if (raw < 1) { preview.classList.remove('visible'); return; }
@@ -842,7 +819,6 @@ window.calcFee = () => {
   preview.classList.add('visible');
 };
 
-/* ── RENDER ACCOUNTS ── */
 const renderAccounts = (accountsObj) => {
   const sel = document.getElementById('accountSelector');
   if (!accountsObj) {
@@ -868,7 +844,6 @@ const renderAccounts = (accountsObj) => {
   `).join('');
 };
 
-/* ── TODAY COUNT ── */
 const getTodayCount = async (uid) => {
   const today = new Date().toISOString().split('T')[0];
   try {
@@ -882,7 +857,6 @@ const getTodayCount = async (uid) => {
   } catch { return 0; }
 };
 
-/* ── UPDATE BALANCE UI ── */
 const updateBalanceUI = (data, todayCount) => {
   const balance = Math.round(parseFloat(data?.balance || 0));
   document.getElementById('balanceDisplay').innerHTML =
@@ -893,18 +867,16 @@ const updateBalanceUI = (data, todayCount) => {
     Math.max(0, MAX_DAILY - todayCount);
 };
 
-/* ── SUBMIT (global) ── */
 window.submitWithdraw = async () => {
   if (!currentUser || !userData) return toast('⚠️ Non connecté', 'error');
 
-  // ══ GARDE INVESTISSEMENT ══
   if (!hasActiveInvest) {
     toast('🔒 Vous devez investir avant de retirer', 'error');
     document.getElementById('noInvestBanner').scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
 
-  if (!checkTime()) return toast('⛔ Retraits fermés (10h–17h)', 'warning');
+  if (!checkTime()) return toast('⛔ Retraits fermés (8h–20h)', 'warning');
 
   const amount  = parseFloat(document.getElementById('amount').value) || 0;
   const pin     = getPin();
@@ -930,7 +902,7 @@ window.submitWithdraw = async () => {
   btn.innerHTML = '<svg viewBox="0 0 24 24" style="animation:spin .6s linear infinite;fill:white;width:17px;height:17px"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg> Traitement…';
 
   try {
-    const fee    = Math.floor(amount * FEE_RATE);
+    const fee    = Math.floor(amount * FEE_RATE);  // ✅ 1%
     const net    = amount - fee;
     const today  = new Date().toISOString().split('T')[0];
     const wdId   = push(ref(database, `withdrawals/${currentUser.uid}`)).key;
@@ -957,7 +929,6 @@ window.submitWithdraw = async () => {
 
     toast('✅ Demande envoyée avec succès !');
 
-    // Reset
     document.getElementById('amount').value = '';
     pinIds.forEach(id => document.getElementById(id).value = '');
     document.getElementById('feePreview').classList.remove('visible');
@@ -974,7 +945,6 @@ window.submitWithdraw = async () => {
   }
 };
 
-/* ── AUTH + INIT ── */
 onAuthStateChanged(auth, async (user) => {
   if (!user) { window.location.href = 'index.html'; return; }
   currentUser = user;
@@ -982,11 +952,9 @@ onAuthStateChanged(auth, async (user) => {
   checkTime();
   setInterval(checkTime, 60000);
 
-  // ══ 1. Vérifier les investissements en premier ══
   hasActiveInvest = await checkInvestments(user.uid);
   applyInvestmentLock(!hasActiveInvest);
 
-  // ══ 2. Écouter les données utilisateur ══
   onValue(ref(database, `users/${currentUser.uid}`), async (snap) => {
     userData = snap.val() || {};
     const todayCount = await getTodayCount(currentUser.uid);
@@ -994,7 +962,6 @@ onAuthStateChanged(auth, async (user) => {
     renderAccounts(userData.withdrawalAccounts || null);
   });
 
-  // ══ 3. Écouter les changements d'investissement en temps réel ══
   onValue(ref(database, `investments/${currentUser.uid}`), (snap) => {
     let found = false;
     if (snap.exists()) {
