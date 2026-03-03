@@ -100,7 +100,7 @@
       background: linear-gradient(90deg, transparent, var(--green-light), transparent);
       opacity: 0.4;
     }
-    .sb-num { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: #fff; display: block; }
+    .sb-num { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: #fff; display: block; word-break: break-word; line-height: 1.2; }
     .sb-lbl { font-size: 0.57rem; font-weight: 500; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.4px; }
 
     /* SECTION */
@@ -212,7 +212,6 @@
     }
     .btn-collect:active .bci { transform: scale(0.97); box-shadow: 0 2px 10px rgba(13,51,32,0.2); }
 
-    /* Sweep animation */
     .bci::before {
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.1) 50%, transparent 65%);
@@ -220,7 +219,6 @@
     }
     @keyframes sweep { 0% { transform:translateX(-120%); } 100% { transform:translateX(120%); } }
 
-    /* Pulse ring on icon */
     .bci-icon-wrap {
       width: 40px; height: 40px;
       background: rgba(255,255,255,0.12);
@@ -251,7 +249,6 @@
       color: var(--gold-light); flex-shrink: 0;
     }
 
-    /* Wait */
     .btn-wait {
       width: 100%; border: 1.5px solid var(--border);
       background: var(--bg); border-radius: 16px;
@@ -262,17 +259,6 @@
     .bw-main { font-size: 0.82rem; font-weight: 700; color: var(--text); display: block; }
     .bw-sub  { font-size: 0.67rem; color: var(--muted); display: block; margin-top: 1px; }
 
-    /* Locked (délai retrait) */
-    .btn-locked {
-      width: 100%; border: 1.5px solid #f0c040;
-      background: #fff8e1; border-radius: 16px;
-      padding: 14px 18px; cursor: not-allowed;
-      display: flex; align-items: center; gap: 12px;
-    }
-    .btn-locked .bw-main { color: #7a5c00; }
-    .btn-locked .bw-sub  { color: #9a7c20; }
-
-    /* Done */
     .btn-done {
       width: 100%; border: none; border-radius: 16px;
       padding: 14px 18px; cursor: not-allowed;
@@ -423,7 +409,7 @@
   const auth = getAuth(app);
   const db   = getDatabase(app);
 
-  // ── Images par machine (7 machines) ──────────────────────────────────────
+  // ── Images par machine ────────────────────────────────────────────────────
   const IMGS = {
     1: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&fit=crop",
     2: "https://images.unsplash.com/photo-1560493676-04071c5f467b?w=600&fit=crop",
@@ -434,19 +420,16 @@
     7: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&fit=crop",
   };
 
-  // ── Données produits (identiques à investissement.html) ──────────────────
+  // ✅ PRODUCT_CONFIG — aligné avec les cartes HTML (action.html)
   const PRODUCT_CONFIG = {
-    1: { productId:1, price:5500,   dailyRevenue:1000,  cycleDuration:20, totalRevenue:20000,  limit:1 },
-        2: { productId:2, price:10500,  dailyRevenue:2500,  cycleDuration:19, totalRevenue:47500,  limit:1 },
-        3: { productId:3, price:18500,  dailyRevenue:4000,  cycleDuration:18, totalRevenue:72000,  limit:1 },
-        4: { productId:4, price:35500,  dailyRevenue:8000,  cycleDuration:17, totalRevenue:136000, limit:1 },
-        5: { productId:5, price:50000,  dailyRevenue:13000, cycleDuration:16, totalRevenue:208000, limit:5 },
-        6: { productId:6, price:100000, dailyRevenue:25400, cycleDuration:14, totalRevenue:355600, limit:5 },
-        7: { productId:7, price:200000, dailyRevenue:50000, cycleDuration:9,  totalRevenue:450000, limit:10 }
-    };
-
-  // Délai retrait : 3 jours (en ms)
-  const WITHDRAWAL_DELAY_MS = 3 * 24 * 60 * 60 * 1000;
+    1: { productId:1, price:5500,   dailyRevenue:1000,  cycleDuration:20, totalRevenue:20000,  limit:1  },
+    2: { productId:2, price:10500,  dailyRevenue:2500,  cycleDuration:19, totalRevenue:47500,  limit:1  },
+    3: { productId:3, price:18500,  dailyRevenue:4000,  cycleDuration:18, totalRevenue:72000,  limit:1  },
+    4: { productId:4, price:35500,  dailyRevenue:8000,  cycleDuration:17, totalRevenue:136000, limit:1  },
+    5: { productId:5, price:50000,  dailyRevenue:13000, cycleDuration:16, totalRevenue:208000, limit:5  },
+    6: { productId:6, price:100000, dailyRevenue:25400, cycleDuration:14, totalRevenue:355600, limit:5  },
+    7: { productId:7, price:200000, dailyRevenue:50000, cycleDuration:9,  totalRevenue:450000, limit:10 }
+  };
 
   let _uid = null;
 
@@ -469,51 +452,32 @@
   function collectedToday(last) { return last && new Date(last).toDateString() === todayStr(); }
 
   /**
-   * Vérifie si le délai de retrait de 3 jours est passé.
-   * withdrawalAvailableAt est enregistré lors de l'achat dans investissement.html.
+   * Calcule le montant disponible à collecter.
+   * Utilise cycleDuration depuis PRODUCT_CONFIG si disponible,
+   * sinon depuis les données Firebase (remainingDays).
    */
-  function isWithdrawalUnlocked(inv) {
-    if (!inv.withdrawalAvailableAt) {
-      // Ancien investissement sans ce champ : on calcule depuis startDate
-      return (Date.now() - new Date(inv.startDate).getTime()) >= WITHDRAWAL_DELAY_MS;
-    }
-    return Date.now() >= new Date(inv.withdrawalAvailableAt).getTime();
-  }
-
-  /**
-   * Retourne le nombre de ms restants avant déblocage du retrait.
-   */
-  function msUntilUnlock(inv) {
-    if (!inv.withdrawalAvailableAt) {
-      const unlockAt = new Date(inv.startDate).getTime() + WITHDRAWAL_DELAY_MS;
-      return Math.max(0, unlockAt - Date.now());
-    }
-    return Math.max(0, new Date(inv.withdrawalAvailableAt).getTime() - Date.now());
-  }
-
-  function formatCountdown(ms) {
-    const totalSec = Math.floor(ms / 1000);
-    const h = Math.floor(totalSec / 3600);
-    const m = Math.floor((totalSec % 3600) / 60);
-    const s = totalSec % 60;
-    if (h > 0) return `${h}h ${m}m`;
-    if (m > 0) return `${m}m ${s}s`;
-    return `${s}s`;
-  }
-
   function getAvailable(inv) {
-    const now   = new Date(), start = new Date(inv.startDate);
-    const last  = inv.lastCollection ? new Date(inv.lastCollection) : start;
-    const msDay = 86400000;
-    const total = inv.remainingDays || 60;
-    const passed = Math.floor((now - start) / msDay);
-    const active = Math.min(passed, total);
-    const since  = Math.floor((now - last) / msDay);
-    const toCollect = Math.min(since, active);
-    return Math.max(0, toCollect * (inv.dailyRevenue || 0));
+    const cfg    = PRODUCT_CONFIG[inv.productId];
+    const cycle  = cfg ? cfg.cycleDuration : (inv.remainingDays || 60);
+    const daily  = cfg ? cfg.dailyRevenue  : (inv.dailyRevenue  || 0);
+
+    const now    = new Date();
+    const start  = new Date(inv.startDate);
+    const last   = inv.lastCollection ? new Date(inv.lastCollection) : start;
+    const msDay  = 86400000;
+
+    const passed    = Math.floor((now - start) / msDay);
+    const active    = Math.min(passed, cycle);
+    const sinceLast = Math.floor((now - last)  / msDay);
+    const toCollect = Math.min(sinceLast, active);
+
+    return Math.max(0, toCollect * daily);
   }
 
   function cardFooter(key, inv, available, done) {
+    const cfg   = PRODUCT_CONFIG[inv.productId];
+    const daily = cfg ? cfg.dailyRevenue : (inv.dailyRevenue || 0);
+
     if (done) {
       return `<button class="btn-done" disabled>🏁 Cycle terminé &nbsp;·&nbsp; ${fmt(inv.totalCollected || 0)} récoltés</button>`;
     }
@@ -540,17 +504,22 @@
         <span class="bw-icon">⏳</span>
         <div>
           <span class="bw-main">Déjà collecté aujourd'hui</span>
-          <span class="bw-sub">Reviens demain · +${fmt(inv.dailyRevenue)} t'attendent</span>
+          <span class="bw-sub">Reviens demain · +${fmt(daily)} t'attendent</span>
         </div>
       </button>`;
   }
 
   function buildCard(key, inv, delay) {
-    const now    = new Date(), start = new Date(inv.startDate);
-    const total  = inv.remainingDays || 60;
+    const cfg    = PRODUCT_CONFIG[inv.productId];
+    const cycle  = cfg ? cfg.cycleDuration : (inv.remainingDays || 60);
+    const daily  = cfg ? cfg.dailyRevenue  : (inv.dailyRevenue  || 0);
+    const total  = cfg ? cfg.totalRevenue  : (inv.totalRevenue  || 0);
+
+    const now    = new Date();
+    const start  = new Date(inv.startDate);
     const passed = Math.floor((now - start) / 86400000);
-    const left   = Math.max(0, total - passed);
-    const pct    = Math.min(100, Math.round((passed / total) * 100));
+    const left   = Math.max(0, cycle - passed);
+    const pct    = Math.min(100, Math.round((passed / cycle) * 100));
     const done   = inv.status === 'completed' || left === 0;
     const avail  = getAvailable(inv);
     const img    = IMGS[inv.productId] || IMGS[1];
@@ -567,8 +536,8 @@
 
         <div class="card-prog">
           <div class="prog-head">
-            <span class="ph-left">${done ? 'Cycle terminé' : left + ' jour' + (left > 1 ? 's' : '') + ' restants'}</span>
-            <span class="ph-right">${Math.min(passed, total)}/${total} jours</span>
+            <span class="ph-left">${done ? 'Cycle terminé' : left + ' jour' + (left > 1 ? 's' : '') + ' restant' + (left > 1 ? 's' : '')}</span>
+            <span class="ph-right">${Math.min(passed, cycle)}/${cycle} jours</span>
           </div>
           <div class="prog-track">
             <div class="prog-fill" style="width:${pct}%"></div>
@@ -584,7 +553,7 @@
           <div class="metric">
             <span class="m-icon">📈</span>
             <div class="m-lbl">Par jour</div>
-            <div class="m-val g">+${fmt(inv.dailyRevenue)}</div>
+            <div class="m-val g">+${fmt(daily)}</div>
           </div>
           <div class="metric">
             <span class="m-icon">🏆</span>
@@ -614,13 +583,15 @@
 
       const inv   = iSnap.val();
       const solde = sSnap.val() || 0;
+      const cfg   = PRODUCT_CONFIG[inv.productId];
+      const cycle = cfg ? cfg.cycleDuration : (inv.remainingDays || 60);
 
       const avail = getAvailable(inv);
       if (avail <= 0) { showNotif("Aucun bénéfice disponible", true); return; }
 
       const now    = new Date();
       const passed = Math.floor((now - new Date(inv.startDate)) / 86400000);
-      const status = passed >= (inv.remainingDays || 60) ? 'completed' : 'active';
+      const status = passed >= cycle ? 'completed' : 'active';
 
       await update(ref(db), {
         [`users/${_uid}/balance`]:                     solde + avail,
@@ -638,11 +609,14 @@
 
   function updateStats(list) {
     const actives = list.filter(i => i.status === 'active');
-    const gains   = actives.reduce((s, i) => s + (i.dailyRevenue || 0), 0);
-    const total   = list.reduce((s, i) => s + (i.totalCollected || 0), 0);
+    const gains   = actives.reduce((s, i) => {
+      const cfg = PRODUCT_CONFIG[i.productId];
+      return s + (cfg ? cfg.dailyRevenue : (i.dailyRevenue || 0));
+    }, 0);
+    const total = list.reduce((s, i) => s + (i.totalCollected || 0), 0);
     document.getElementById('statA').textContent = actives.length || '0';
-    document.getElementById('statG').textContent = actives.length ? short(gains) : '—';
-    document.getElementById('statC').textContent = short(total);
+    document.getElementById('statG').textContent = actives.length ? fmt(gains) : '—';
+    document.getElementById('statC').textContent = total > 0 ? fmt(total) : '—';
   }
 
   function listen(uid) {
