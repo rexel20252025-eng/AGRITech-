@@ -619,6 +619,23 @@
     document.getElementById('statC').textContent = total > 0 ? fmt(total) : '—';
   }
 
+  // ✅ Corrige les anciennes valeurs Firebase avec les nouvelles de PRODUCT_CONFIG
+  async function migrateInvestments(uid, entries) {
+    const updates = {};
+    for (const [key, inv] of entries) {
+      const cfg = PRODUCT_CONFIG[inv.productId];
+      if (!cfg) continue;
+      if (inv.dailyRevenue  !== cfg.dailyRevenue)  updates['investments/' + uid + '/' + key + '/dailyRevenue']  = cfg.dailyRevenue;
+      if (inv.totalRevenue  !== cfg.totalRevenue)  updates['investments/' + uid + '/' + key + '/totalRevenue']  = cfg.totalRevenue;
+      if (inv.remainingDays !== cfg.cycleDuration) updates['investments/' + uid + '/' + key + '/remainingDays'] = cfg.cycleDuration;
+      if (inv.amount        !== cfg.price)         updates['investments/' + uid + '/' + key + '/amount']        = cfg.price;
+    }
+    if (Object.keys(updates).length > 0) {
+      await update(ref(db), updates);
+      console.log('Migration Firebase : ' + Object.keys(updates).length + ' champ(s) mis a jour');
+    }
+  }
+
   function listen(uid) {
     onValue(ref(db, `users/${uid}/balance`), s => {
       document.getElementById('soldeVal').textContent = fmt(s.val() || 0);
@@ -638,6 +655,8 @@
         if (b.status === 'active' && a.status !== 'active') return  1;
         return new Date(b.startDate) - new Date(a.startDate);
       });
+      // Migration auto
+      migrateInvestments(uid, entries);
       wrap.innerHTML = entries.map(([k, i], idx) => buildCard(k, i, idx * 0.07)).join('');
       updateStats(entries.map(([, i]) => i));
     });
