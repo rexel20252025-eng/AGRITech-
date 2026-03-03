@@ -436,14 +436,14 @@
 
   // ── Données produits (identiques à investissement.html) ──────────────────
   const PRODUCT_CONFIG = {
-    1: { price:3000,   dailyRevenue:400,   cycleDuration:60, totalRevenue:24000   },
-    2: { price:6000,   dailyRevenue:1000,  cycleDuration:60, totalRevenue:60000   },
-    3: { price:12000,  dailyRevenue:2000,  cycleDuration:60, totalRevenue:120000  },
-    4: { price:20000,  dailyRevenue:3000,  cycleDuration:60, totalRevenue:180000  },
-    5: { price:50000,  dailyRevenue:7000,  cycleDuration:60, totalRevenue:420000  },
-    6: { price:100000, dailyRevenue:15000, cycleDuration:60, totalRevenue:900000  },
-    7: { price:500000, dailyRevenue:65000, cycleDuration:60, totalRevenue:3900000 },
-  };
+    1: { productId:1, price:5500,   dailyRevenue:1000,  cycleDuration:20, totalRevenue:20000,  limit:1 },
+        2: { productId:2, price:10500,  dailyRevenue:2500,  cycleDuration:19, totalRevenue:47500,  limit:1 },
+        3: { productId:3, price:18500,  dailyRevenue:4000,  cycleDuration:18, totalRevenue:72000,  limit:1 },
+        4: { productId:4, price:35500,  dailyRevenue:8000,  cycleDuration:17, totalRevenue:136000, limit:1 },
+        5: { productId:5, price:50000,  dailyRevenue:13000, cycleDuration:16, totalRevenue:208000, limit:5 },
+        6: { productId:6, price:100000, dailyRevenue:25400, cycleDuration:14, totalRevenue:355600, limit:5 },
+        7: { productId:7, price:200000, dailyRevenue:50000, cycleDuration:9,  totalRevenue:450000, limit:10 }
+    };
 
   // Délai retrait : 3 jours (en ms)
   const WITHDRAWAL_DELAY_MS = 3 * 24 * 60 * 60 * 1000;
