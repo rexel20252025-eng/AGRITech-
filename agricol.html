@@ -28,8 +28,6 @@
       padding-bottom: 100px;
       color: var(--text);
     }
-
-    /* HEADER */
     .header {
       background: var(--green-deep);
       padding: 0 0 24px;
@@ -49,253 +47,89 @@
       border: 1px solid rgba(77,184,122,0.1);
       top: -50px; right: -50px;
     }
-    .header-inner {
-      padding: 36px 20px 20px;
-      position: relative; z-index: 2;
-    }
-    .header-row {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      margin-bottom: 22px;
-    }
+    .header-inner { padding: 36px 20px 20px; position: relative; z-index: 2; }
+    .header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; }
     .page-eyebrow {
       font-size: 0.6rem; font-weight: 600; letter-spacing: 2.5px;
       text-transform: uppercase; color: var(--green-light);
       display: flex; align-items: center; gap: 7px; margin-bottom: 6px;
     }
-    .page-eyebrow::before {
-      content: ''; width: 18px; height: 1.5px;
-      background: var(--green-light); display: inline-block;
-    }
-    .page-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem; font-weight: 800; color: #fff; line-height: 1.1;
-    }
+    .page-eyebrow::before { content: ''; width: 18px; height: 1.5px; background: var(--green-light); display: inline-block; }
+    .page-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; color: #fff; line-height: 1.1; }
     .page-title em {
       font-style: italic;
       background: linear-gradient(135deg, var(--gold-light), var(--gold));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-
-    .solde-card {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.13);
-      border-radius: 16px; padding: 12px 16px; text-align: right;
-    }
+    .solde-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.13); border-radius: 16px; padding: 12px 16px; text-align: right; }
     .solde-lbl { font-size: 0.58rem; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
-    .solde-val {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem; font-weight: 700; color: var(--gold-light); margin-top: 3px;
-    }
-
+    .solde-val { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--gold-light); margin-top: 3px; }
     .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-    .stat-box {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 14px; padding: 12px 10px; text-align: center;
-      position: relative; overflow: hidden;
-    }
-    .stat-box::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--green-light), transparent);
-      opacity: 0.4;
-    }
+    .stat-box { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 12px 10px; text-align: center; position: relative; overflow: hidden; }
+    .stat-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--green-light), transparent); opacity: 0.4; }
     .sb-num { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: #fff; display: block; word-break: break-word; line-height: 1.2; }
     .sb-lbl { font-size: 0.57rem; font-weight: 500; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.4px; }
-
-    /* SECTION */
     .sec { padding: 22px 20px 12px; display: flex; align-items: center; gap: 12px; }
     .sec h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--text); white-space: nowrap; }
     .sec-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
-
-    /* LOADING */
     .loading { text-align: center; padding: 60px 20px; }
     .loader { width: 38px; height: 38px; border: 3px solid var(--border); border-top-color: var(--green-mid); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 14px; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .loading p { font-size: 0.82rem; color: var(--muted); }
-
-    /* EMPTY */
     .empty { text-align: center; padding: 70px 30px; display: none; }
     .empty-icon { font-size: 3.5rem; margin-bottom: 16px; }
     .empty h3 { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--text); margin-bottom: 8px; }
     .empty p { font-size: 0.82rem; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
-    .go-invest {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: linear-gradient(135deg, var(--green), var(--green-light));
-      color: white; text-decoration: none;
-      padding: 14px 28px; border-radius: 50px;
-      font-size: 0.88rem; font-weight: 700;
-      box-shadow: 0 8px 24px rgba(26,92,56,0.28);
-    }
-
-    /* CARDS */
+    .go-invest { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--green), var(--green-light)); color: white; text-decoration: none; padding: 14px 28px; border-radius: 50px; font-size: 0.88rem; font-weight: 700; box-shadow: 0 8px 24px rgba(26,92,56,0.28); }
     .cards { padding: 0 16px; display: flex; flex-direction: column; gap: 18px; }
-    .inv-card {
-      background: var(--card); border-radius: 22px;
-      border: 1.5px solid var(--border);
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(13,51,32,0.07);
-      animation: fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both;
-    }
+    .inv-card { background: var(--card); border-radius: 22px; border: 1.5px solid var(--border); overflow: hidden; box-shadow: 0 4px 20px rgba(13,51,32,0.07); animation: fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both; }
     @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
-
-    /* Banner */
     .card-banner { position: relative; height: 140px; overflow: hidden; }
     .card-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .card-banner::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(13,51,32,0.05) 0%, rgba(13,51,32,0.65) 100%);
-    }
-    .banner-labels {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 10px 14px; z-index: 2;
-      display: flex; justify-content: space-between; align-items: flex-end;
-    }
-    .card-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem; font-weight: 700; color: white;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
-    }
-    .s-pill {
-      padding: 4px 11px; border-radius: 20px;
-      font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px;
-    }
+    .card-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(13,51,32,0.05) 0%, rgba(13,51,32,0.65) 100%); }
+    .banner-labels { position: absolute; bottom: 0; left: 0; right: 0; padding: 10px 14px; z-index: 2; display: flex; justify-content: space-between; align-items: flex-end; }
+    .card-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+    .s-pill { padding: 4px 11px; border-radius: 20px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; }
     .s-active { background: rgba(77,184,122,0.88); color: white; }
-    .s-done   { background: rgba(201,147,58,0.88);  color: white; }
-
-    /* Progress */
+    .s-done   { background: rgba(201,147,58,0.88); color: white; }
     .card-prog { padding: 14px 16px 4px; }
     .prog-head { display: flex; justify-content: space-between; font-size: 0.68rem; font-weight: 600; margin-bottom: 8px; }
     .ph-left { color: var(--green-mid); }
     .ph-right { color: var(--muted); }
     .prog-track { height: 8px; background: var(--green-pale); border-radius: 10px; overflow: hidden; }
-    .prog-fill {
-      height: 100%; border-radius: 10px;
-      background: linear-gradient(90deg, var(--green), var(--green-light));
-      position: relative; overflow: hidden;
-    }
-    .prog-fill::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      animation: glide 2.2s ease-in-out infinite;
-    }
+    .prog-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--green), var(--green-light)); position: relative; overflow: hidden; }
+    .prog-fill::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: glide 2.2s ease-in-out infinite; }
     @keyframes glide { 0% { transform:translateX(-100%); } 100% { transform:translateX(200%); } }
-
-    /* Metrics */
     .card-metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 10px 16px; }
-    .metric {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 12px; padding: 10px 8px; text-align: center;
-    }
+    .metric { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px 8px; text-align: center; }
     .m-icon { font-size: 0.9rem; margin-bottom: 3px; display: block; }
     .m-lbl { font-size: 0.57rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px; }
     .m-val { font-family: 'Playfair Display', serif; font-size: 0.88rem; font-weight: 700; color: var(--text); }
     .m-val.g { color: var(--green-mid); }
     .m-val.o { color: var(--gold); }
-
-    /* ─── COLLECT BUTTON ─── */
     .card-foot { padding: 6px 16px 18px; }
-
-    .btn-collect {
-      width: 100%; border: none; background: none;
-      cursor: pointer; border-radius: 16px; padding: 0;
-      display: block;
-    }
-    .bci {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 15px 18px;
-      background: linear-gradient(135deg, #0d3320 0%, #1a5c38 50%, #2d8a56 100%);
-      border-radius: 16px;
-      position: relative; overflow: hidden;
-      transition: transform 0.15s, box-shadow 0.2s;
-      box-shadow: 0 6px 24px rgba(13,51,32,0.3);
-    }
+    .btn-collect { width: 100%; border: none; background: none; cursor: pointer; border-radius: 16px; padding: 0; display: block; }
+    .bci { display: flex; align-items: center; justify-content: space-between; padding: 15px 18px; background: linear-gradient(135deg, #0d3320 0%, #1a5c38 50%, #2d8a56 100%); border-radius: 16px; position: relative; overflow: hidden; transition: transform 0.15s, box-shadow 0.2s; box-shadow: 0 6px 24px rgba(13,51,32,0.3); }
     .btn-collect:active .bci { transform: scale(0.97); box-shadow: 0 2px 10px rgba(13,51,32,0.2); }
-
-    .bci::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.1) 50%, transparent 65%);
-      animation: sweep 2.8s ease-in-out infinite;
-    }
+    .bci::before { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.1) 50%, transparent 65%); animation: sweep 2.8s ease-in-out infinite; }
     @keyframes sweep { 0% { transform:translateX(-120%); } 100% { transform:translateX(120%); } }
-
-    .bci-icon-wrap {
-      width: 40px; height: 40px;
-      background: rgba(255,255,255,0.12);
-      border-radius: 11px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem; flex-shrink: 0;
-      position: relative;
-    }
-    .bci-icon-wrap::after {
-      content: '';
-      position: absolute; inset: -3px;
-      border-radius: 14px;
-      border: 1.5px solid rgba(255,255,255,0.2);
-      animation: pulse-ring 2s ease-in-out infinite;
-    }
+    .bci-icon-wrap { width: 40px; height: 40px; background: rgba(255,255,255,0.12); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; position: relative; }
+    .bci-icon-wrap::after { content: ''; position: absolute; inset: -3px; border-radius: 14px; border: 1.5px solid rgba(255,255,255,0.2); animation: pulse-ring 2s ease-in-out infinite; }
     @keyframes pulse-ring { 0%,100%{opacity:0.6;transform:scale(1);} 50%{opacity:0.2;transform:scale(1.12);} }
-
     .bci-left { display: flex; align-items: center; gap: 12px; }
     .bci-text-main { font-size: 0.88rem; font-weight: 700; color: white; display: block; }
     .bci-text-sub  { font-size: 0.65rem; color: rgba(255,255,255,0.6); display: block; margin-top: 1px; }
-
-    .bci-amount {
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 11px; padding: 7px 13px;
-      font-family: 'Playfair Display', serif;
-      font-size: 0.95rem; font-weight: 700;
-      color: var(--gold-light); flex-shrink: 0;
-    }
-
-    .btn-wait {
-      width: 100%; border: 1.5px solid var(--border);
-      background: var(--bg); border-radius: 16px;
-      padding: 14px 18px; cursor: not-allowed;
-      display: flex; align-items: center; gap: 12px;
-    }
+    .bci-amount { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.2); border-radius: 11px; padding: 7px 13px; font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: var(--gold-light); flex-shrink: 0; }
+    .btn-wait { width: 100%; border: 1.5px solid var(--border); background: var(--bg); border-radius: 16px; padding: 14px 18px; cursor: not-allowed; display: flex; align-items: center; gap: 12px; }
     .bw-icon { font-size: 1.1rem; flex-shrink: 0; }
     .bw-main { font-size: 0.82rem; font-weight: 700; color: var(--text); display: block; }
     .bw-sub  { font-size: 0.67rem; color: var(--muted); display: block; margin-top: 1px; }
-
-    .btn-done {
-      width: 100%; border: none; border-radius: 16px;
-      padding: 14px 18px; cursor: not-allowed;
-      background: linear-gradient(135deg, #5a4000, var(--gold));
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      color: white; font-family: 'Outfit', sans-serif;
-      font-size: 0.85rem; font-weight: 700;
-    }
-
-    /* NOTIF */
-    .notif {
-      position: fixed; top: 20px; left: 50%;
-      transform: translateX(-50%) translateY(-90px);
-      background: linear-gradient(135deg, var(--green), var(--green-light));
-      color: white; padding: 13px 22px; border-radius: 50px;
-      font-size: 0.84rem; font-weight: 700;
-      z-index: 9999; white-space: nowrap;
-      box-shadow: 0 8px 30px rgba(26,92,56,0.35);
-      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.3s;
-      opacity: 0; pointer-events: none;
-    }
+    .btn-done { width: 100%; border: none; border-radius: 16px; padding: 14px 18px; cursor: not-allowed; background: linear-gradient(135deg, #5a4000, var(--gold)); display: flex; align-items: center; justify-content: center; gap: 10px; color: white; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 700; }
+    .notif { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-90px); background: linear-gradient(135deg, var(--green), var(--green-light)); color: white; padding: 13px 22px; border-radius: 50px; font-size: 0.84rem; font-weight: 700; z-index: 9999; white-space: nowrap; box-shadow: 0 8px 30px rgba(26,92,56,0.35); transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.3s; opacity: 0; pointer-events: none; }
     .notif.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     .notif.err  { background: linear-gradient(135deg, #7f0000, #c62828); }
-
-    /* BOTTOM NAV */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: white; border-top: 1.5px solid var(--border);
-      display: flex; justify-content: space-around; align-items: center;
-      padding: 8px 0 14px; z-index: 100;
-      box-shadow: 0 -4px 20px rgba(45,106,79,0.08);
-    }
-    .nav-item {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 3px; cursor: pointer; padding: 4px 16px;
-      border-radius: 12px; transition: all 0.2s; text-decoration: none;
-    }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1.5px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding: 8px 0 14px; z-index: 100; box-shadow: 0 -4px 20px rgba(45,106,79,0.08); }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 16px; border-radius: 12px; transition: all 0.2s; text-decoration: none; }
     .nav-icon { transition: transform 0.2s; color: #aac4b0; }
     .nav-label { font-size: 0.6rem; font-weight: 600; color: var(--muted); letter-spacing: 0.3px; }
     .nav-item.active .nav-label { color: var(--green); font-weight: 700; }
@@ -306,7 +140,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-inner">
     <div class="header-row">
@@ -320,35 +153,23 @@
       </div>
     </div>
     <div class="stats-row">
-      <div class="stat-box">
-        <span class="sb-num" id="statA">—</span>
-        <span class="sb-lbl">Actives</span>
-      </div>
-      <div class="stat-box">
-        <span class="sb-num" id="statG">—</span>
-        <span class="sb-lbl">Gains/jour</span>
-      </div>
-      <div class="stat-box">
-        <span class="sb-num" id="statC">—</span>
-        <span class="sb-lbl">Total collecté</span>
-      </div>
+      <div class="stat-box"><span class="sb-num" id="statA">—</span><span class="sb-lbl">Actives</span></div>
+      <div class="stat-box"><span class="sb-num" id="statG">—</span><span class="sb-lbl">Gains/jour</span></div>
+      <div class="stat-box"><span class="sb-num" id="statC">—</span><span class="sb-lbl">Total collecté</span></div>
     </div>
   </div>
 </div>
 
-<!-- SECTION -->
 <div class="sec">
   <h2>Mes investissements</h2>
   <div class="sec-line"></div>
 </div>
 
-<!-- LOADING -->
 <div class="loading" id="loadWrap">
   <div class="loader"></div>
   <p>Chargement de vos machines…</p>
 </div>
 
-<!-- EMPTY -->
 <div class="empty" id="emptyWrap">
   <div class="empty-icon">🌾</div>
   <h3>Aucune machine active</h3>
@@ -356,33 +177,25 @@
   <a href="action.html" class="go-invest">🚜 Voir les machines</a>
 </div>
 
-<!-- CARDS -->
 <div class="cards" id="cardsWrap"></div>
-
-<!-- NOTIF -->
 <div class="notif" id="notif"></div>
 
-<!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <a class="nav-item" href="accueil.html">
     <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 21V12h6v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <div class="nav-label">Accueil</div>
-    <div class="nav-dot"></div>
+    <div class="nav-label">Accueil</div><div class="nav-dot"></div>
   </a>
   <a class="nav-item active" href="action.html">
     <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <div class="nav-label">Action</div>
-    <div class="nav-dot"></div>
+    <div class="nav-label">Action</div><div class="nav-dot"></div>
   </a>
   <a class="nav-item" href="partage.html">
     <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke="currentColor" stroke-width="2"/></svg></div>
-    <div class="nav-label">Partage</div>
-    <div class="nav-dot"></div>
+    <div class="nav-label">Partage</div><div class="nav-dot"></div>
   </a>
   <a class="nav-item" href="compte.html">
     <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-    <div class="nav-label">Compte</div>
-    <div class="nav-dot"></div>
+    <div class="nav-label">Compte</div><div class="nav-dot"></div>
   </a>
 </div>
 
@@ -390,7 +203,7 @@
   import { initializeApp }     from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
   import { getAnalytics }      from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-  import { getDatabase, ref, get, update, onValue, serverTimestamp }
+  import { getDatabase, ref, get, update, onValue }
     from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
   const firebaseConfig = {
@@ -404,12 +217,11 @@
     measurementId: "G-XYB13DQZSP"
   };
 
-  const app  = initializeApp(firebaseConfig);
+  const app       = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
-  const auth = getAuth(app);
-  const db   = getDatabase(app);
+  const auth      = getAuth(app);
+  const db        = getDatabase(app);
 
-  // ── Images par machine ────────────────────────────────────────────────────
   const IMGS = {
     1: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&fit=crop",
     2: "https://images.unsplash.com/photo-1560493676-04071c5f467b?w=600&fit=crop",
@@ -420,7 +232,6 @@
     7: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&fit=crop",
   };
 
-  // ✅ PRODUCT_CONFIG — aligné avec les cartes HTML (action.html)
   const PRODUCT_CONFIG = {
     1: { productId:1, price:5500,   dailyRevenue:1000,  cycleDuration:20, totalRevenue:20000,  limit:1  },
     2: { productId:2, price:10500,  dailyRevenue:2500,  cycleDuration:19, totalRevenue:47500,  limit:1  },
@@ -434,11 +245,6 @@
   let _uid = null;
 
   function fmt(n) { return new Intl.NumberFormat('fr-FR').format(Math.max(0, Math.floor(n))) + " FCFA"; }
-  function short(n) {
-    if (n >= 1000000) return (n / 1000000).toFixed(1).replace('.0', '') + "M";
-    if (n >= 1000)    return Math.floor(n / 1000) + "k";
-    return String(Math.floor(n));
-  }
 
   function showNotif(msg, err = false) {
     const el = document.getElementById('notif');
@@ -448,30 +254,33 @@
     setTimeout(() => el.classList.remove('show'), 3500);
   }
 
-  function todayStr() { return new Date().toDateString(); }
-  function collectedToday(last) { return last && new Date(last).toDateString() === todayStr(); }
+  // ✅ Ramène n'importe quelle date à minuit heure locale
+  // Évite le décalage UTC qui comptait un jour de trop
+  function midnight(date) {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
 
-  /**
-   * Calcule le montant disponible à collecter.
-   * Utilise cycleDuration depuis PRODUCT_CONFIG si disponible,
-   * sinon depuis les données Firebase (remainingDays).
-   */
+  // ✅ CALCUL DES REVENUS DISPONIBLES
+  // - Compare les dates à minuit local → pas de faux décalage UTC
+  // - activeDays plafonné au cycle (max 14 pour machine 6)
+  // - collectedDays déduit de totalCollected avec Math.round (anti-flottant)
   function getAvailable(inv) {
-    const cfg    = PRODUCT_CONFIG[inv.productId];
-    const cycle  = cfg ? cfg.cycleDuration : (inv.remainingDays || 60);
-    const daily  = cfg ? cfg.dailyRevenue  : (inv.dailyRevenue  || 0);
+    const cfg   = PRODUCT_CONFIG[inv.productId];
+    const cycle = cfg ? cfg.cycleDuration : (inv.remainingDays || 60);
+    const daily = cfg ? cfg.dailyRevenue  : (inv.dailyRevenue  || 0);
 
-    const now    = new Date();
-    const start  = new Date(inv.startDate);
-    const last   = inv.lastCollection ? new Date(inv.lastCollection) : start;
-    const msDay  = 86400000;
+    const today = midnight(new Date());
+    const start = midnight(new Date(inv.startDate));
+    const msDay = 86400000;
 
-    const passed    = Math.floor((now - start) / msDay);
-    const active    = Math.min(passed, cycle);
-    const sinceLast = Math.floor((now - last)  / msDay);
-    const toCollect = Math.min(sinceLast, active);
+    const passed        = Math.floor((today - start) / msDay);
+    const activeDays    = Math.min(passed, cycle);
+    const collectedDays = daily > 0 ? Math.round((inv.totalCollected || 0) / daily) : 0;
+    const toCollect     = Math.max(0, activeDays - collectedDays);
 
-    return Math.max(0, toCollect * daily);
+    return toCollect * daily;
   }
 
   function cardFooter(key, inv, available, done) {
@@ -481,9 +290,9 @@
     if (done) {
       return `<button class="btn-done" disabled>🏁 Cycle terminé &nbsp;·&nbsp; ${fmt(inv.totalCollected || 0)} récoltés</button>`;
     }
-
     if (available > 0) {
-      const sub = collectedToday(inv.lastCollection) ? "Bénéfices accumulés disponibles" : "Bénéfices du jour prêts";
+      const days = daily > 0 ? Math.round(available / daily) : 1;
+      const sub  = days > 1 ? `${days} jours de bénéfices disponibles` : "Bénéfices du jour prêts";
       return `
         <button class="btn-collect" onclick="window._collect('${key}')">
           <div class="bci">
@@ -498,7 +307,6 @@
           </div>
         </button>`;
     }
-
     return `
       <button class="btn-wait" disabled>
         <span class="bw-icon">⏳</span>
@@ -510,19 +318,20 @@
   }
 
   function buildCard(key, inv, delay) {
-    const cfg    = PRODUCT_CONFIG[inv.productId];
-    const cycle  = cfg ? cfg.cycleDuration : (inv.remainingDays || 60);
-    const daily  = cfg ? cfg.dailyRevenue  : (inv.dailyRevenue  || 0);
-    const total  = cfg ? cfg.totalRevenue  : (inv.totalRevenue  || 0);
+    const cfg   = PRODUCT_CONFIG[inv.productId];
+    const cycle = cfg ? cfg.cycleDuration : (inv.remainingDays || 60);
+    const daily = cfg ? cfg.dailyRevenue  : (inv.dailyRevenue  || 0);
 
-    const now    = new Date();
-    const start  = new Date(inv.startDate);
-    const passed = Math.floor((now - start) / 86400000);
-    const left   = Math.max(0, cycle - passed);
-    const pct    = Math.min(100, Math.round((passed / cycle) * 100));
-    const done   = inv.status === 'completed' || left === 0;
-    const avail  = getAvailable(inv);
-    const img    = IMGS[inv.productId] || IMGS[1];
+    // ✅ midnight() utilisé aussi pour la barre de progression
+    const today      = midnight(new Date());
+    const start      = midnight(new Date(inv.startDate));
+    const passed     = Math.floor((today - start) / 86400000);
+    const activeDays = Math.min(passed, cycle);
+    const left       = Math.max(0, cycle - activeDays);
+    const pct        = Math.min(100, Math.round((activeDays / cycle) * 100));
+    const done       = inv.status === 'completed' || left === 0;
+    const avail      = getAvailable(inv);
+    const img        = IMGS[inv.productId] || IMGS[1];
 
     return `
       <div class="inv-card" id="card-${key}" style="animation-delay:${delay}s">
@@ -533,17 +342,13 @@
             <div class="s-pill ${done ? 's-done' : 's-active'}">${done ? '✅ Terminé' : '🟢 Actif'}</div>
           </div>
         </div>
-
         <div class="card-prog">
           <div class="prog-head">
             <span class="ph-left">${done ? 'Cycle terminé' : left + ' jour' + (left > 1 ? 's' : '') + ' restant' + (left > 1 ? 's' : '')}</span>
-            <span class="ph-right">${Math.min(passed, cycle)}/${cycle} jours</span>
+            <span class="ph-right">${activeDays}/${cycle} jours</span>
           </div>
-          <div class="prog-track">
-            <div class="prog-fill" style="width:${pct}%"></div>
-          </div>
+          <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
         </div>
-
         <div class="card-metrics">
           <div class="metric">
             <span class="m-icon">💰</span>
@@ -561,7 +366,6 @@
             <div class="m-val o">${fmt(inv.totalCollected || 0)}</div>
           </div>
         </div>
-
         <div class="card-foot" id="foot-${key}">
           ${cardFooter(key, inv, avail, done)}
         </div>
@@ -570,7 +374,6 @@
 
   window._collect = async function(key) {
     if (!_uid) { showNotif("Connectez-vous d'abord", true); return; }
-
     const foot = document.getElementById('foot-' + key);
     if (foot) foot.innerHTML = `<button class="btn-wait" disabled><span class="bw-icon">⏳</span><div><span class="bw-main">Collecte en cours…</span></div></button>`;
 
@@ -589,14 +392,17 @@
       const avail = getAvailable(inv);
       if (avail <= 0) { showNotif("Aucun bénéfice disponible", true); return; }
 
-      const now    = new Date();
-      const passed = Math.floor((now - new Date(inv.startDate)) / 86400000);
-      const status = passed >= cycle ? 'completed' : 'active';
+      // ✅ midnight() pour le statut aussi
+      const today      = midnight(new Date());
+      const start      = midnight(new Date(inv.startDate));
+      const passed     = Math.floor((today - start) / 86400000);
+      const activeDays = Math.min(passed, cycle);
+      const status     = activeDays >= cycle ? 'completed' : 'active';
 
       await update(ref(db), {
         [`users/${_uid}/balance`]:                     solde + avail,
         [`investments/${_uid}/${key}/totalCollected`]: (inv.totalCollected || 0) + avail,
-        [`investments/${_uid}/${key}/lastCollection`]: now.toISOString(),
+        [`investments/${_uid}/${key}/lastCollection`]: new Date().toISOString(),
         [`investments/${_uid}/${key}/status`]:         status,
       });
 
@@ -619,7 +425,6 @@
     document.getElementById('statC').textContent = total > 0 ? fmt(total) : '—';
   }
 
-  // ✅ Corrige les anciennes valeurs Firebase avec les nouvelles de PRODUCT_CONFIG
   async function migrateInvestments(uid, entries) {
     const updates = {};
     for (const [key, inv] of entries) {
@@ -632,7 +437,7 @@
     }
     if (Object.keys(updates).length > 0) {
       await update(ref(db), updates);
-      console.log('Migration Firebase : ' + Object.keys(updates).length + ' champ(s) mis a jour');
+      console.log('Migration Firebase : ' + Object.keys(updates).length + ' champ(s) mis à jour');
     }
   }
 
@@ -655,7 +460,6 @@
         if (b.status === 'active' && a.status !== 'active') return  1;
         return new Date(b.startDate) - new Date(a.startDate);
       });
-      // Migration auto
       migrateInvestments(uid, entries);
       wrap.innerHTML = entries.map(([k, i], idx) => buildCard(k, i, idx * 0.07)).join('');
       updateStats(entries.map(([, i]) => i));
@@ -663,10 +467,8 @@
   }
 
   onAuthStateChanged(auth, user => {
-    if (user) {
-      _uid = user.uid;
-      listen(user.uid);
-    } else {
+    if (user) { _uid = user.uid; listen(user.uid); }
+    else {
       _uid = null;
       document.getElementById('loadWrap').style.display = 'none';
       document.getElementById('emptyWrap').style.display = 'block';
