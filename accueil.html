@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AGRITech — Accueil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --forest: #1f4d3a;
+      --forest-deep: #122e21;
+      --moss: #4f9d72;
+      --moss-light: #8fd4a8;
+      --sand: #f6f1e4;
+      --wheat: #d9a441;
+      --wheat-light: #f0c675;
+      --text: #1b2e22;
+      --muted: #6d8577;
+      --bg: #fbfaf6;
+      --border: #e7e2d3;
+      --shadow: rgba(31,77,58,0.12);
+      --heart: #d9604f;
+    }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 0 92px 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .page { display: none; flex-direction: column; align-items: center; width: 100%; max-width: 420px; padding: 0 16px; position: relative; z-index: 1; }
+    .page.active { display: flex; }
+
+    /* TOPBAR */
+    .topbar { width: 100%; max-width: 420px; padding: 20px 20px 14px; display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 5; }
+    .topbar-logo { display: flex; align-items: center; gap: 10px; }
+    .topbar-icon { width: 40px; height: 40px; background: linear-gradient(150deg, var(--forest), var(--moss)); border-radius: 13px; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(31,77,58,0.3), inset 0 1px 0 rgba(255,255,255,0.25); }
+    .topbar-name { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 700; color: var(--forest-deep); letter-spacing: 0.5px; }
+
+    /* BOUTON INFORMATIONS */
+    .info-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: white; border: 1.5px solid var(--border);
+      border-radius: 999px; padding: 8px 14px 8px 10px;
+      cursor: pointer; position: relative;
+      box-shadow: 0 3px 10px var(--shadow);
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .info-btn:hover { transform: translateY(-2px); border-color: var(--moss-light); }
+    .info-btn:active { transform: scale(0.96); }
+    .info-btn-label { font-size: 0.68rem; font-weight: 700; color: var(--forest); letter-spacing: 0.2px; }
+    .notif-badge {
+      position: absolute; top: -5px; right: -5px;
+      min-width: 17px; height: 17px;
+      background: var(--heart); border-radius: 999px;
+      border: 2.5px solid white; display: none;
+      align-items: center; justify-content: center; padding: 0 3px;
+      box-shadow: 0 2px 6px rgba(217,96,79,0.4);
+      animation: heartbeat 1.6s ease-in-out infinite;
+    }
+    .notif-badge span { font-size: 0.52rem; font-weight: 700; color: white; line-height: 1; }
+    .notif-badge.show { display: flex; }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.3); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.2); }
+      60% { transform: scale(1); }
+    }
+
+    /* CARTE COMPTE — nouvelle silhouette organique */
+    .user-account-card {
+      width: 100%;
+      background: linear-gradient(160deg, var(--forest-deep) 0%, var(--forest) 55%, var(--moss) 130%);
+      border-radius: 26px;
+      padding: 24px 22px 22px;
+      color: white;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 14px 34px rgba(18,46,33,0.35);
+      animation: fadeUp 0.5s 0.15s ease both;
+    }
+    .uac-wave { position: absolute; inset: auto 0 0 0; opacity: 0.9; line-height: 0; }
+    .uac-grain { position: absolute; top: -60px; right: -60px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,255,255,0.07), transparent 70%); border-radius: 50%; }
+    .uac-inner { position: relative; z-index: 1; }
+    .uac-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .uac-top-left { display: flex; align-items: center; gap: 11px; }
+    .uac-avatar { width: 44px; height: 44px; background: rgba(255,255,255,0.16); border-radius: 14px; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.28); flex-shrink: 0; }
+    .uac-greet { font-size: 0.58rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
+    .uac-name { font-family: 'Fraunces', serif; font-size: 1.12rem; font-weight: 600; line-height: 1.25; }
+    .uac-badge { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.26); border-radius: 20px; padding: 4px 11px; font-size: 0.55rem; font-weight: 700; color: rgba(255,255,255,0.92); letter-spacing: 1.2px; }
+    .uac-balance-label { font-size: 0.6rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 6px; }
+    .uac-balance-row { display: flex; align-items: baseline; gap: 8px; }
+    .uac-balance { font-family: 'Fraunces', serif; font-size: 2.6rem; font-weight: 600; letter-spacing: -0.5px; line-height: 1; }
+    .uac-currency { font-size: 0.85rem; font-weight: 600; opacity: 0.65; }
+    .uac-eye { width: 26px; height: 26px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-left: auto; transition: background 0.2s; }
+    .uac-eye:hover { background: rgba(255,255,255,0.22); }
+    .uac-tagline { margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; gap: 8px; }
+    .uac-tagline-dot { width: 6px; height: 6px; background: var(--wheat-light); border-radius: 50%; box-shadow: 0 0 0 3px rgba(240,198,117,0.22); animation: pulse 2s infinite; flex-shrink: 0; }
+    .uac-tagline-text { font-size: 0.68rem; font-weight: 600; color: rgba(255,255,255,0.78); font-style: italic; line-height: 1.4; }
+    .uac-tagline-brand { font-family: 'Fraunces', serif; font-weight: 700; color: var(--wheat-light); font-style: normal; }
+    @keyframes pulse { 0%,100% { box-shadow: 0 0 0 3px rgba(240,198,117,0.22); } 50% { box-shadow: 0 0 0 6px rgba(240,198,117,0.06); } }
+
+    .quick-actions { width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; animation: fadeUp 0.5s 0.25s ease both; }
+    .qa-item { display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 15px 4px 12px; background: white; border: 1.5px solid var(--border); border-radius: 18px; cursor: pointer; transition: all 0.2s; box-shadow: 0 3px 12px var(--shadow); }
+    .qa-item:hover { transform: translateY(-3px); border-color: var(--moss-light); box-shadow: 0 8px 20px var(--shadow); }
+    .qa-item:active { transform: scale(0.96); }
+    .qa-icon-ring { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .qa-label { font-size: 0.58rem; font-weight: 700; color: var(--muted); text-align: center; letter-spacing: 0.2px; }
+
+    .section-title { width: 100%; font-family: 'Fraunces', serif; font-size: 1.08rem; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+
+    #trust-carousel { width: 100%; position: relative; overflow: hidden; border-radius: 20px; animation: fadeUp 0.5s 0.35s ease both; }
+    .trust-slide { width: 33.33%; flex-shrink: 0; background: white; border: 1.5px solid var(--border); border-radius: 20px; padding: 18px; box-shadow: 0 4px 16px var(--shadow); }
+    .trust-icon { width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .trust-eyebrow { font-size: 0.64rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .trust-title { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 600; color: var(--text); }
+    .trust-body { font-size: 0.73rem; color: var(--muted); line-height: 1.6; }
+
+    #loading-overlay { display: none; position: fixed; inset: 0; background: rgba(251,250,246,0.92); z-index: 999; align-items: center; justify-content: center; flex-direction: column; gap: 14px; backdrop-filter: blur(6px); }
+    .loader-wrapper { position: relative; display: flex; align-items: center; justify-content: center; }
+    .loader-ring { width: 50px; height: 50px; border: 3.5px solid var(--sand); border-top: 3.5px solid var(--forest); border-radius: 50%; animation: spin 0.75s linear infinite; }
+    .loader-icon { position: absolute; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+    .loader-text { font-size: 0.8rem; font-weight: 600; color: var(--forest); letter-spacing: 0.5px; }
+    .loader-sub { font-size: 0.68rem; color: var(--muted); }
+
+    /* BOTTOM NAV — inchangé */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1.5px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding: 8px 0 14px; z-index: 100; box-shadow: 0 -4px 20px rgba(45,106,79,0.08); }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 16px; border-radius: 12px; transition: all 0.2s; text-decoration: none; }
+    .nav-icon { transition: transform 0.2s; color: #aac4b0; }
+    .nav-label { font-size: 0.6rem; font-weight: 600; color: var(--muted); letter-spacing: 0.3px; }
+    .nav-item.active .nav-label { color: var(--forest); font-weight: 700; }
+    .nav-item.active .nav-icon { transform: scale(1.15); color: var(--forest); }
+    .nav-dot { width: 4px; height: 4px; background: var(--forest); border-radius: 50%; display: none; }
+    .nav-item.active .nav-dot { display: block; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── GUIDE DE BIENVENUE ── */
+    #tour-overlay {
+      display: none; position: fixed; inset: 0; z-index: 900;
+    }
+    .tour-spot {
+      position: fixed; border-radius: 20px;
+      box-shadow: 0 0 0 9999px rgba(15,28,20,0.72);
+      transition: all 0.45s cubic-bezier(.4,0,.2,1);
+      pointer-events: none;
+    }
+    .tour-tooltip {
+      position: fixed; z-index: 901;
+      max-width: 300px; width: calc(100% - 40px);
+      background: white; border-radius: 20px; padding: 20px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+      transition: all 0.45s cubic-bezier(.4,0,.2,1);
+      animation: tourIn 0.4s ease both;
+    }
+    @keyframes tourIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .tour-step-label { font-size: 0.62rem; font-weight: 700; color: var(--moss); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .tour-title { font-family: 'Fraunces', serif; font-size: 1.08rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .tour-text { font-size: 0.78rem; color: var(--muted); line-height: 1.55; margin-bottom: 16px; }
+    .tour-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .tour-dots { display: flex; gap: 5px; }
+    .tour-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: all 0.25s; }
+    .tour-dot.active { width: 16px; border-radius: 3px; background: var(--forest); }
+    .tour-actions { display: flex; align-items: center; gap: 10px; }
+    .tour-skip { font-size: 0.7rem; font-weight: 600; color: var(--muted); cursor: pointer; background: none; border: none; padding: 6px; }
+    .tour-next {
+      background: linear-gradient(135deg, var(--forest), var(--moss)); color: white;
+      border: none; border-radius: 12px; padding: 10px 18px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.76rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(31,77,58,0.3);
+      transition: transform 0.15s;
+    }
+    .tour-next:hover { transform: translateY(-2px); }
+    #tour-welcome {
+      display: none; position: fixed; inset: 0; z-index: 950;
+      align-items: center; justify-content: center; padding: 20px;
+      background: rgba(15,28,20,0.72); backdrop-filter: blur(3px);
+    }
+    .tour-welcome-card {
+      background: white; border-radius: 26px; padding: 30px 26px; max-width: 340px; text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3); animation: tourIn 0.4s ease both;
+    }
+    .tour-welcome-icon { width: 62px; height: 62px; margin: 0 auto 16px; background: linear-gradient(150deg, var(--forest), var(--moss)); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(31,77,58,0.3); }
+    .tour-welcome-title { font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .tour-welcome-text { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-bottom: 22px; }
+    .tour-welcome-btn {
+      width: 100%; padding: 13px; background: linear-gradient(135deg, var(--forest), var(--moss)); color: white;
+      border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 700;
+      cursor: pointer; box-shadow: 0 6px 16px rgba(31,77,58,0.3);
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C8 2 5 6 5 10c0 5 7 12 7 12s7-7 7-12c0-4-3-8-7-8z" fill="#fff" opacity="0.9"/>
+        <circle cx="12" cy="10" r="3" fill="#d9f2e0"/>
+      </svg>
+    </div>
+    <div class="topbar-name">AGRITech</div>
+  </div>
+  <div class="info-btn" id="info-btn" onclick="goLink('notifications.html', 'Ouverture des informations…', 'default')">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#1f4d3a" stroke-width="2" stroke-linecap="round"/>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#1f4d3a" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="info-btn-label">Informations</span>
+    <div class="notif-badge" id="notif-badge"><span id="notif-count">•</span></div>
+  </div>
+</div>
+
+<!-- PAGE ACCUEIL -->
+<div class="page active" id="page-accueil">
+
+  <!-- CARTE COMPTE UTILISATEUR -->
+  <div class="user-account-card" id="balance-card">
+    <div class="uac-grain"></div>
+    <svg class="uac-wave" viewBox="0 0 400 60" preserveAspectRatio="none" width="100%" height="46">
+      <path d="M0 30 Q100 0 200 30 T400 30 V60 H0 Z" fill="rgba(255,255,255,0.05)"/>
+    </svg>
+    <div class="uac-inner">
+      <div class="uac-top">
+        <div class="uac-top-left">
+          <div class="uac-avatar">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="8" r="4" fill="rgba(255,255,255,0.85)"/>
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" fill="rgba(255,255,255,0.5)"/>
+            </svg>
+          </div>
+          <div>
+            <div class="uac-greet">Bienvenue</div>
+            <div class="uac-name" id="user-name">Chargement…</div>
+          </div>
+        </div>
+        <div class="uac-badge">ACTIF</div>
+      </div>
+
+      <div class="uac-balance-label">Solde disponible</div>
+      <div class="uac-balance-row">
+        <div class="uac-balance" id="main-balance">—</div>
+        <div class="uac-currency">FCFA</div>
+        <div class="uac-eye" onclick="toggleBalance(this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="rgba(255,255,255,0.75)" stroke-width="2"/>
+            <circle cx="12" cy="12" r="3" stroke="rgba(255,255,255,0.75)" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="uac-tagline">
+        <div class="uac-tagline-dot"></div>
+        <div class="uac-tagline-text">
+          <span class="uac-tagline-brand">AGRITech</span> — le meilleur choix pour augmenter votre chance
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quick-actions" id="quick-actions">
+    <div class="qa-item" onclick="goLink('recharge.html', 'Recharge en cours…', 'recharge')">
+      <div class="qa-icon-ring" style="background:#e9f6ee;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 6v6l4 2" stroke="#1f4d3a" stroke-width="2" stroke-linecap="round"/><path d="M6 12a6 6 0 1 0 6-6" stroke="#4f9d72" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="qa-label">Recharge</div>
+    </div>
+    <div class="qa-item" onclick="goLink('retrait.html', 'Retrait en cours…', 'retrait')">
+      <div class="qa-icon-ring" style="background:#fbf1de;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 8v8M9 13l3 3 3-3" stroke="#d9a441" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="qa-label">Retrait</div>
+    </div>
+    <div class="qa-item" onclick="goLink('agricol.html', 'Chargement produits…', 'produits')">
+      <div class="qa-icon-ring" style="background:#fbe9ee;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M8 12h8M8 9h5M8 15h3" stroke="#c65a7c" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="qa-label">Mes produits</div>
+    </div>
+    <div class="qa-item" onclick="goLink('tableau.html', 'Ouverture tableau…', 'tableau')">
+      <div class="qa-icon-ring" style="background:#eaeefb;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><polyline points="9,17 9,13 12,13 12,9 15,9 15,17" stroke="#5b63c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="qa-label">Tableau</div>
+    </div>
+  </div>
+
+  <!-- CAROUSEL CONFIANCE -->
+  <div id="trust-carousel">
+    <div id="trust-track" style="display:flex;transition:transform 0.5s ease;width:300%;">
+
+      <div class="trust-slide">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div class="trust-icon" style="background:#e9f6ee;">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5.5 3.5 10.7 8 12 4.5-1.3 8-6.5 8-12V6L12 2z" stroke="#1f4d3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#1f4d3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="trust-eyebrow" style="color:var(--forest);">🔒 Sécurité garantie</div>
+            <div class="trust-title">Votre argent, protégé</div>
+          </div>
+        </div>
+        <div class="trust-body">Chaque franc investi est <strong style="color:var(--forest);">100% sécurisé</strong>. Nos fonds agricoles sont couverts par des garanties solides.</div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;align-items:center;gap:6px;">
+          <span style="font-size:0.75rem;">⭐⭐⭐⭐⭐</span>
+          <span style="font-size:0.65rem;color:var(--muted);">2.400+ investisseurs satisfaits</span>
+        </div>
+      </div>
+
+      <div class="trust-slide">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div class="trust-icon" style="background:#fbf1de;">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none"><polyline points="23,6 13.5,15.5 8.5,10.5 1,18" stroke="#d9a441" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="17,6 23,6 23,12" stroke="#d9a441" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="trust-eyebrow" style="color:var(--wheat);">📈 Rendement réel</div>
+            <div class="trust-title">Jusqu'à 27% de gain</div>
+          </div>
+        </div>
+        <div class="trust-body">Avec seulement <strong style="color:var(--wheat);">5.500 F</strong>, commencez à générer des revenus. Nos membres gagnent en moyenne <strong style="color:var(--wheat);">27% par cycle agricole</strong>.</div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:0.65rem;color:var(--muted);">5.500 F investi =</span>
+          <span style="font-size:0.78rem;font-weight:700;color:var(--wheat);">→ 5.500 F garanti</span>
+        </div>
+      </div>
+
+      <div class="trust-slide">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div class="trust-icon" style="background:#fbe9ee;">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#c65a7c" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="#c65a7c" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#c65a7c" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="trust-eyebrow" style="color:#c65a7c;">🤝 Ensemble on grandit</div>
+            <div class="trust-title">Une communauté solide</div>
+          </div>
+        </div>
+        <div class="trust-body">Plus de <strong style="color:#c65a7c;">2.000 agriculteurs</strong> nous font confiance. Chaque parrainage vous rapporte <strong style="color:#c65a7c;">5.000 F</strong>.</div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:0.65rem;color:var(--muted);">Actif dans</div>
+          <div style="display:flex;gap:4px;">
+            <span style="font-size:0.65rem;background:#e9f6ee;color:var(--forest);padding:2px 7px;border-radius:10px;font-weight:600;">🇨🇮 CI</span>
+            <span style="font-size:0.65rem;background:#fbf1de;color:var(--wheat);padding:2px 7px;border-radius:10px;font-weight:600;">🇲🇱 ML</span>
+            <span style="font-size:0.65rem;background:#fbe9ee;color:#c65a7c;padding:2px 7px;border-radius:10px;font-weight:600;">🇸🇳 SN</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div style="display:flex;justify-content:center;gap:6px;margin-top:12px;">
+      <span class="trust-dot" style="display:inline-block;width:20px;height:4px;border-radius:3px;background:var(--forest);cursor:pointer;" onclick="goTrust(0)"></span>
+      <span class="trust-dot" style="display:inline-block;width:8px;height:4px;border-radius:3px;background:var(--border);cursor:pointer;" onclick="goTrust(1)"></span>
+      <span class="trust-dot" style="display:inline-block;width:8px;height:4px;border-radius:3px;background:var(--border);cursor:pointer;" onclick="goTrust(2)"></span>
+    </div>
+  </div>
+
+</div>
+
+<!-- LOADING OVERLAY -->
+<div id="loading-overlay">
+  <div class="loader-wrapper">
+    <div class="loader-ring"></div>
+    <div class="loader-icon" id="loader-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 6 5 10c0 5 7 12 7 12s7-7 7-12c0-4-3-8-7-8z" fill="#1f4d3a" opacity="0.85"/><circle cx="12" cy="10" r="3" fill="#d9f2e0"/></svg>
+    </div>
+  </div>
+  <div class="loader-text" id="loader-text">Chargement…</div>
+  <div class="loader-sub" id="loader-sub">AGRITech vous redirige</div>
+</div>
+
+<!-- BOTTOM NAV (inchangé) -->
+<div class="bottom-nav">
+  <a class="nav-item active" id="nav-accueil" href="accueil.html">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 21V12h6v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="nav-label">Accueil</div>
+    <div class="nav-dot"></div>
+  </a>
+  <a class="nav-item" id="nav-action" href="action.html">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="nav-label">Action</div>
+    <div class="nav-dot"></div>
+  </a>
+  <a class="nav-item" id="nav-partage" href="partage.html">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke="currentColor" stroke-width="2"/></svg></div>
+    <div class="nav-label">Partage</div>
+    <div class="nav-dot"></div>
+  </a>
+  <a class="nav-item" id="nav-compte" href="compte.html">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+    <div class="nav-label">Compte</div>
+    <div class="nav-dot"></div>
+  </a>
+</div>
+
+<!-- ── GUIDE DE BIENVENUE ── -->
+<div id="tour-welcome">
+  <div class="tour-welcome-card">
+    <div class="tour-welcome-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 6 5 10c0 5 7 12 7 12s7-7 7-12c0-4-3-8-7-8z" fill="#fff"/></svg>
+    </div>
+    <div class="tour-welcome-title">Bienvenue sur AGRITech</div>
+    <div class="tour-welcome-text">Faisons un tour rapide de la plateforme pour que vous sachiez exactement où tout se trouve.</div>
+    <button class="tour-welcome-btn" onclick="startTour()">Commencer la visite</button>
+  </div>
+</div>
+
+<div id="tour-overlay">
+  <div class="tour-spot" id="tour-spot"></div>
+  <div class="tour-tooltip" id="tour-tooltip">
+    <div class="tour-step-label" id="tour-step-label">Étape 1 sur 4</div>
+    <div class="tour-title" id="tour-title">—</div>
+    <div class="tour-text" id="tour-text">—</div>
+    <div class="tour-footer">
+      <div class="tour-dots" id="tour-dots"></div>
+      <div class="tour-actions">
+        <button class="tour-skip" onclick="endTour()">Passer</button>
+        <button class="tour-next" id="tour-next-btn" onclick="nextTourStep()">Suivant</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+  const loaderIcons = {
+    recharge: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#e9f6ee"/><path d="M12 6v6l4 2" stroke="#1f4d3a" stroke-width="2" stroke-linecap="round"/><path d="M6 12a6 6 0 1 0 6-6" stroke="#4f9d72" stroke-width="2" stroke-linecap="round"/></svg>`,
+    retrait:  `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#fbf1de"/><path d="M12 8v8M9 13l3 3 3-3" stroke="#d9a441" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    produits: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#fbe9ee"/><path d="M8 12h8M8 9h5M8 15h3" stroke="#c65a7c" stroke-width="2" stroke-linecap="round"/></svg>`,
+    tableau:  `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#eaeefb"/><polyline points="9,17 9,13 12,13 12,9 15,9 15,17" stroke="#5b63c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    default:  `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 6 5 10c0 5 7 12 7 12s7-7 7-12c0-4-3-8-7-8z" fill="#1f4d3a" opacity="0.85"/><circle cx="12" cy="10" r="3" fill="#d9f2e0"/></svg>`
+  };
+
+  function goLink(href, message, iconKey) {
+    if (document.getElementById('tour-overlay').style.display === 'block') return;
+    const overlay = document.getElementById('loading-overlay');
+    document.getElementById('loader-text').textContent = message || 'Chargement…';
+    document.getElementById('loader-icon').innerHTML = loaderIcons[iconKey] || loaderIcons.default;
+    overlay.style.display = 'flex';
+    setTimeout(() => { window.location.href = href; }, 1200);
+  }
+
+  let balanceVisible = true;
+  function toggleBalance(el) {
+    balanceVisible = !balanceVisible;
+    document.getElementById('main-balance').style.filter = balanceVisible ? 'none' : 'blur(8px)';
+    el.style.opacity = balanceVisible ? '1' : '0.5';
+  }
+
+  /* ── CAROUSEL ── */
+  let trustIdx = 0;
+  function goTrust(idx) {
+    trustIdx = idx;
+    document.getElementById('trust-track').style.transform = 'translateX(-' + (idx * 33.333) + '%)';
+    document.querySelectorAll('.trust-dot').forEach((d, i) => {
+      d.style.width = i === idx ? '20px' : '8px';
+      d.style.background = i === idx ? 'var(--forest)' : 'var(--border)';
+    });
+  }
+  setInterval(() => { goTrust((trustIdx + 1) % 3); }, 4500);
+
+  /* ── GUIDE DE BIENVENUE ── */
+  const TOUR_KEY = 'agritech_tour_seen_v1';
+  const tourSteps = [
+    { target: '#balance-card', title: 'Votre solde en direct', text: 'Ici s\u2019affiche votre solde disponible, mis à jour en temps réel. Touchez l\u2019icône œil pour le masquer si besoin.' },
+    { target: '#quick-actions', title: 'Raccourcis rapides', text: 'Rechargez votre compte, effectuez un retrait, consultez vos produits ou votre tableau en un seul clic.' },
+    { target: '#info-btn', title: 'Vos informations', text: 'Ce bouton affiche vos messages importants. Un badge rouge apparaît dès qu\u2019il y a du nouveau.' },
+    { target: '#nav-action', title: 'Le menu du bas', text: 'Utilisez cette barre pour naviguer entre l\u2019accueil, les actions, le parrainage et votre compte.' }
+  ];
+  let tourIndex = 0;
+
+  function positionTour() {
+    const step = tourSteps[tourIndex];
+    const el = document.querySelector(step.target);
+    if (!el) { nextTourStep(); return; }
+    const rect = el.getBoundingClientRect();
+    const pad = 8;
+    const spot = document.getElementById('tour-spot');
+    spot.style.top = (rect.top - pad) + 'px';
+    spot.style.left = (rect.left - pad) + 'px';
+    spot.style.width = (rect.width + pad * 2) + 'px';
+    spot.style.height = (rect.height + pad * 2) + 'px';
+
+    const tooltip = document.getElementById('tour-tooltip');
+    document.getElementById('tour-step-label').textContent = `Étape ${tourIndex + 1} sur ${tourSteps.length}`;
+    document.getElementById('tour-title').textContent = step.title;
+    document.getElementById('tour-text').textContent = step.text;
+    document.getElementById('tour-next-btn').textContent = tourIndex === tourSteps.length - 1 ? 'Terminer' : 'Suivant';
+
+    const dotsWrap = document.getElementById('tour-dots');
+    dotsWrap.innerHTML = tourSteps.map((_, i) => `<div class="tour-dot ${i === tourIndex ? 'active' : ''}"></div>`).join('');
+
+    const spaceBelow = window.innerHeight - rect.bottom;
+    tooltip.style.left = '20px';
+    tooltip.style.width = 'calc(100% - 40px)';
+    if (spaceBelow > 220) {
+      tooltip.style.top = (rect.bottom + pad + 14) + 'px';
+      tooltip.style.bottom = 'auto';
+    } else {
+      tooltip.style.top = 'auto';
+      tooltip.style.bottom = (window.innerHeight - rect.top + pad + 14) + 'px';
+    }
+
+    el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+
+  function startTour() {
+    document.getElementById('tour-welcome').style.display = 'none';
+    document.getElementById('tour-overlay').style.display = 'block';
+    tourIndex = 0;
+    setTimeout(positionTour, 150);
+  }
+
+  function nextTourStep() {
+    tourIndex++;
+    if (tourIndex >= tourSteps.length) { endTour(); return; }
+    positionTour();
+  }
+
+  function endTour() {
+    document.getElementById('tour-overlay').style.display = 'none';
+    document.getElementById('tour-welcome').style.display = 'none';
+    localStorage.setItem(TOUR_KEY, '1');
+  }
+
+  window.addEventListener('resize', () => {
+    if (document.getElementById('tour-overlay').style.display === 'block') positionTour();
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!localStorage.getItem(TOUR_KEY)) {
+      setTimeout(() => { document.getElementById('tour-welcome').style.display = 'flex'; }, 500);
+    }
+  });
+</script>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut }
+  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+import { getDatabase, ref, onValue }
+  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDaFEepJKO8TbePfgnYlX0N3-CcaV75fy4",
+  authDomain: "agri-5af15.firebaseapp.com",
+  databaseURL: "https://agri-5af15-default-rtdb.firebaseio.com",
+  projectId: "agri-5af15",
+  storageBucket: "agri-5af15.firebasestorage.app",
+  messagingSenderId: "1010902928190",
+  appId: "1:1010902928190:web:57d2555d69e2c023057a6f",
+  measurementId: "G-XYB13DQZSP"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getDatabase(app);
+
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
+
+function setBalance(id, amount) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = Math.round(amount || 0).toLocaleString('fr-FR');
+}
+
+function updateUserDisplay(data) {
+  const name = data?.username || '—';
+  setText('user-name', name);
+}
+
+function listenBalance(uid) {
+  onValue(ref(db, `users/${uid}/balance`), snap => {
+    setBalance('main-balance', snap.val() || 0);
+  });
+}
+
+function listenNotifications(uid) {
+  const lastSeenRef = ref(db, `users/${uid}/lastSeenMessageTime`);
+  onValue(ref(db, 'messages'), snap => {
+    const messages = snap.val() || {};
+    onValue(lastSeenRef, seenSnap => {
+      const lastSeen = seenSnap.val() || 0;
+      let unread = 0;
+      Object.values(messages).forEach(m => { if ((m.timestamp || 0) > lastSeen) unread++; });
+      const badge = document.getElementById('notif-badge');
+      const count = document.getElementById('notif-count');
+      if (unread > 0) {
+        badge.classList.add('show');
+        count.textContent = unread > 9 ? '9+' : unread;
+      } else {
+        badge.classList.remove('show');
+      }
+    }, { onlyOnce: true });
+  });
+}
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    onValue(ref(db, `users/${user.uid}`), snap => { updateUserDisplay(snap.val() || {}); });
+    listenBalance(user.uid);
+    listenNotifications(user.uid);
+  } else {
+    setText('user-name', '—');
+    setText('main-balance', '—');
+    setTimeout(() => {
+      if (window.location.pathname.includes('accueil')) window.location.href = 'login.html';
+    }, 1000);
+  }
+});
+</script>
+
+</body>
+</html>
