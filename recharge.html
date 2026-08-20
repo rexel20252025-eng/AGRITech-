@@ -355,13 +355,13 @@ body {
       <div style="margin-top:16px;">
         <div class="sl">Montant de rechargement</div>
         <div class="amts">
+          <div class="amt" onclick="pickAmt(this,'5 500',5500)"><span class="amt-v">5 500</span><span class="amt-c">F CFA</span></div>
           <div class="amt" onclick="pickAmt(this,'10 500',10500)"><span class="amt-v">10 500</span><span class="amt-c">F CFA</span></div>
-          <div class="amt" onclick="pickAmt(this,'15 500',15500)"><span class="amt-v">15 500</span><span class="amt-c">F CFA</span></div>
+          <div class="amt" onclick="pickAmt(this,'18 500',18500)"><span class="amt-v">18 500</span><span class="amt-c">F CFA</span></div>
           <div class="amt" onclick="pickAmt(this,'35 500',35500)"><span class="amt-v">35 500</span><span class="amt-c">F CFA</span></div>
-          <div class="amt" onclick="pickAmt(this,'50500',50500)"><span class="amt-v">50 500</span><span class="amt-c">F CFA</span></div>
-          <div class="amt" onclick="pickAmt(this,'100000',100000)"><span class="amt-v">100 000</span><span class="amt-c">F CFA</span></div>
+          <div class="amt" onclick="pickAmt(this,'50 000',50000)"><span class="amt-v">50 000</span><span class="amt-c">F CFA</span></div>
+          <div class="amt" onclick="pickAmt(this,'100 000',100000)"><span class="amt-v">100 000</span><span class="amt-c">F CFA</span></div>
           <div class="amt" onclick="pickAmt(this,'200 000',200000)"><span class="amt-v">200 000</span><span class="amt-c">F CFA</span></div>
-          
         </div>
         <input type="hidden" id="amount" value="">
         <span class="err-msg" id="amountError"></span>
@@ -526,7 +526,7 @@ body {
   const CI_NUMEROS = {
     mtn    : { numero: ' 05 84 78 55 69', app: 'MTN Mobile Money' },
     orange : { numero: 'ecrivez au service client', app: 'Orange Money' },
-    wave   : { numero: ' 07 10 01 71 76', app: 'Wave' },
+    wave   : { numero: ' 07 88 66 63 17', app: 'Wave' },
     moov   : { numero: ' 01 73 75 02 25',  app: 'Moov Money' },
     tmoney : { numero: null,              app: 'T-Money' }
   };
