@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AGRITech — Mes Machines</title>
+  <title>AGRITech— Mes Machines</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -159,7 +159,7 @@
     <div class="header-row">
       <div>
         <div class="page-eyebrow">AGRITech</div>
-        <div class="page-title">Mes <em>Machines</em></div>
+        <div class="page-title">Mes <em>produits</em></div>
       </div>
       <div class="solde-card">
         <div class="solde-lbl">Mon Solde</div>
@@ -212,29 +212,13 @@
     <div class="nav-label">Compte</div><div class="nav-dot"></div>
   </a>
 </div>
+
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-  import {
-    getAnalytics
-  } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
-
-  import {
-    getAuth,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-
-  import {
-    getDatabase,
-    ref,
-    get,
-    update,
-    onValue
-  } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
-
-
-  // =====================================================
-  // FIREBASE
-  // =====================================================
+  import { initializeApp }     from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getAnalytics }      from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+  import { getDatabase, ref, get, update, onValue }
+    from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDaFEepJKO8TbePfgnYlX0N3-CcaV75fy4",
@@ -247,1332 +231,267 @@
     measurementId: "G-XYB13DQZSP"
   };
 
-  const app = initializeApp(firebaseConfig);
-
-  try {
-    getAnalytics(app);
-  } catch (e) {
-    console.warn("Analytics indisponible :", e);
-  }
-
-  const auth = getAuth(app);
-  const db = getDatabase(app);
-
-
-  // =====================================================
-  // IMAGES — 6 PRODUITS
-  // =====================================================
+  const app       = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth      = getAuth(app);
+  const db        = getDatabase(app);
 
   const IMGS = {
-
     1: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&fit=crop",
-
     2: "https://images.unsplash.com/photo-1560493676-04071c5f467b?w=600&fit=crop",
-
     3: "https://images.unsplash.com/photo-1599058917765-a780eda07a3e?w=600&fit=crop",
-
     4: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&fit=crop",
-
     5: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&fit=crop",
-
-    6: "https://images.unsplash.com/photo-1473973266408-ed4e27abdd47?w=600&fit=crop"
-
+    6: "https://images.unsplash.com/photo-1473973266408-ed4e27abdd47?w=600&fit=crop",
+    7: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&fit=crop",
   };
-
-
-  // =====================================================
-  // CONFIGURATION — EXACTEMENT 6 PRODUITS
-  // =====================================================
 
   const PRODUCT_CONFIG = {
-
-    1: {
-      productId: 1,
-      price: 10500,
-      dailyRevenue: 2000,
-      cycleDuration: 20,
-      totalRevenue: 40000,
-      limit: 1
-    },
-
-    2: {
-      productId: 2,
-      price: 15500,
-      dailyRevenue: 4000,
-      cycleDuration: 19,
-      totalRevenue: 76000,
-      limit: 1
-    },
-
-    3: {
-      productId: 3,
-      price: 35500,
-      dailyRevenue: 8000,
-      cycleDuration: 18,
-      totalRevenue: 144000,
-      limit: 1
-    },
-
-    4: {
-      productId: 4,
-      price: 50500,
-      dailyRevenue: 12000,
-      cycleDuration: 17,
-      totalRevenue: 204000,
-      limit: 1
-    },
-
-    5: {
-      productId: 5,
-      price: 100000,
-      dailyRevenue: 33500,
-      cycleDuration: 11,
-      totalRevenue: 368500,
-      limit: 5
-    },
-
-    6: {
-      productId: 6,
-      price: 200000,
-      dailyRevenue: 50000,
-      cycleDuration: 10,
-      totalRevenue: 500000,
-      limit: 5
-    }
-
+  1: { productId:1, price:5500,   dailyRevenue:1000,  cycleDuration:20, totalRevenue:20000,  limit:1  },
+    2: { productId:2, price:10500,  dailyRevenue:2500,  cycleDuration:19, totalRevenue:47500,  limit:1  },
+    3: { productId:3, price:18500,  dailyRevenue:4000,  cycleDuration:18, totalRevenue:72000,  limit:1  },
+    4: { productId:4, price:35500,  dailyRevenue:8000,  cycleDuration:17, totalRevenue:136000, limit:1  },
+    5: { productId:5, price:50000,  dailyRevenue:15000, cycleDuration:16, totalRevenue:240000, limit:5  },
+    6: { productId:6, price:100000, dailyRevenue:25400, cycleDuration:14, totalRevenue:355600, limit:5  },
+    7: { productId:7, price:200000, dailyRevenue:50000, cycleDuration:5,  totalRevenue:450000, limit:10 }
   };
-
-
-  // =====================================================
-  // VARIABLES
-  // =====================================================
 
   let _uid = null;
 
-  const collecting = new Set();
-
-
-  // =====================================================
-  // FORMAT FCFA
-  // =====================================================
-
-  function fmt(number) {
-
-    const value = Number(number) || 0;
-
-    return (
-      new Intl.NumberFormat("fr-FR").format(
-        Math.max(0, Math.floor(value))
-      ) + " FCFA"
-    );
-
-  }
-
-
-  // =====================================================
-  // FORMAT DATE
-  // =====================================================
+  function fmt(n) { return new Intl.NumberFormat('fr-FR').format(Math.max(0, Math.floor(n))) + " FCFA"; }
 
   function fmtDate(dateStr) {
-
-    if (!dateStr) {
-      return "—";
-    }
-
+    if (!dateStr) return '—';
     const d = new Date(dateStr);
-
-    if (Number.isNaN(d.getTime())) {
-      return "—";
-    }
-
-    return d.toLocaleDateString("fr-FR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "2-digit"
-    });
-
+    return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' });
   }
 
-
-  // =====================================================
-  // NOTIFICATION
-  // =====================================================
-
-  function showNotif(message, error = false) {
-
-    const el = document.getElementById("notif");
-
-    if (!el) {
-      console.log(message);
-      return;
-    }
-
-    el.textContent = message;
-
-    el.className =
-      "notif" + (error ? " err" : "");
-
-    el.classList.add("show");
-
-    setTimeout(() => {
-      el.classList.remove("show");
-    }, 3500);
-
+  function showNotif(msg, err = false) {
+    const el = document.getElementById('notif');
+    el.textContent = msg;
+    el.className = 'notif' + (err ? ' err' : '');
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 3500);
   }
-
-
-  // =====================================================
-  // MINUIT
-  // =====================================================
 
   function midnight(date) {
-
     const d = new Date(date);
-
     d.setHours(0, 0, 0, 0);
-
     return d;
-
   }
-
-
-  // =====================================================
-  // PRODUIT
-  // =====================================================
-
-  function getProduct(productId) {
-
-    return PRODUCT_CONFIG[
-      Number(productId)
-    ];
-
-  }
-
-
-  // =====================================================
-  // BÉNÉFICES DISPONIBLES
-  // =====================================================
 
   function getAvailable(inv) {
+    const cfg   = PRODUCT_CONFIG[inv.productId];
+    const cycle = cfg ? cfg.cycleDuration : (inv.remainingDays || 60);
+    const daily = cfg ? cfg.dailyRevenue  : (inv.dailyRevenue  || 0);
 
-    const cfg =
-      getProduct(inv.productId);
+    const today = midnight(new Date());
+    const start = midnight(new Date(inv.startDate));
+    const msDay = 86400000;
 
-    const cycle = cfg
-      ? cfg.cycleDuration
-      : Number(inv.remainingDays || 60);
+    const passed        = Math.floor((today - start) / msDay);
+    const activeDays    = Math.min(passed, cycle);
+    const collectedDays = daily > 0 ? Math.round((inv.totalCollected || 0) / daily) : 0;
+    const toCollect     = Math.max(0, activeDays - collectedDays);
 
-    const daily = cfg
-      ? cfg.dailyRevenue
-      : Number(inv.dailyRevenue || 0);
-
-
-    if (!inv.startDate || daily <= 0) {
-      return 0;
-    }
-
-
-    const today =
-      midnight(new Date());
-
-    const start =
-      midnight(new Date(inv.startDate));
-
-
-    const msDay =
-      24 * 60 * 60 * 1000;
-
-
-    let passed =
-      Math.floor(
-        (today - start) / msDay
-      );
-
-
-    passed =
-      Math.max(0, passed);
-
-
-    const activeDays =
-      Math.min(passed, cycle);
-
-
-    const collected =
-      Number(inv.totalCollected || 0);
-
-
-    const collectedDays =
-      daily > 0
-        ? Math.floor(collected / daily)
-        : 0;
-
-
-    const daysToCollect =
-      Math.max(
-        0,
-        activeDays - collectedDays
-      );
-
-
-    return daysToCollect * daily;
-
+    return toCollect * daily;
   }
 
-
-  // =====================================================
-  // FOOTER DE LA CARTE
-  // =====================================================
-
-  function cardFooter(
-    key,
-    inv,
-    available,
-    done
-  ) {
-
-    const cfg =
-      getProduct(inv.productId);
-
-    const daily =
-      cfg
-        ? cfg.dailyRevenue
-        : Number(inv.dailyRevenue || 0);
-
-
-    // Cycle terminé
+  function cardFooter(key, inv, available, done) {
+    const cfg   = PRODUCT_CONFIG[inv.productId];
+    const daily = cfg ? cfg.dailyRevenue : (inv.dailyRevenue || 0);
 
     if (done) {
-
-      return `
-        <button
-          class="btn-done"
-          disabled
-        >
-          🏁 Cycle terminé
-          &nbsp;·&nbsp;
-          ${fmt(inv.totalCollected || 0)}
-          récoltés
-        </button>
-      `;
-
+      return `<button class="btn-done" disabled>🏁 Cycle terminé &nbsp;·&nbsp; ${fmt(inv.totalCollected || 0)} récoltés</button>`;
     }
-
-
-    // Bénéfices disponibles
-
     if (available > 0) {
-
-      const days =
-        daily > 0
-          ? Math.round(
-              available / daily
-            )
-          : 1;
-
-
-      const sub =
-        days > 1
-          ? `${days} jours de bénéfices disponibles`
-          : "Bénéfices du jour prêts";
-
-
+      const days = daily > 0 ? Math.round(available / daily) : 1;
+      const sub  = days > 1 ? `${days} jours de bénéfices disponibles` : "Veuillez le récupérer et le retirer";
       return `
-        <button
-          class="btn-collect"
-          onclick="window._collect('${key}')"
-        >
-
+        <button class="btn-collect" onclick="window._collect('${key}')">
           <div class="bci">
-
             <div class="bci-left">
-
-              <div class="bci-icon-wrap">
-                💸
-              </div>
-
+              <div class="bci-icon-wrap">💸</div>
               <div>
-
-                <span class="bci-text-main">
-                  Récupérer mes bénéfices
-                </span>
-
-                <span class="bci-text-sub">
-                  ${sub}
-                </span>
-
+                <span class="bci-text-main">Votre bénéfice est prêt</span>
+                <span class="bci-text-sub">${sub}</span>
               </div>
-
             </div>
-
-            <div class="bci-amount">
-              +${fmt(available)}
-            </div>
-
+            <div class="bci-amount">+${fmt(available)}</div>
           </div>
-
-        </button>
-      `;
-
+        </button>`;
     }
-
-
-    // Rien à collecter
-
     return `
-      <button
-        class="btn-wait"
-        disabled
-      >
-
-        <span class="bw-icon">
-          ⏳
-        </span>
-
+      <button class="btn-wait" disabled>
+        <span class="bw-icon">⏳</span>
         <div>
-
-          <span class="bw-main">
-            Déjà collecté aujourd'hui
-          </span>
-
-          <span class="bw-sub">
-            Reviens demain · +${fmt(daily)} t'attendent
-          </span>
-
+          <span class="bw-main">Déjà récupéré aujourd'hui</span>
+          <span class="bw-sub">Veuillez revenir demain· +${fmt(daily)} t'attendent</span>
         </div>
-
-      </button>
-    `;
-
+      </button>`;
   }
 
+  function buildCard(key, inv, delay) {
+    const cfg   = PRODUCT_CONFIG[inv.productId];
+    const cycle = cfg ? cfg.cycleDuration : (inv.remainingDays || 60);
+    const daily = cfg ? cfg.dailyRevenue  : (inv.dailyRevenue  || 0);
 
-  // =====================================================
-  // CONSTRUCTION CARTE
-  // =====================================================
-
-  function buildCard(
-    key,
-    inv,
-    delay
-  ) {
-
-    const cfg =
-      getProduct(inv.productId);
-
-
-    const cycle =
-      cfg
-        ? cfg.cycleDuration
-        : Number(inv.remainingDays || 60);
-
-
-    const daily =
-      cfg
-        ? cfg.dailyRevenue
-        : Number(inv.dailyRevenue || 0);
-
-
-    const today =
-      midnight(new Date());
-
-
-    const start =
-      midnight(new Date(inv.startDate));
-
-
-    let passed =
-      Math.floor(
-        (today - start) / 86400000
-      );
-
-
-    passed =
-      Math.max(0, passed);
-
-
-    const activeDays =
-      Math.min(
-        passed,
-        cycle
-      );
-
-
-    const left =
-      Math.max(
-        0,
-        cycle - activeDays
-      );
-
-
-    const pct =
-      cycle > 0
-        ? Math.min(
-            100,
-            Math.round(
-              (activeDays / cycle) * 100
-            )
-          )
-        : 0;
-
-
-    const done =
-      inv.status === "completed" ||
-      left === 0;
-
-
-    const available =
-      getAvailable(inv);
-
-
-    const img =
-      IMGS[inv.productId] ||
-      IMGS[1];
-
-
-    const productName =
-      inv.productName ||
-      `Produit ${inv.productId}`;
-
-
-    const dateInvest =
-      fmtDate(inv.startDate);
-
+    const today      = midnight(new Date());
+    const start      = midnight(new Date(inv.startDate));
+    const passed     = Math.floor((today - start) / 86400000);
+    const activeDays = Math.min(passed, cycle);
+    const left       = Math.max(0, cycle - activeDays);
+    const pct        = Math.min(100, Math.round((activeDays / cycle) * 100));
+    const done       = inv.status === 'completed' || left === 0;
+    const avail      = getAvailable(inv);
+    const img        = IMGS[inv.productId] || IMGS[1];
+    const dateInvest = fmtDate(inv.startDate);
 
     return `
-
-      <div
-        class="inv-card"
-        id="card-${key}"
-        style="animation-delay:${delay}s"
-      >
-
+      <div class="inv-card" id="card-${key}" style="animation-delay:${delay}s">
         <div class="card-banner">
-
-          <img
-            src="${img}"
-            alt="${productName}"
-            loading="lazy"
-          />
-
+          <img src="${img}" alt="${inv.productName}" loading="lazy"/>
           <div class="banner-labels">
-
-            <div class="card-name">
-              ${productName}
-            </div>
-
-            <div
-              class="s-pill ${
-                done
-                  ? "s-done"
-                  : "s-active"
-              }"
-            >
-              ${
-                done
-                  ? "✅ Terminé"
-                  : "🟢 Actif"
-              }
-            </div>
-
+            <div class="card-name">${inv.productName || 'Machine'}</div>
+            <div class="s-pill ${done ? 's-done' : 's-active'}">${done ? '✅ Terminé' : '🟢 Actif'}</div>
           </div>
-
         </div>
-
-
         <div class="card-prog">
-
           <div class="prog-head">
-
-            <span class="ph-left">
-
-              ${
-                done
-                  ? "Cycle terminé"
-                  : `${left} jour${
-                      left > 1 ? "s" : ""
-                    } restant${
-                      left > 1 ? "s" : ""
-                    }`
-              }
-
-            </span>
-
-            <span class="ph-right">
-              ${activeDays}/${cycle} jours
-            </span>
-
+            <span class="ph-left">${done ? 'Cycle terminé' : left + ' jour' + (left > 1 ? 's' : '') + ' restant' + (left > 1 ? 's' : '')}</span>
+            <span class="ph-right">${activeDays}/${cycle} jours</span>
           </div>
-
-
-          <div class="prog-track">
-
-            <div
-              class="prog-fill"
-              style="width:${pct}%"
-            ></div>
-
-          </div>
-
+          <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
         </div>
-
-
         <div class="card-metrics">
-
           <div class="metric">
-
-            <span class="m-icon">
-              💰
-            </span>
-
-            <div class="m-lbl">
-              Investi
-            </div>
-
-            <div class="m-val">
-              ${fmt(inv.amount)}
-            </div>
-
+            <span class="m-icon">💰</span>
+            <div class="m-lbl">Investi</div>
+            <div class="m-val">${fmt(inv.amount)}</div>
           </div>
-
-
           <div class="metric">
-
-            <span class="m-icon">
-              📈
-            </span>
-
-            <div class="m-lbl">
-              Par jour
-            </div>
-
-            <div class="m-val g">
-              +${fmt(daily)}
-            </div>
-
+            <span class="m-icon">📈</span>
+            <div class="m-lbl">Par jour</div>
+            <div class="m-val g">+${fmt(daily)}</div>
           </div>
-
-
           <div class="metric">
-
-            <span class="m-icon">
-              🏆
-            </span>
-
-            <div class="m-lbl">
-              Collecté
-            </div>
-
-            <div class="m-val o">
-              ${fmt(inv.totalCollected || 0)}
-            </div>
-
+            <span class="m-icon">🏆</span>
+            <div class="m-lbl">Collecté</div>
+            <div class="m-val o">${fmt(inv.totalCollected || 0)}</div>
           </div>
-
-
           <div class="metric">
-
-            <span class="m-icon">
-              📅
-            </span>
-
-            <div class="m-lbl">
-              Date
-            </div>
-
-            <div class="m-val b">
-              ${dateInvest}
-            </div>
-
+            <span class="m-icon">📅</span>
+            <div class="m-lbl">Date</div>
+            <div class="m-val b">${dateInvest}</div>
           </div>
-
         </div>
-
-
-        <div
-          class="card-foot"
-          id="foot-${key}"
-        >
-
-          ${cardFooter(
-            key,
-            inv,
-            available,
-            done
-          )}
-
+        <div class="card-foot" id="foot-${key}">
+          ${cardFooter(key, inv, avail, done)}
         </div>
-
-      </div>
-
-    `;
-
+      </div>`;
   }
-
-
-  // =====================================================
-  // COLLECTE
-  // =====================================================
 
   window._collect = async function(key) {
-
-    if (!_uid) {
-
-      showNotif(
-        "Connectez-vous d'abord",
-        true
-      );
-
-      return;
-
-    }
-
-
-    // Empêcher double clic
-
-    if (collecting.has(key)) {
-      return;
-    }
-
-    collecting.add(key);
-
-
-    const foot =
-      document.getElementById(
-        "foot-" + key
-      );
-
-
-    if (foot) {
-
-      foot.innerHTML = `
-
-        <button
-          class="btn-wait"
-          disabled
-        >
-
-          <span class="bw-icon">
-            ⏳
-          </span>
-
-          <div>
-
-            <span class="bw-main">
-              Collecte en cours…
-            </span>
-
-          </div>
-
-        </button>
-
-      `;
-
-    }
-
+    if (!_uid) { showNotif("Connectez-vous d'abord", true); return; }
+    const foot = document.getElementById('foot-' + key);
+    if (foot) foot.innerHTML = `<button class="btn-wait" disabled><span class="bw-icon">⏳</span><div><span class="bw-main">Collecte en cours…</span></div></button>`;
 
     try {
-
-      const [
-        investmentSnapshot,
-        balanceSnapshot
-      ] = await Promise.all([
-
-        get(
-          ref(
-            db,
-            `investments/${_uid}/${key}`
-          )
-        ),
-
-        get(
-          ref(
-            db,
-            `users/${_uid}/balance`
-          )
-        )
-
+      const [iSnap, sSnap] = await Promise.all([
+        get(ref(db, `investments/${_uid}/${key}`)),
+        get(ref(db, `users/${_uid}/balance`))
       ]);
+      if (!iSnap.exists()) { showNotif("Investissement introuvable", true); return; }
 
+      const inv   = iSnap.val();
+      const solde = sSnap.val() || 0;
+      const cfg   = PRODUCT_CONFIG[inv.productId];
+      const cycle = cfg ? cfg.cycleDuration : (inv.remainingDays || 60);
 
-      if (!investmentSnapshot.exists()) {
+      const avail = getAvailable(inv);
+      if (avail <= 0) { showNotif("Aucun bénéfice disponible", true); return; }
 
-        showNotif(
-          "Investissement introuvable",
-          true
-        );
+      const today      = midnight(new Date());
+      const start      = midnight(new Date(inv.startDate));
+      const passed     = Math.floor((today - start) / 86400000);
+      const activeDays = Math.min(passed, cycle);
+      const status     = activeDays >= cycle ? 'completed' : 'active';
 
-        return;
+      await update(ref(db), {
+        [`users/${_uid}/balance`]:                     solde + avail,
+        [`investments/${_uid}/${key}/totalCollected`]: (inv.totalCollected || 0) + avail,
+        [`investments/${_uid}/${key}/lastCollection`]: new Date().toISOString(),
+        [`investments/${_uid}/${key}/status`]:         status,
+      });
 
-      }
-
-
-      const inv =
-        investmentSnapshot.val();
-
-
-      const solde =
-        Number(
-          balanceSnapshot.val()
-        ) || 0;
-
-
-      const cfg =
-        getProduct(inv.productId);
-
-
-      const cycle =
-        cfg
-          ? cfg.cycleDuration
-          : Number(
-              inv.remainingDays || 60
-            );
-
-
-      const available =
-        getAvailable(inv);
-
-
-      if (available <= 0) {
-
-        showNotif(
-          "Aucun bénéfice disponible",
-          true
-        );
-
-        return;
-
-      }
-
-
-      const today =
-        midnight(new Date());
-
-
-      const start =
-        midnight(
-          new Date(inv.startDate)
-        );
-
-
-      let passed =
-        Math.floor(
-          (today - start) /
-          86400000
-        );
-
-
-      passed =
-        Math.max(0, passed);
-
-
-      const activeDays =
-        Math.min(
-          passed,
-          cycle
-        );
-
-
-      const status =
-        activeDays >= cycle
-          ? "completed"
-          : "active";
-
-
-      const newTotalCollected =
-        Number(
-          inv.totalCollected || 0
-        ) + available;
-
-
-      const updates = {
-
-        [`users/${_uid}/balance`]:
-          solde + available,
-
-        [`investments/${_uid}/${key}/totalCollected`]:
-          newTotalCollected,
-
-        [`investments/${_uid}/${key}/lastCollection`]:
-          new Date().toISOString(),
-
-        [`investments/${_uid}/${key}/status`]:
-          status
-
-      };
-
-
-      await update(
-        ref(db),
-        updates
-      );
-
-
-      showNotif(
-        `✅ +${fmt(available)} ajoutés à votre solde !`
-      );
-
-
-    } catch (error) {
-
-      console.error(
-        "Erreur collecte :",
-        error
-      );
-
-
-      showNotif(
-        "Erreur lors de la collecte",
-        true
-      );
-
-
-    } finally {
-
-      collecting.delete(key);
-
+      showNotif(`✅ +${fmt(avail)} ajoutés à votre solde !`);
+    } catch (e) {
+      console.error(e);
+      showNotif("Erreur lors de la collecte", true);
     }
-
   };
 
-
-  // =====================================================
-  // STATISTIQUES
-  // =====================================================
-
   function updateStats(list) {
-
-    const active =
-      list.filter(
-        inv => inv.status === "active"
-      );
-
-
-    const gains =
-      active.reduce(
-        (total, inv) => {
-
-          const cfg =
-            getProduct(
-              inv.productId
-            );
-
-
-          return (
-            total +
-            (
-              cfg
-                ? cfg.dailyRevenue
-                : Number(
-                    inv.dailyRevenue || 0
-                  )
-            )
-          );
-
-        },
-        0
-      );
-
-
-    const totalCollected =
-      list.reduce(
-        (total, inv) => {
-
-          return (
-            total +
-            Number(
-              inv.totalCollected || 0
-            )
-          );
-
-        },
-        0
-      );
-
-
-    const statA =
-      document.getElementById(
-        "statA"
-      );
-
-    const statG =
-      document.getElementById(
-        "statG"
-      );
-
-    const statC =
-      document.getElementById(
-        "statC"
-      );
-
-
-    if (statA) {
-      statA.textContent =
-        active.length;
-    }
-
-
-    if (statG) {
-      statG.textContent =
-        active.length
-          ? fmt(gains)
-          : "—";
-    }
-
-
-    if (statC) {
-      statC.textContent =
-        totalCollected > 0
-          ? fmt(totalCollected)
-          : "—";
-    }
-
+    const actives = list.filter(i => i.status === 'active');
+    const gains   = actives.reduce((s, i) => {
+      const cfg = PRODUCT_CONFIG[i.productId];
+      return s + (cfg ? cfg.dailyRevenue : (i.dailyRevenue || 0));
+    }, 0);
+    const total = list.reduce((s, i) => s + (i.totalCollected || 0), 0);
+    document.getElementById('statA').textContent = actives.length || '0';
+    document.getElementById('statG').textContent = actives.length ? fmt(gains) : '—';
+    document.getElementById('statC').textContent = total > 0 ? fmt(total) : '—';
   }
 
-
-  // =====================================================
-  // MIGRATION / MISE À JOUR DES PRODUITS
-  // =====================================================
-
-  async function migrateInvestments(
-    uid,
-    entries
-  ) {
-
+  async function migrateInvestments(uid, entries) {
     const updates = {};
-
-
-    for (
-      const [key, inv]
-      of entries
-    ) {
-
-      const cfg =
-        getProduct(
-          inv.productId
-        );
-
-
-      if (!cfg) {
-        continue;
-      }
-
-
-      if (
-        Number(inv.dailyRevenue) !==
-        cfg.dailyRevenue
-      ) {
-
-        updates[
-          `investments/${uid}/${key}/dailyRevenue`
-        ] =
-          cfg.dailyRevenue;
-
-      }
-
-
-      if (
-        Number(inv.totalRevenue) !==
-        cfg.totalRevenue
-      ) {
-
-        updates[
-          `investments/${uid}/${key}/totalRevenue`
-        ] =
-          cfg.totalRevenue;
-
-      }
-
-
-      if (
-        Number(inv.remainingDays) !==
-        cfg.cycleDuration
-      ) {
-
-        updates[
-          `investments/${uid}/${key}/remainingDays`
-        ] =
-          cfg.cycleDuration;
-
-      }
-
-
-      if (
-        Number(inv.amount) !==
-        cfg.price
-      ) {
-
-        updates[
-          `investments/${uid}/${key}/amount`
-        ] =
-          cfg.price;
-
-      }
-
+    for (const [key, inv] of entries) {
+      const cfg = PRODUCT_CONFIG[inv.productId];
+      if (!cfg) continue;
+      if (inv.dailyRevenue  !== cfg.dailyRevenue)  updates['investments/' + uid + '/' + key + '/dailyRevenue']  = cfg.dailyRevenue;
+      if (inv.totalRevenue  !== cfg.totalRevenue)  updates['investments/' + uid + '/' + key + '/totalRevenue']  = cfg.totalRevenue;
+      if (inv.remainingDays !== cfg.cycleDuration) updates['investments/' + uid + '/' + key + '/remainingDays'] = cfg.cycleDuration;
+      if (inv.amount        !== cfg.price)         updates['investments/' + uid + '/' + key + '/amount']        = cfg.price;
     }
-
-
-    if (
-      Object.keys(updates).length > 0
-    ) {
-
-      await update(
-        ref(db),
-        updates
-      );
-
-      console.log(
-        "Migration Firebase :",
-        Object.keys(updates).length,
-        "champ(s) mis à jour"
-      );
-
+    if (Object.keys(updates).length > 0) {
+      await update(ref(db), updates);
+      console.log('Migration Firebase : ' + Object.keys(updates).length + ' champ(s) mis à jour');
     }
-
   }
-
-
-  // =====================================================
-  // ÉCOUTE FIREBASE
-  // =====================================================
 
   function listen(uid) {
-
-
-    // SOLDE
-
-    onValue(
-      ref(
-        db,
-        `users/${uid}/balance`
-      ),
-
-      snapshot => {
-
-        const solde =
-          Number(
-            snapshot.val()
-          ) || 0;
-
-
-        const el =
-          document.getElementById(
-            "soldeVal"
-          );
-
-
-        if (el) {
-
-          el.textContent =
-            fmt(solde);
-
-        }
-
+    onValue(ref(db, `users/${uid}/balance`), s => {
+      document.getElementById('soldeVal').textContent = fmt(s.val() || 0);
+    });
+    onValue(ref(db, `investments/${uid}`), s => {
+      document.getElementById('loadWrap').style.display = 'none';
+      const wrap = document.getElementById('cardsWrap');
+      if (!s.exists()) {
+        document.getElementById('emptyWrap').style.display = 'block';
+        wrap.innerHTML = '';
+        updateStats([]);
+        return;
       }
-    );
-
-
-    // INVESTISSEMENTS
-
-    onValue(
-      ref(
-        db,
-        `investments/${uid}`
-      ),
-
-      async snapshot => {
-
-        const loadWrap =
-          document.getElementById(
-            "loadWrap"
-          );
-
-        const emptyWrap =
-          document.getElementById(
-            "emptyWrap"
-          );
-
-        const cardsWrap =
-          document.getElementById(
-            "cardsWrap"
-          );
-
-
-        if (loadWrap) {
-          loadWrap.style.display =
-            "none";
-        }
-
-
-        if (!snapshot.exists()) {
-
-          if (emptyWrap) {
-            emptyWrap.style.display =
-              "block";
-          }
-
-
-          if (cardsWrap) {
-            cardsWrap.innerHTML =
-              "";
-          }
-
-
-          updateStats([]);
-
-          return;
-
-        }
-
-
-        if (emptyWrap) {
-          emptyWrap.style.display =
-            "none";
-        }
-
-
-        const entries =
-          Object.entries(
-            snapshot.val()
-          );
-
-
-        // Trier : actifs en premier
-
-        entries.sort(
-          ([, a], [, b]) => {
-
-            if (
-              a.status === "active" &&
-              b.status !== "active"
-            ) {
-              return -1;
-            }
-
-
-            if (
-              b.status === "active" &&
-              a.status !== "active"
-            ) {
-              return 1;
-            }
-
-
-            return (
-              new Date(b.startDate) -
-              new Date(a.startDate)
-            );
-
-          }
-        );
-
-
-        // Mise à jour des données
-
-        try {
-
-          await migrateInvestments(
-            uid,
-            entries
-          );
-
-        } catch (error) {
-
-          console.warn(
-            "Migration impossible :",
-            error
-          );
-
-        }
-
-
-        // Afficher les 6 produits
-
-        if (cardsWrap) {
-
-          cardsWrap.innerHTML =
-            entries
-              .map(
-                ([key, inv], index) =>
-                  buildCard(
-                    key,
-                    inv,
-                    index * 0.07
-                  )
-              )
-              .join("");
-
-        }
-
-
-        updateStats(
-          entries.map(
-            ([, inv]) => inv
-          )
-        );
-
-      }
-    );
-
+      document.getElementById('emptyWrap').style.display = 'none';
+      const entries = Object.entries(s.val()).sort(([, a], [, b]) => {
+        if (a.status === 'active' && b.status !== 'active') return -1;
+        if (b.status === 'active' && a.status !== 'active') return  1;
+        return new Date(b.startDate) - new Date(a.startDate);
+      });
+      migrateInvestments(uid, entries);
+      wrap.innerHTML = entries.map(([k, i], idx) => buildCard(k, i, idx * 0.07)).join('');
+      updateStats(entries.map(([, i]) => i));
+    });
   }
 
-
-  // =====================================================
-  // AUTHENTIFICATION
-  // =====================================================
-
-  onAuthStateChanged(
-    auth,
-    user => {
-
-      if (user) {
-
-        _uid =
-          user.uid;
-
-
-        listen(
-          user.uid
-        );
-
-      } else {
-
-        _uid =
-          null;
-
-
-        const loadWrap =
-          document.getElementById(
-            "loadWrap"
-          );
-
-
-        const emptyWrap =
-          document.getElementById(
-            "emptyWrap"
-          );
-
-
-        if (loadWrap) {
-
-          loadWrap.style.display =
-            "none";
-
-        }
-
-
-        if (emptyWrap) {
-
-          emptyWrap.style.display =
-            "block";
-
-        }
-
-      }
-
+  onAuthStateChanged(auth, user => {
+    if (user) { _uid = user.uid; listen(user.uid); }
+    else {
+      _uid = null;
+      document.getElementById('loadWrap').style.display = 'none';
+      document.getElementById('emptyWrap').style.display = 'block';
     }
-  );
-
+  });
 </script>
-
 </body>
 </html>
