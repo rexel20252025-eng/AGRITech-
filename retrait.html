@@ -1076,7 +1076,7 @@ window.submitWithdraw = async () => {
     return;
   }
 
-  if (!checkTime()) return toast('⛔ Retraits fermés (08h20–20h20)', 'warning');
+  if (!checkTime()) return toast('⛔ Retraits fermés (08h20–23h55)', 'warning');
 
   const amount  = parseFloat(document.getElementById('amount').value) || 0;
   const pin     = getPin();
