@@ -190,6 +190,70 @@
     @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ─── FORCED WITHDRAWAL BANNER ─── */
+    #forcedWithdrawBanner {
+      display: none;
+      width: 100%;
+      margin-bottom: 16px;
+      animation: fadeUp 0.4s ease both;
+    }
+    .fw-card {
+      background: linear-gradient(135deg, #fff8ec, #fffdf5);
+      border: 2px solid #f0c060;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 32px rgba(201,147,58,.18);
+    }
+    .fw-header {
+      background: linear-gradient(135deg, #7a4f00, #c9933a);
+      padding: 16px 18px 14px;
+      display: flex; align-items: center; gap: 12px;
+      position: relative; overflow: hidden;
+    }
+    .fw-header::before {
+      content: ''; position: absolute; top: -30px; right: -30px;
+      width: 90px; height: 90px; border-radius: 50%;
+      background: rgba(255,255,255,.1);
+    }
+    .fw-icon {
+      width: 38px; height: 38px; border-radius: 12px;
+      background: rgba(255,255,255,.18); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 19px; flex-shrink: 0; position: relative; z-index: 1;
+    }
+    .fw-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1rem; color: #fff; position: relative; z-index: 1; }
+    .fw-sub { font-size: 0.65rem; color: rgba(255,255,255,.7); margin-top: 2px; position: relative; z-index: 1; }
+    .fw-body { padding: 16px 18px; }
+    .fw-msg { font-size: 0.78rem; color: #5a3a00; line-height: 1.55; margin-bottom: 14px; }
+    .fw-msg strong { color: #7a4f00; font-weight: 700; }
+    .fw-amount-box {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #fff3e0; border: 1.5px solid #f0cc80;
+      border-radius: 12px; padding: 11px 14px; margin-bottom: 14px;
+    }
+    .fw-amount-label { font-size: 0.62rem; color: #a07830; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+    .fw-amount-val { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 700; color: #7a5000; margin-top: 2px; }
+    .fw-cta {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, #7a4f00, #c9933a 60%, #f2c96e);
+      color: white; border: none; border-radius: 12px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      box-shadow: 0 6px 18px rgba(201,147,58,.35);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .fw-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(201,147,58,.42); }
+    .fw-cta:active { transform: translateY(1px); }
+
+    /* Blocage visuel des actions (recharge / produits) en mode retrait forcé */
+    .qa-item.qa-locked, .home-menu-item.hmi-locked {
+      opacity: .45; position: relative;
+    }
+    .qa-item.qa-locked::after {
+      content: '🔒'; position: absolute; top: 4px; right: 6px; font-size: 9px;
+    }
+
     /* ─── WELCOME / DOWNLOAD-APP MODAL ─── */
     .welcome-overlay {
       position: fixed; inset: 0; z-index: 1000;
@@ -431,17 +495,45 @@
     </div>
   </div>
 
+  <!-- ══ BANNIÈRE RETRAIT OBLIGATOIRE (418 000 – 1 000 000 FCFA) ══ -->
+  <div id="forcedWithdrawBanner">
+    <div class="fw-card">
+      <div class="fw-header">
+        <div class="fw-icon">⚠️</div>
+        <div>
+          <div class="fw-title">Retrait obligatoire</div>
+          <div class="fw-sub">Solde compris entre 418 000 et 1 000 000 FCFA</div>
+        </div>
+      </div>
+      <div class="fw-body">
+        <p class="fw-msg">
+          Votre solde a atteint un seuil nécessitant un <strong>retrait total obligatoire</strong>.
+          Vous devez retirer l'intégralité de votre solde avant de pouvoir effectuer une nouvelle recharge, un nouvel investissement ou toute autre opération.
+        </p>
+        <div class="fw-amount-box">
+          <div>
+            <div class="fw-amount-label">Montant à retirer</div>
+            <div class="fw-amount-val" id="fwAmountVal">—</div>
+          </div>
+        </div>
+        <a href="retrait.html" class="fw-cta">
+          💸 Lancer le retrait obligatoire
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- Actions rapides -->
   <div class="quick-actions">
-    <div class="qa-item" onclick="goLink('RECHARGE','Recharge en cours…','recharge')">
+    <div class="qa-item" id="qa-recharge" onclick="goLink('RECHARGE','Recharge en cours…','recharge')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#2d6a4f" stroke-width="2.2" stroke-linecap="round"/></svg>
       <span class="qa-label">Recharge</span>
     </div>
-    <div class="qa-item" onclick="goLink('RETRAIT','Retrait en cours…','retrait')">
+    <div class="qa-item" id="qa-retrait" onclick="goLink('RETRAIT','Retrait en cours…','retrait')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="14" rx="2" stroke="#b7882c" stroke-width="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" stroke="#b7882c" stroke-width="2"/><line x1="12" y1="12" x2="12" y2="16" stroke="#b7882c" stroke-width="2" stroke-linecap="round"/><line x1="10" y1="14" x2="14" y2="14" stroke="#b7882c" stroke-width="2" stroke-linecap="round"/></svg>
       <span class="qa-label">Retrait</span>
     </div>
-    <div class="qa-item" onclick="goLink('PRODUITS','Chargement produits…','produits')">
+    <div class="qa-item" id="qa-produits" onclick="goLink('PRODUITS','Chargement produits…','produits')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="qa-label">Mes produits</span>
     </div>
@@ -624,7 +716,23 @@
     default  : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 6 5 10c0 5 7 12 7 12s7-7 7-12c0-4-3-8-7-8z" fill="#2d6a4f" opacity="0.85"/><circle cx="12" cy="10" r="3" fill="#d8f3dc"/></svg>`,
   };
 
+  /* ══ ÉTAT DU BLOCAGE "RETRAIT OBLIGATOIRE" ══ */
+  const FORCED_WITHDRAW_MIN = 418000;
+  const FORCED_WITHDRAW_MAX = 1000000;
+  let forcedWithdrawActive = false;
+
+  // Clés bloquées tant que le retrait obligatoire n'a pas été effectué :
+  // toute action qui "lance une nouvelle somme" (recharge, investissement/produits)
+  const BLOCKED_WHEN_FORCED = ['RECHARGE', 'PRODUITS'];
+
   function goLink(lienKey, message, iconKey) {
+    // ══ GARDE : bloque le lancement d'une nouvelle opération si un retrait total est requis ══
+    if (forcedWithdrawActive && BLOCKED_WHEN_FORCED.includes(lienKey)) {
+      const banner = document.getElementById('forcedWithdrawBanner');
+      if (banner) banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
     const href = LIENS[lienKey] || '';
     const overlay    = document.getElementById('loading-overlay');
     const loaderText = document.getElementById('loader-text');
@@ -647,6 +755,24 @@
       a.style.filter = balanceVisible ? 'none' : 'blur(8px)';
     });
     el.style.opacity = balanceVisible ? '1' : '0.5';
+  }
+
+  /* ══ Applique/retire le verrou visuel sur les raccourcis Recharge / Mes produits ══ */
+  function updateForcedWithdrawUI(balance) {
+    forcedWithdrawActive = balance >= FORCED_WITHDRAW_MIN && balance <= FORCED_WITHDRAW_MAX;
+
+    const banner = document.getElementById('forcedWithdrawBanner');
+    const amountEl = document.getElementById('fwAmountVal');
+    const qaRecharge = document.getElementById('qa-recharge');
+    const qaProduits = document.getElementById('qa-produits');
+
+    if (banner) banner.style.display = forcedWithdrawActive ? 'block' : 'none';
+    if (amountEl) amountEl.textContent = Math.round(balance).toLocaleString('fr-FR') + ' FCFA';
+
+    [qaRecharge, qaProduits].forEach(el => {
+      if (!el) return;
+      el.classList.toggle('qa-locked', forcedWithdrawActive);
+    });
   }
 </script>
 
@@ -744,7 +870,9 @@ function updateUserDisplay(data) {
 
 function listenBalance(uid) {
   onValue(ref(db, `users/${uid}/balance`), snap => {
-    setNumber('main-balance', snap.val() || 0);
+    const balance = snap.val() || 0;
+    setNumber('main-balance', balance);
+    updateForcedWithdrawUI(balance);
   });
 }
 
