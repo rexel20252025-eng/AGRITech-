@@ -86,26 +86,17 @@ body {
 .ci-panel-title { font-size:13px; font-weight:700; color:#fff; }
 .ci-panel-sub { font-size:11px; color:rgba(255,255,255,.65); margin-top:1px; }
 .ci-panel-body { padding:16px 18px 18px; }
-.ci-info-row {
-  display:flex; align-items:center; justify-content:space-between;
-  background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:11px;
-  padding:12px 14px; margin-bottom:10px;
+.ci-msg { font-size:13px; color:#5a3d05; line-height:1.6; margin-bottom:14px; text-align:center; }
+.ci-pay-btn {
+  width:100%; border:none; border-radius:13px; padding:14px;
+  font-family:'Inter',sans-serif; font-size:14px; font-weight:600; cursor:pointer;
+  background:linear-gradient(135deg,#e95420,#f77f00); color:#fff;
+  box-shadow:0 8px 24px rgba(233,84,32,.28);
+  transition:all .25s cubic-bezier(.16,1,.3,1);
 }
-.ci-info-row:last-child { margin-bottom:0; }
-.ci-info-label { font-size:11px; color:rgba(0,0,0,.4); font-weight:500; }
-.ci-info-val { font-size:14px; font-weight:700; color:#1a2e20; }
-.ci-copy-btn {
-  background:linear-gradient(135deg,var(--green),var(--green2));
-  color:#fff; border:none; border-radius:8px;
-  padding:6px 12px; font-size:11px; font-weight:600;
-  cursor:pointer; transition:all .2s; font-family:'Inter',sans-serif;
-}
-.ci-copy-btn:hover { transform:scale(1.05); box-shadow:0 4px 12px rgba(26,122,60,.3); }
-.ci-copy-btn:active { transform:scale(.97); }
-.ci-steps { margin-top:14px; }
-.ci-step { display:flex; align-items:flex-start; gap:10px; font-size:12px; color:rgba(0,0,0,.5); margin-bottom:8px; line-height:1.5; }
-.ci-step-num { width:20px; height:20px; border-radius:50%; background:var(--green); color:#fff; font-size:10px; font-weight:600; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.ci-step strong { color:#1a2e20; }
+.ci-pay-btn:hover { box-shadow:0 12px 30px rgba(233,84,32,.4); transform:translateY(-2px); }
+.ci-pay-btn:active { transform:scale(.97); }
+.ci-pay-btn:disabled { opacity:.75; transform:none; box-shadow:0 8px 24px rgba(26,122,60,.3); background:linear-gradient(135deg,#1a7a3c,#2db85e); }
 
 .card {
   width:100%; max-width:420px; background:#fff; border-radius:24px;
@@ -360,7 +351,9 @@ body {
           <div class="amt" onclick="pickAmt(this,'18 500',18500)"><span class="amt-v">18 500</span><span class="amt-c">F CFA</span></div>
           <div class="amt" onclick="pickAmt(this,'35 500',35500)"><span class="amt-v">35 500</span><span class="amt-c">F CFA</span></div>
           <div class="amt" onclick="pickAmt(this,'50 000',50000)"><span class="amt-v">50 000</span><span class="amt-c">F CFA</span></div>
+          <div class="amt" onclick="pickAmt(this,'90 000',90000)"><span class="amt-v">90 000</span><span class="amt-c">F CFA</span></div>
           <div class="amt" onclick="pickAmt(this,'100 000',100000)"><span class="amt-v">100 000</span><span class="amt-c">F CFA</span></div>
+          <div class="amt" onclick="pickAmt(this,'150 000',150000)"><span class="amt-v">150 000</span><span class="amt-c">F CFA</span></div>
           <div class="amt" onclick="pickAmt(this,'200 000',200000)"><span class="amt-v">200 000</span><span class="amt-c">F CFA</span></div>
         </div>
         <input type="hidden" id="amount" value="">
@@ -410,29 +403,12 @@ body {
           <div class="ci-panel-header">
             <div>
               <div class="ci-panel-title">🇨🇮 Paiement en Côte d'Ivoire</div>
-              <div class="ci-panel-sub">Envoyez le montant au numéro ci-dessous</div>
+              <div class="ci-panel-sub">Effectuez votre paiement puis confirmez</div>
             </div>
           </div>
           <div class="ci-panel-body">
-            <div class="ci-info-row">
-              <div>
-                <div class="ci-info-label">Numéro de dépôt</div>
-                <div class="ci-info-val" id="ciNumero">—</div>
-              </div>
-              <button class="ci-copy-btn" onclick="copierNumero()">📋 Copier</button>
-            </div>
-            <div class="ci-info-row">
-              <div>
-                <div class="ci-info-label">Nom du destinataire</div>
-                <div class="ci-info-val">AGRITech AGRITech</div>
-              </div>
-              <button class="ci-copy-btn" onclick="copierNom()">📋 Copier</button>
-            </div>
-            <div class="ci-steps">
-              <div class="ci-step"><div class="ci-step-num">1</div><span>Ouvrez votre application <strong id="ciAppLabel">Mobile Money</strong></span></div>
-              <div class="ci-step"><div class="ci-step-num">2</div><span>Envoyez <strong id="ciMontantLabel">—</strong> au numéro <strong id="ciNumeroLabel">—</strong></span></div>
-              <div class="ci-step"><div class="ci-step-num">3</div><span>Entrez votre <strong>ID de transaction</strong> dans le champ ci-dessous</span></div>
-            </div>
+            <p class="ci-msg">Veuillez cliquer sur le bouton ci-dessous pour payer.</p>
+            <button class="ci-pay-btn" id="ciPayeBtn" onclick="payerCI()">✅ &nbsp;Payé</button>
           </div>
         </div>
 
@@ -519,17 +495,9 @@ body {
   const auth = getAuth(app);
   const db   = getDatabase(app);
 
-  const MF_LINK   = 'https://my.moneyfusion.net/69a1e3df72d40f4062a204f5';
-  const SS_KEY    = 'agritech_recharge_state';
-
-  // Numéros CI par opérateur
-  const CI_NUMEROS = {
-    mtn    : { numero: ' 05 84 78 55 69', app: 'MTN Mobile Money' },
-    orange : { numero: 'ecrivez au service client', app: 'Orange Money' },
-    wave   : { numero: ' 07 05 28 42 04', app: 'Wave' },
-    moov   : { numero: ' 01 73 75 02 25',  app: 'Moov Money' },
-    tmoney : { numero: null,              app: 'T-Money' }
-  };
+  const MF_LINK    = 'https://my.moneyfusion.net/69a1e3df72d40f4062a204f5';
+  const JEKO_LINK  = 'https://pay.jeko.africa/pl/af8fd51f-18cd-4a3f-ab24-95b150acbaa3';
+  const SS_KEY     = 'agritech_recharge_state';
 
   const S = { op:'', opLabel:'', amtLabel:'', amtNum:0, phone:'', gmail:'', pays:'' };
   let currentUser = null;
@@ -582,32 +550,11 @@ body {
     applyMfVisibility(pays);
   };
 
-  // MàJ panneau CI selon l'opérateur sélectionné
+  // Affiche le panneau CI dès qu'un opérateur est choisi
   function updateCiPanel() {
     if (S.pays !== 'ci' || !S.op) return;
-    const info = CI_NUMEROS[S.op];
-    const panel = $('ciPanel');
-
-    panel.classList.remove('show');
-    if (!info || !info.numero) return;
-
-    panel.classList.add('show');
-    $('ciNumero').textContent      = info.numero;
-    $('ciNumeroLabel').textContent = info.numero;
-    $('ciAppLabel').textContent    = info.app;
-    $('ciMontantLabel').textContent = S.amtNum > 0 ? S.amtLabel + ' F CFA' : '—';
+    $('ciPanel').classList.add('show');
   }
-
-  // ══ COPIER ══
-  window.copierNumero = () => {
-    const info = CI_NUMEROS[S.op];
-    if (!info || !info.numero) return;
-    const raw = info.numero.replace(/\s/g, '');
-    navigator.clipboard.writeText(raw).then(() => showNotif('📋 Numéro copié !', 'success'));
-  };
-  window.copierNom = () => {
-    navigator.clipboard.writeText('AGRITech').then(() => showNotif('📋 Nom copié !', 'success'));
-  };
 
   window.goTo = (n, dir) => {
     const isBack  = dir === 'back' || n < currentStep;
@@ -648,7 +595,6 @@ body {
     document.querySelectorAll('.amt').forEach(e=>e.classList.remove('sel'));
     el.classList.add('sel');
     S.amtLabel = label; S.amtNum = parseInt(num); $('amount').value = num;
-    updateCiPanel();
   };
 
   function isValidGmail(email) {
@@ -694,6 +640,23 @@ body {
     goTo(2);
   };
 
+  // ══ PAIEMENT CI : bouton "Payé" → redirection vers le lien Jeko ══
+  window.payerCI = () => {
+    sessionStorage.setItem(SS_KEY, JSON.stringify({...S, mfOuvert:true}));
+
+    const btn = $('ciPayeBtn');
+    btn.innerHTML = '✅ &nbsp;Page de paiement ouverte';
+    btn.disabled = true;
+
+    $('returnAlert').classList.add('show');
+    $('tokenGuide').classList.add('show');
+    $('modifyBtn').style.display = 'none';
+
+    setTimeout(()=>$('transactionId').focus(), 500);
+    window.open(JEKO_LINK, '_blank');
+  };
+
+  // ══ PAIEMENT INTERNATIONAL : MoneyFusion ══
   window.ouvrirMF = () => {
     sessionStorage.setItem(SS_KEY, JSON.stringify({...S, mfOuvert:true}));
 
@@ -804,6 +767,9 @@ body {
       if (S.pays === 'ci') {
         $('ciPaySection').style.display = 'block';
         updateCiPanel();
+        const cb = $('ciPayeBtn');
+        cb.innerHTML = '✅ &nbsp;Page de paiement ouverte';
+        cb.disabled = true;
       } else {
         $('ciPaySection').style.display = 'none';
       }
@@ -836,6 +802,9 @@ body {
     document.querySelectorAll('.amt').forEach(e=>e.classList.remove('sel'));
 
     $('ciPanel').classList.remove('show');
+    const cb = $('ciPayeBtn');
+    cb.innerHTML = '✅ &nbsp;Payé';
+    cb.disabled = false;
 
     const btn = $('payBtn');
     btn.innerHTML = '🌐 &nbsp;Paiement international — MoneyFusion';
