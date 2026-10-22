@@ -96,7 +96,6 @@ body {
 }
 .ci-pay-btn:hover { box-shadow:0 12px 30px rgba(233,84,32,.4); transform:translateY(-2px); }
 .ci-pay-btn:active { transform:scale(.97); }
-.ci-pay-btn:disabled { opacity:.75; transform:none; box-shadow:0 8px 24px rgba(26,122,60,.3); background:linear-gradient(135deg,#1a7a3c,#2db85e); }
 
 .card {
   width:100%; max-width:420px; background:#fff; border-radius:24px;
@@ -276,7 +275,6 @@ body {
 .balance-box .bv { font-size:20px; font-weight:700; color:#fff; margin:4px 0 2px; }
 .balance-box .bs { font-size:11px; color:rgba(255,255,255,.5); }
 
-/* Divider entre CI et intl buttons */
 .pay-divider {
   display:flex; align-items:center; gap:10px;
   margin:12px 0; font-size:11px; color:rgba(0,0,0,.3);
@@ -284,7 +282,6 @@ body {
 .pay-divider::before, .pay-divider::after {
   content:''; flex:1; height:1px; background:rgba(0,0,0,.08);
 }
-/* Masquer le divider et le bouton MF pour CI */
 .hide-mf { display:none !important; }
 </style>
 </head>
@@ -326,7 +323,6 @@ body {
     <!-- ÉTAPE 1 -->
     <div class="step active" id="step1">
 
-      <!-- Badge pays -->
       <div class="pays-badge" id="paysBadge">
         <span id="paysFlag">🌍</span>
         <span>Pays : <strong id="paysLabel">—</strong></span>
@@ -412,11 +408,10 @@ body {
           </div>
         </div>
 
-        <!-- Divider "ou" — masqué pour CI -->
         <div class="pay-divider" id="payDivider">ou</div>
       </div>
 
-      <!-- Bouton paiement international — masqué pour CI -->
+      <!-- Paiement international — masqué pour CI -->
       <button class="btn btn-gold" id="payBtn" onclick="ouvrirMF()" style="margin-bottom:14px;">
         🌐 &nbsp;Paiement international — MoneyFusion
       </button>
@@ -444,7 +439,7 @@ body {
           <label>ID de transaction</label>
           <div class="inp-wrap">
             <span class="inp-ico">🔑</span>
-            <input type="text" id="transactionId" placeholder="Collez ici votre ID de transaction" autocomplete="off" autocorrect="off" spellcheck="false"/>
+            <input type="text" id="transactionId" inputmode="numeric" placeholder="Ex : 4385083702" maxlength="10" autocomplete="off" autocorrect="off" spellcheck="false"/>
           </div>
           <span class="err-msg" id="txnError"></span>
         </div>
@@ -495,9 +490,9 @@ body {
   const auth = getAuth(app);
   const db   = getDatabase(app);
 
-  const MF_LINK    = 'https://my.moneyfusion.net/69a1e3df72d40f4062a204f5';
-  const JEKO_LINK  = 'https://pay.jeko.africa/pl/af8fd51f-18cd-4a3f-ab24-95b150acbaa3';
-  const SS_KEY     = 'agritech_recharge_state';
+  const MF_LINK   = 'https://my.moneyfusion.net/69a1e3df72d40f4062a204f5';
+  const JEKO_LINK = 'https://pay.jeko.africa/pl/af8fd51f-18cd-4a3f-ab24-95b150acbaa3';
+  const SS_KEY    = 'agritech_recharge_state';
 
   const S = { op:'', opLabel:'', amtLabel:'', amtNum:0, phone:'', gmail:'', pays:'' };
   let currentUser = null;
@@ -521,7 +516,6 @@ body {
     return id.trim().replace(/[.#$[\]]/g, '_');
   }
 
-  // Applique la visibilité du bouton MoneyFusion selon le pays
   function applyMfVisibility(pays) {
     const isCi = pays === 'ci';
     $('payBtn').classList.toggle('hide-mf', isCi);
@@ -550,7 +544,6 @@ body {
     applyMfVisibility(pays);
   };
 
-  // Affiche le panneau CI dès qu'un opérateur est choisi
   function updateCiPanel() {
     if (S.pays !== 'ci' || !S.op) return;
     $('ciPanel').classList.add('show');
@@ -636,17 +629,12 @@ body {
     }
 
     applyMfVisibility(S.pays);
-
     goTo(2);
   };
 
-  // ══ PAIEMENT CI : bouton "Payé" → redirection vers le lien Jeko ══
+  // ══ PAIEMENT CI : bouton "Payé" toujours actif → ouvre le lien Jeko à chaque clic ══
   window.payerCI = () => {
     sessionStorage.setItem(SS_KEY, JSON.stringify({...S, mfOuvert:true}));
-
-    const btn = $('ciPayeBtn');
-    btn.innerHTML = '✅ &nbsp;Page de paiement ouverte';
-    btn.disabled = true;
 
     $('returnAlert').classList.add('show');
     $('tokenGuide').classList.add('show');
@@ -659,14 +647,6 @@ body {
   // ══ PAIEMENT INTERNATIONAL : MoneyFusion ══
   window.ouvrirMF = () => {
     sessionStorage.setItem(SS_KEY, JSON.stringify({...S, mfOuvert:true}));
-
-    const btn = $('payBtn');
-    btn.innerHTML    = '✅ &nbsp;Page MoneyFusion ouverte';
-    btn.style.background = 'linear-gradient(135deg,#1a7a3c,#2db85e)';
-    btn.style.color  = '#fff';
-    btn.style.boxShadow = '0 8px 24px rgba(26,122,60,.3)';
-    btn.style.opacity = '.75';
-    btn.disabled = true;
 
     $('returnAlert').classList.add('show');
     $('tokenGuide').classList.add('show');
@@ -682,10 +662,16 @@ body {
 
     clearErrors();
 
-    if (!rawTxnId || rawTxnId.length < 4) {
+    if (S.pays === 'ci') {
+      if (!/^\d{10}$/.test(rawTxnId)) {
+        showErr('txnError','L\'ID doit contenir exactement 10 chiffres (ex : 4385083702)');
+        return;
+      }
+    } else if (!rawTxnId || rawTxnId.length < 4) {
       showErr('txnError','Veuillez saisir votre ID de transaction (min. 4 caractères)');
       return;
     }
+
     if (!currentUser) { showNotif('🔒 Veuillez vous connecter','error'); return; }
 
     showLoading('Envoi de votre demande...');
@@ -767,22 +753,11 @@ body {
       if (S.pays === 'ci') {
         $('ciPaySection').style.display = 'block';
         updateCiPanel();
-        const cb = $('ciPayeBtn');
-        cb.innerHTML = '✅ &nbsp;Page de paiement ouverte';
-        cb.disabled = true;
       } else {
         $('ciPaySection').style.display = 'none';
       }
 
       applyMfVisibility(S.pays);
-
-      // Restaurer le bouton MF
-      if (saved.mfOuvert) {
-        const btn = $('payBtn');
-        btn.innerHTML = '✅ &nbsp;Page MoneyFusion ouverte';
-        btn.style.background = 'linear-gradient(135deg,#1a7a3c,#2db85e)';
-        btn.style.color = '#fff'; btn.style.opacity = '.75'; btn.disabled = true;
-      }
 
       $('returnAlert').classList.add('show');
       $('tokenGuide').classList.add('show');
@@ -802,9 +777,6 @@ body {
     document.querySelectorAll('.amt').forEach(e=>e.classList.remove('sel'));
 
     $('ciPanel').classList.remove('show');
-    const cb = $('ciPayeBtn');
-    cb.innerHTML = '✅ &nbsp;Payé';
-    cb.disabled = false;
 
     const btn = $('payBtn');
     btn.innerHTML = '🌐 &nbsp;Paiement international — MoneyFusion';
