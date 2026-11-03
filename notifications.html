@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AGRITech — Messages</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green: #2d6a4f;
+      --green-deep: #1a2e1e;
+      --green-light: #52b788;
+      --green-pale: #d8f3dc;
+      --gold: #b7882c;
+      --text: #1a2e1e;
+      --muted: #6b8f71;
+      --bg: #faf8f3;
+      --border: #e2ece2;
+      --shadow: rgba(45,106,79,0.10);
+      --heart: #e0554a;
+    }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 0 40px 0;
+    }
+    .container { width: 100%; max-width: 420px; padding: 0 16px; }
+
+    .topbar { width: 100%; padding: 20px 0 14px; display: flex; align-items: center; gap: 12px; }
+    .back-btn { width: 38px; height: 38px; background: white; border: 1.5px solid var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); flex-shrink: 0; }
+    .topbar-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--green-deep); }
+    .topbar-sub { font-size: 0.68rem; color: var(--muted); margin-top: 1px; }
+
+    /* LISTE */
+    #view-list { display: flex; flex-direction: column; gap: 10px; }
+    .msg-card {
+      background: white; border: 1.5px solid var(--border); border-radius: 16px;
+      padding: 14px 15px; display: flex; gap: 12px; align-items: flex-start;
+      cursor: pointer; box-shadow: 0 2px 10px var(--shadow); transition: all 0.18s;
+      position: relative;
+    }
+    .msg-card:hover { transform: translateY(-2px); border-color: var(--green-light); }
+    .msg-card:active { transform: scale(0.98); }
+    .msg-card.unread { border-color: var(--green-light); background: #f6fcf8; }
+    .msg-icon { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg,#e8f5ed,#d8f3dc); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .msg-body { flex: 1; min-width: 0; }
+    .msg-title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .msg-title { font-size: 0.85rem; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .msg-dot { width: 7px; height: 7px; background: var(--heart); border-radius: 50%; flex-shrink: 0; }
+    .msg-preview { font-size: 0.72rem; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .msg-date { font-size: 0.62rem; color: #a9c2ae; margin-top: 6px; font-weight: 600; letter-spacing: 0.3px; }
+
+    .empty-state { width: 100%; text-align: center; padding: 60px 20px; color: var(--muted); }
+    .empty-state svg { margin-bottom: 14px; opacity: 0.5; }
+    .empty-state-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .empty-state-sub { font-size: 0.75rem; }
+
+    /* DETAIL */
+    #view-detail { display: none; }
+    .detail-card {
+      background: white; border: 1.5px solid var(--border); border-radius: 20px;
+      padding: 22px; box-shadow: 0 4px 20px var(--shadow); animation: fadeUp 0.35s ease both;
+    }
+    .detail-icon { width: 52px; height: 52px; border-radius: 15px; background: linear-gradient(135deg,#e8f5ed,#d8f3dc); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .detail-title { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 6px; }
+    .detail-date { font-size: 0.7rem; color: var(--muted); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .detail-body { font-size: 0.85rem; color: var(--text); line-height: 1.75; white-space: pre-wrap; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .loading-txt { text-align: center; color: var(--muted); font-size: 0.78rem; padding: 40px 0; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="topbar">
+    <div class="back-btn" onclick="handleBack()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="#2d6a4f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div>
+      <div class="topbar-title" id="page-title">Messages</div>
+      <div class="topbar-sub" id="page-sub">Toutes vos notifications</div>
+    </div>
+  </div>
+
+  <div id="view-list">
+    <div class="loading-txt" id="loading-txt">Chargement des messages…</div>
+  </div>
+
+  <div id="view-detail">
+    <div class="detail-card">
+      <div class="detail-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v12H7l-3 3V4z" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="detail-title" id="detail-title">—</div>
+      <div class="detail-date" id="detail-date">—</div>
+      <div class="detail-body" id="detail-body">—</div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getAuth, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+import { getDatabase, ref, onValue, set }
+  from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDaFEepJKO8TbePfgnYlX0N3-CcaV75fy4",
+  authDomain: "agri-5af15.firebaseapp.com",
+  databaseURL: "https://agri-5af15-default-rtdb.firebaseio.com",
+  projectId: "agri-5af15",
+  storageBucket: "agri-5af15.firebasestorage.app",
+  messagingSenderId: "1010902928190",
+  appId: "1:1010902928190:web:57d2555d69e2c023057a6f",
+  measurementId: "G-XYB13DQZSP"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getDatabase(app);
+
+let currentUid = null;
+let lastSeen = 0;
+let messagesCache = [];
+
+function formatDate(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  const now = new Date();
+  const sameDay = d.toDateString() === now.toDateString();
+  const opts = sameDay
+    ? { hour: '2-digit', minute: '2-digit' }
+    : { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+  const prefix = sameDay ? "Aujourd'hui à " : '';
+  return prefix + d.toLocaleString('fr-FR', opts).replace(sameDay ? d.toLocaleDateString('fr-FR') : '', '');
+}
+
+function niceDate(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  const now = new Date();
+  const sameDay = d.toDateString() === now.toDateString();
+  const time = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  if (sameDay) return "Aujourd'hui à " + time;
+  const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
+  if (d.toDateString() === yesterday.toDateString()) return 'Hier à ' + time;
+  return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' à ' + time;
+}
+
+function renderList() {
+  const container = document.getElementById('view-list');
+  if (!messagesCache.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#6b8f71" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <div class="empty-state-title">Aucun message</div>
+        <div class="empty-state-sub">Vous serez notifié ici dès qu'un nouveau message arrive.</div>
+      </div>`;
+    return;
+  }
+  container.innerHTML = messagesCache.map((m, i) => {
+    const unread = (m.timestamp || 0) > lastSeen;
+    const preview = (m.body || '').slice(0, 60) + ((m.body || '').length > 60 ? '…' : '');
+    return `
+      <div class="msg-card ${unread ? 'unread' : ''}" onclick="showDetail(${i})">
+        <div class="msg-icon">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v12H7l-3 3V4z" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="msg-body">
+          <div class="msg-title-row">
+            <div class="msg-title">${escapeHtml(m.title || 'Message')}</div>
+            ${unread ? '<div class="msg-dot"></div>' : ''}
+          </div>
+          <div class="msg-preview">${escapeHtml(preview)}</div>
+          <div class="msg-date">${niceDate(m.timestamp)}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+window.showDetail = function(i) {
+  const m = messagesCache[i];
+  document.getElementById('detail-title').textContent = m.title || 'Message';
+  document.getElementById('detail-date').textContent = niceDate(m.timestamp);
+  document.getElementById('detail-body').textContent = m.body || '';
+  document.getElementById('view-list').style.display = 'none';
+  document.getElementById('view-detail').style.display = 'block';
+  document.getElementById('page-title').textContent = 'Détail';
+  document.getElementById('page-sub').textContent = 'Message reçu';
+};
+
+window.handleBack = function() {
+  const detailVisible = document.getElementById('view-detail').style.display === 'block';
+  if (detailVisible) {
+    document.getElementById('view-detail').style.display = 'none';
+    document.getElementById('view-list').style.display = 'flex';
+    document.getElementById('page-title').textContent = 'Messages';
+    document.getElementById('page-sub').textContent = 'Toutes vos notifications';
+  } else {
+    window.location.href = 'accueil.html';
+  }
+};
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) { window.location.href = 'login.html'; return; }
+  currentUid = user.uid;
+
+  onValue(ref(db, `users/${user.uid}/lastSeenMessageTime`), snap => {
+    lastSeen = snap.val() || 0;
+  }, { onlyOnce: true });
+
+  onValue(ref(db, 'messages'), snap => {
+    const data = snap.val() || {};
+    messagesCache = Object.values(data).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    renderList();
+
+    // Marque les messages comme vus une fois affichés
+    const newest = messagesCache.reduce((max, m) => Math.max(max, m.timestamp || 0), 0);
+    if (newest > 0) {
+      set(ref(db, `users/${user.uid}/lastSeenMessageTime`), newest);
+    }
+  });
+});
+</script>
+
+</body>
+</html>
